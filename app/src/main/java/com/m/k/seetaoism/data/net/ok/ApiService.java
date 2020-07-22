@@ -1,7 +1,7 @@
 package com.m.k.seetaoism.data.net.ok;
 
 
-import com.m.k.seetaoism.data.entity.Banner;
+import com.m.k.seetaoism.data.entity.ColumnData;
 import com.m.k.seetaoism.data.entity.HttpResult;
 import com.m.k.seetaoism.data.entity.User;
 
@@ -42,22 +42,9 @@ public interface ApiService {
     Observable<HttpResult<User>>  loginByPassword(@FieldMap HashMap<String,String> params );
 
 
-    /**
-     * 注册
-     * @param hashMap
-     * @return
-     */
-    @POST("/api/user/register")
-    Observable<HttpResult<User>>  regisgter(@FieldMap HashMap<String,String> hashMap);
 
-
-    /**
-     * 注册
-     * @param hashMap
-     * @return
-     */
-    @POST("/api/user/banner")
-    Observable<HttpResult<Banner>>  getBanner(@FieldMap HashMap<String,String> hashMap);
+    @GET("/api/column/columnmanagelist")
+    Observable<HttpResult<ColumnData>> getColumnData(@QueryMap HashMap<String,String> params);
 
 
 

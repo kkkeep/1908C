@@ -1,13 +1,14 @@
 package com.m.k.seetaoism.home;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.m.k.Test;
-import com.m.k.seetaoism.data.entity.User;
+import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.home.recommend.RecommendFragment;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -18,21 +19,26 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
 
-        //Test.main();
+        showRecommendFragment();
+    }
 
+
+    public void showRecommendFragment(){
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+
+        RecommendFragment fragment = new RecommendFragment();
+
+        transaction.add(R.id.home_fragment_container,fragment);
+
+        transaction.commitNow();
 
     }
 
 
-    // 第一 成功： 给我 data 数据
-    // 第二：失败： 给我错误信息
-
-    public void onUserSuccess(User result){
-       // 拿到user 对象做用户数据显示
-    }
-
-    public void onUserError(String msg){
-       // 显示错误信息
-    }
 }
