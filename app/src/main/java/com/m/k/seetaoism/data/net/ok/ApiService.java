@@ -12,6 +12,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
@@ -48,12 +49,12 @@ public interface ApiService {
 
 
 
-   /* @POST
+    @POST
     @FormUrlEncoded
-    Observable<String> doPost(@Url String url, @FieldMap HashMap<String,String> params);
+    Observable<String> doPost(@Url String url,@HeaderMap HashMap<String,Object> headers, @FieldMap HashMap<String,Object> params);
 
     @GET
-    Observable<String> doGet(@Url String url, @QueryMap HashMap<String,String> params);*/
+    Observable<String> doGet(@Url String url,@HeaderMap HashMap<String,Object> headers, @QueryMap HashMap<String,Object> params);
 
 
 }

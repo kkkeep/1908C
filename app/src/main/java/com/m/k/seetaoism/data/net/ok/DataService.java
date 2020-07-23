@@ -2,6 +2,7 @@ package com.m.k.seetaoism.data.net.ok;
 
 import com.m.k.seetaoism.BuildConfig;
 import com.m.k.seetaoism.Constrant;
+import com.m.k.seetaoism.data.net.ok.converter.MvpGsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +43,7 @@ public class DataService {
 //
                     Retrofit mRetrofit = new Retrofit.Builder()
                             .client(builder.build())
-                            .addConverterFactory(GsonConverterFactory.create()) // 帮我们把json 窜转为 entity 对象
+                            .addConverterFactory(MvpGsonConverterFactory.create()) // 帮我们把json 窜转为 entity 对象
                             .addCallAdapterFactory(RxJava3CallAdapterFactory.create()) // 结合 rxjava 使用
                             .baseUrl(Constrant.BASE_URL)
                             .build();

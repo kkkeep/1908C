@@ -20,7 +20,7 @@ public class RecommendRepository extends BaseRepository  implements RecommendCon
 
 
     @Override
-    public void getColumnData(HashMap<String,String> params,IBaseCallBack<ColumnData> callBack) {
-        doObserver(DataService.getService().getColumnData(params),callBack);
+    public void getColumnData(HashMap<String, String> params, IBaseCallBack<ColumnData> callBack) {
+
     }
 }

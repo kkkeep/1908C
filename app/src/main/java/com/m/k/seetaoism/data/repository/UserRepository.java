@@ -19,6 +19,5 @@ public class UserRepository extends BaseRepository implements PasswordLoginContr
 
     @Override
     public void login(HashMap<String, String> params, IBaseCallBack<User> callBack) {
-        doObserver( DataService.getService().loginByPassword(params),callBack);
     }
 }

@@ -50,6 +50,7 @@ public class RecommendFragment extends Fragment implements RecommendContract.IRe
     @Override
     public void onDataSuccess(ColumnData data) {
         Logger.d("%s get column data success %s",TAG,Arrays.toString(data.getList().getMyColumn().toArray()));
+        Toast.makeText(getContext(),"数据回来了",Toast.LENGTH_SHORT).show();
     }
 
     @Override
