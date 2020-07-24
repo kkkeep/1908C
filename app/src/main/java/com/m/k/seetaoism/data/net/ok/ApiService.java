@@ -14,6 +14,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -40,12 +41,29 @@ public interface ApiService {
      */
     @POST("/api/user/login")
     @FormUrlEncoded
-    Observable<HttpResult<User>>  loginByPassword(@FieldMap HashMap<String,String> params );
+    Observable<HttpResult<User>>  loginByPassword(@FieldMap HashMap<String,Object> params );
 
+    /**
+     * 密码登录
+     * @param params
+     * @return
+     */
+    @PUT("/api/user/login")
+    @FormUrlEncoded
+    Observable<String>  register(@FieldMap HashMap<String,Object> params );
+    /**
+     * 密码登录
+     * @param params
+     * @return
+     */
+    @POST("/api/user/login")
+    @FormUrlEncoded
+    Observable<String>  forgetPassword(@FieldMap HashMap<String,Object> params );
 
 
     @GET("/api/column/columnmanagelist")
     Observable<HttpResult<ColumnData>> getColumnData(@QueryMap HashMap<String,String> params);
+
 
 
 

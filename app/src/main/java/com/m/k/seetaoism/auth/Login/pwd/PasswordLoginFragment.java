@@ -1,47 +1,43 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.base.v.MvpBaseFragment;
+import com.m.k.seetaoism.data.PostRequest;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.seetaoism.utils.AppUtils;
+import com.m.k.seetaoism.utils.ParamsUtils;
 
-public class PasswordLoginFragment  extends Fragment implements PasswordLoginContract.ILoginView{
+import java.util.HashMap;
+
+import static com.m.k.seetaoism.Constrant.RequestKey.KEY_USER_ACOUNT;
+import static com.m.k.seetaoism.Constrant.RequestKey.KEY_USER_PASSWORD;
+
+public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContract.ILoginPresenter> implements PasswordLoginContract.ILoginView{
 
     private EditText mEdtCount;
     private EditText mEdtPassword;
     private Button mBtnLogin;
 
 
-    private PasswordLoginContract.ILoginPresenter mPresenter;
+
+
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mPresenter = new PasswordLoginPresenter();
-        mPresenter.bindView(this);
+    protected int getLayoutId() {
+        return R.layout.fragment_password_login;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_password_login,container,false);
+    protected void initView() {
 
-
-        mEdtCount = root.findViewById(R.id.auth_password_login_edt_count);
-        mEdtPassword = root.findViewById(R.id.auth_password_login_edt_password);
-        mBtnLogin = root.findViewById(R.id.auth_password_login_btn_login);
+        mEdtCount = findViewById(R.id.auth_password_login_edt_count);
+        mEdtPassword = findViewById(R.id.auth_password_login_edt_password);
+        mBtnLogin =  findViewById(R.id.auth_password_login_btn_login);
 
 
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
@@ -52,9 +48,8 @@ public class PasswordLoginFragment  extends Fragment implements PasswordLoginCon
                 login();
             }
         });
-
-        return root;
     }
+
 
 
 
@@ -62,7 +57,8 @@ public class PasswordLoginFragment  extends Fragment implements PasswordLoginCon
 
         String count = mEdtCount.getText().toString().trim();
         String password = mEdtPassword.getText().toString().trim();
-        mPresenter.login(count,password);
+
+
 
     }
 
@@ -82,21 +78,47 @@ public class PasswordLoginFragment  extends Fragment implements PasswordLoginCon
 
     @Override
     public void onLoginSuccess(User user) {
-        Toast.makeText(getActivity(),user.getUser_info().getNickname(),Toast.LENGTH_SHORT).show();
+        showToast(user.getUser_info().getMy_integral());
     }
 
     @Override
     public void onLoginFail(String msg) {
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+       showToast(msg);
+    }
+
+    @Override
+    public void onRegisterSuccess(User user) {
+
+    }
+
+    @Override
+    public void onRegisterFail(User user) {
+
+    }
+
+    @Override
+    public void onForgetSuccess(String msg) {
+
+    }
+
+    @Override
+    public void onForgetFail(String msg) {
+
     }
 
     @Override
     public void onNetError() {
-        Toast.makeText(getActivity(),"没有网络，请检查网络",Toast.LENGTH_SHORT).show();
+        showToast(R.string.text_error_net);
     }
 
     @Override
     public void onInputFail(String msg) {
         Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public PasswordLoginContract.ILoginPresenter createPresenter() {
+        return new PasswordLoginPresenter();
     }
 }

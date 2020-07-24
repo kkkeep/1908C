@@ -10,7 +10,8 @@ public  class MvpRequest {
     protected HashMap<String,Object> params; // 请求参数
     protected HashMap<String,Object> headers; // 请求头
 
-
+    public MvpRequest() {
+    }
     public MvpRequest(String url) {
         this.url = url;
     }

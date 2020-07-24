@@ -7,6 +7,9 @@ public class PostRequest extends MvpRequest {
         super(url);
     }
 
+    public PostRequest() {
+    }
+
     @Override
     public RequestMethod getRequestMethod() {
         return RequestMethod.POST;

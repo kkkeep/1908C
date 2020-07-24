@@ -4,4 +4,5 @@ public interface IBaseCallBack<T>{
 
     void onSuccess(T data);
     void onError(String msg);
+
 }

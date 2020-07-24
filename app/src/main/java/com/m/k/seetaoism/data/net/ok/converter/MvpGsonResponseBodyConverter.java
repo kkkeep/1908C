@@ -1,10 +1,16 @@
 package com.m.k.seetaoism.data.net.ok.converter;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -26,10 +32,10 @@ public class MvpGsonResponseBodyConverter <T> implements Converter<ResponseBody,
         this.type = type;
     }
 
-    @Override public T convert(ResponseBody value) throws IOException {
+    @Override
+    public T convert(ResponseBody value) throws IOException {
 
         if(type == String.class){
-
             try{
                 MediaType  mediaType = value.contentType();
                 Charset charset = null;
@@ -37,7 +43,8 @@ public class MvpGsonResponseBodyConverter <T> implements Converter<ResponseBody,
                     charset = mediaType.charset();
                 }
                 String json = new String(value.bytes(),charset == null ? StandardCharsets.UTF_8 : charset);
-                return (T) json;
+
+                return (T) handJson(json);
             }finally {
                 value.close();
             }
@@ -54,5 +61,27 @@ public class MvpGsonResponseBodyConverter <T> implements Converter<ResponseBody,
                 value.close();
             }
         }
+    }
+
+    public String handJson(String json){
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+
+            if(!jsonObject.isNull("code")){
+                int code = jsonObject.getInt("code");
+                if(code != 1){ // 失败
+                    if(!jsonObject.isNull("data")){
+                        String data = jsonObject.getString("data");
+                        if(TextUtils.isEmpty(data)){ // 如果 data 是一个空字符串
+                            jsonObject.remove("data");
+                            return jsonObject.toString();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

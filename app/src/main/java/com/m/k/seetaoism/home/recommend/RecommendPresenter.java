@@ -54,8 +54,11 @@ public class RecommendPresenter implements  RecommendContract.IRecommendPresente
             }
         });*/
 
-        GetRequest request = new GetRequest("/api/column/columnmanagelist");
+        GetRequest request = new GetRequest("/app/v_1_6/article/videolist");
         request.setParams(ParamsUtils.getCommonParams());
+        request.getParams().put("start",0);
+        request.getParams().put("number",0);
+        request.getParams().put("point_time",0);
 
         ((RecommendRepository)mMode).doRequest(request,new IBaseCallBack<ColumnData>() {
             @Override

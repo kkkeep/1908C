@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.base.v.BaseFragment;
 import com.m.k.seetaoism.data.entity.ColumnData;
 import com.m.k.seetaoism.utils.Logger;
 

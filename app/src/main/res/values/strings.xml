@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">1908C</string>
     <string name="title">你好 张三</string>
+    <string name="text_error_net">没有网络，请检查网络</string>
 </resources>

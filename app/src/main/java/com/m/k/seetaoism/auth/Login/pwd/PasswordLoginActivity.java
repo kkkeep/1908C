@@ -1,5 +1,6 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.base.p.IBasePresenter;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.seetaoism.utils.AppUtils;
 
@@ -78,5 +80,15 @@ public class PasswordLoginActivity extends AppCompatActivity implements Password
     @Override
     public void closeLoading() {
         Toast.makeText(this,"关闭加载动画",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public IBasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    public Context getMvpContent() {
+        return null;
     }
 }

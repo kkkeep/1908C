@@ -2,12 +2,11 @@ package com.m.k.seetaoism.data;
 
 import com.google.gson.Gson;
 import com.m.k.seetaoism.base.IBaseCallBack;
+import com.m.k.seetaoism.base.IBaseMode;
 import com.m.k.seetaoism.data.entity.HttpResult;
 import com.m.k.seetaoism.data.net.MvpRequest;
 import com.m.k.seetaoism.data.net.ok.DataService;
-import com.m.k.seetaoism.utils.Logger;
 import com.m.k.seetaoism.utils.ParameterizedTypeImpl;
-
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -21,13 +20,13 @@ import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public abstract class BaseRepository {
+public  class BaseRepository  implements IBaseMode {
 
-    public Consumer empty = o -> {
-    };
-
-    public <T> void doRequest(MvpRequest request, IBaseCallBack<T> callBack) {
-
+    @SuppressWarnings("ALL")
+    public Consumer empty = o -> { };
+    @SuppressWarnings("ALL")
+    @Override
+       public <T> void doRequest(MvpRequest request, IBaseCallBack<T> callBack) {
         doRequest(request, empty, callBack);
     }
 
@@ -45,7 +44,7 @@ public abstract class BaseRepository {
         }
     }
 
-    private <T> void doObserver(MvpRequest request, Observable<String> observable, Consumer<T> consumer, IBaseCallBack<T> callBack) {
+    protected  <T> void doObserver(MvpRequest request, Observable<String> observable, Consumer<T> consumer, IBaseCallBack<T> callBack) {
         observable.map(json2Data(callBack))
                 .doOnNext(consumer)
                 .subscribeOn(Schedulers.io())
@@ -79,7 +78,7 @@ public abstract class BaseRepository {
             @Override
             public T apply(String s) throws Throwable {
                 // IBaseCallBack<ColumnData>
-                Thread.sleep(1000 * 20);
+
                 Type[] types = callBack.getClass().getGenericInterfaces();
                 ParameterizedType parameterizedType = (ParameterizedType) types[0];
                 Type realType = parameterizedType.getActualTypeArguments()[0];
@@ -87,8 +86,8 @@ public abstract class BaseRepository {
 
                 //HttpResult<ColumnData>
                 ParameterizedTypeImpl type = new ParameterizedTypeImpl(HttpResult.class, new Type[]{realType});
-                HttpResult<T> data = gson.fromJson(s, type);
 
+                HttpResult<T> data = gson.fromJson(s, type);
                 if (data.getCode() == 1) {
                     if (data.getData() != null) {
                         return data.getData();
@@ -96,7 +95,7 @@ public abstract class BaseRepository {
                         throw new Exception("服务器异常");
                     }
                 } else {
-                    throw new Exception("服务器异常");
+                    throw new Exception(data.getMessage());
                 }
             }
         };

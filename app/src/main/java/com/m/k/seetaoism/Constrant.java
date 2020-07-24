@@ -19,6 +19,7 @@ public interface Constrant {
 
       String KEY_USER_ACOUNT = "username";
       String KEY_USER_PASSWORD = "password";
+      String KEY_CODE = "code";
 
 
 
