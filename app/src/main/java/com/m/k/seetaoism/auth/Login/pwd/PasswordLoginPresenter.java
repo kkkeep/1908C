@@ -1,24 +1,27 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.base.IBaseCallBack;
-import com.m.k.seetaoism.base.IBaseMode;
+import com.m.k.seetaoism.base.m.IBaseMode;
 import com.m.k.seetaoism.base.p.BasePresenter;
-import com.m.k.seetaoism.data.BaseRepository;
-import com.m.k.seetaoism.data.PostRequest;
+import com.m.k.seetaoism.data.repository.BaseRepository;
+import com.m.k.seetaoism.data.net.request.PostRequest;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.MvpRequest;
+import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.utils.AppUtils;
 import com.m.k.seetaoism.utils.ParamsUtils;
 
 import java.util.HashMap;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.ILoginView> implements PasswordLoginContract.ILoginPresenter{
 
     private IBaseMode mMode;
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     public PasswordLoginPresenter() {
         mMode = new BaseRepository();
@@ -56,13 +59,17 @@ public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.
 
         mMode.doRequest(request, new IBaseCallBack<User>() {
             @Override
-            public void onSuccess(User data) {
-
+            public void onStart(Disposable disposable) {
+                mCompositeDisposable.add(disposable);
             }
 
             @Override
-            public void onError(String msg) {
-
+            public void onResult(MvpResponse<User> response) {
+                if(response.isOk()){
+                    mView.onLoginSuccess(response.getData());
+                }else{
+                    mView.onLoginFail(response.getMsg());
+                }
             }
         });
 
@@ -107,13 +114,17 @@ public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.
 
         mMode.doRequest(request, new IBaseCallBack<User>() {
             @Override
-            public void onSuccess(User data) {
-                mView.onLoginSuccess(data);
+            public void onStart(Disposable disposable) {
+                mCompositeDisposable.add(disposable);
             }
 
             @Override
-            public void onError(String msg) {
-                mView.onInputFail(msg);
+            public void onResult(MvpResponse<User> response) {
+                if(response.isOk()){
+                    mView.onRegisterSuccess(response.getData());
+                }else{
+                    mView.onRegisterFail(response.getMsg());
+                }
             }
         });
     }
@@ -124,4 +135,8 @@ public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.
     }
 
 
+    @Override
+    public void cancelRequest() {
+
+    }
 }

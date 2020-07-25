@@ -2,37 +2,12 @@ package com.m.k;
 
 
 
-import com.google.gson.Gson;
-import com.m.k.seetaoism.base.IBaseCallBack;
-import com.m.k.seetaoism.data.entity.HttpResult;
-import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.home.Person;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.internal.operators.observable.ObservableCreate;
-import io.reactivex.rxjava3.internal.operators.observable.ObservableObserveOn;
-import io.reactivex.rxjava3.internal.operators.observable.ObservableSubscribeOn;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Test {
 

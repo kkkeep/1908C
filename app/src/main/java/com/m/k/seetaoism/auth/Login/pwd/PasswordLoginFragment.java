@@ -7,24 +7,13 @@ import android.widget.Toast;
 
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.base.v.MvpBaseFragment;
-import com.m.k.seetaoism.data.PostRequest;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.utils.AppUtils;
-import com.m.k.seetaoism.utils.ParamsUtils;
-
-import java.util.HashMap;
-
-import static com.m.k.seetaoism.Constrant.RequestKey.KEY_USER_ACOUNT;
-import static com.m.k.seetaoism.Constrant.RequestKey.KEY_USER_PASSWORD;
 
 public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContract.ILoginPresenter> implements PasswordLoginContract.ILoginView{
 
     private EditText mEdtCount;
     private EditText mEdtPassword;
     private Button mBtnLogin;
-
-
-
 
 
     @Override
@@ -58,6 +47,7 @@ public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContrac
         String count = mEdtCount.getText().toString().trim();
         String password = mEdtPassword.getText().toString().trim();
 
+        mPresenter.login(count,password);
 
 
     }
@@ -92,7 +82,7 @@ public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContrac
     }
 
     @Override
-    public void onRegisterFail(User user) {
+    public void onRegisterFail(String user) {
 
     }
 

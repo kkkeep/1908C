@@ -1,11 +1,22 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
-import android.widget.EditText;
+import com.m.k.seetaoism.base.v.BaseSmartFragment1;
+import com.m.k.seetaoism.data.entity.User;
+import com.m.k.seetaoism.data.net.response.MvpResponse;
 
-public class PasswordLoginFragment2 {
+public class PasswordLoginFragment2 extends BaseSmartFragment1<User> {
+    @Override
+    protected int getLayoutId() {
+        return 0;
+    }
 
-    private EditText mEdtCount;
+    @Override
+    protected void initView() {
 
+    }
 
+    @Override
+    public void onResult1(MvpResponse<User> response) {
 
+    }
 }

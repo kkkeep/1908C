@@ -1,14 +1,10 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
 import com.m.k.seetaoism.base.IBaseCallBack;
-import com.m.k.seetaoism.base.IBaseMode;
 import com.m.k.seetaoism.base.p.IBasePresenter;
 import com.m.k.seetaoism.base.v.IBaseView;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.MvpRequest;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.m.k.seetaoism.data.net.request.MvpRequest;
 
 public interface PasswordLoginContract {
 
@@ -17,7 +13,7 @@ public interface PasswordLoginContract {
         void onLoginFail(String msg);
 
         void onRegisterSuccess(User user);
-        void onRegisterFail(User user);
+        void onRegisterFail(String user);
         void onForgetSuccess(String msg);
         void onForgetFail(String msg);
 
