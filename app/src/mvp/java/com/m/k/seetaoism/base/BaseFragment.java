@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -22,7 +23,12 @@ public abstract class BaseFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v  = inflater.inflate(getLayoutId(),container,false);
-        return v;
+
+        FrameLayout frameLayout = new FrameLayout(getContext());
+
+        frameLayout.addView(v);
+
+        return frameLayout;
     }
 
     @Override
@@ -48,4 +54,33 @@ public abstract class BaseFragment extends Fragment{
     protected void showToast(@StringRes int id){
         Toast.makeText(getContext(),id,Toast.LENGTH_SHORT).show();
     }
+
+    public int  getEnterAnimation(){
+        return R.anim.common_page_right_in;
+    }
+
+    public int  getExitAnimation(){
+        return R.anim.common_page_left_out;
+    }
+    public int  getPopEnterAnimation(){
+        return R.anim.common_page_left_in;
+    }
+    public int  getPopExitAnimation(){
+        return R.anim.common_page_right_out;
+    }
+    public boolean isNeedAddToBackStack(){
+        return true;
+    }
+
+    public Action getActionFroPreFragment(){
+        return Action.HIDE;
+    }
+
+    /**
+     * 对上一个fragment 如何进行处理
+     */
+    public enum Action{
+        NONE,HIDE,DETACH,REMOVE
+    }
+
 }

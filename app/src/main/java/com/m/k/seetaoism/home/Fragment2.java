@@ -17,8 +17,15 @@ public class Fragment2 extends BaseFragment {
         findViewById(R.id.fragment2_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MvpFragmentManager.addOrShowFragment(getFragmentManager(),Fragment3.class,null,R.id.home_fragment_container);
+                MvpFragmentManager.addOrShowFragment(getFragmentManager(),Fragment3.class,Fragment2.this,R.id.home_fragment_container);
             }
         });
+    }
+
+
+    @Override
+    public Action getActionFroPreFragment() {
+        return Action.NONE;
+
     }
 }
