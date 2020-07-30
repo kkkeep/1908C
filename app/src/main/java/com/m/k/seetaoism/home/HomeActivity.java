@@ -15,11 +15,12 @@ import androidx.fragment.app.FragmentTransaction;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginFragment;
 import com.m.k.seetaoism.base.BaseFragment;
+import com.m.k.seetaoism.base.v.MvpBaseActivity;
 import com.m.k.seetaoism.manager.MvpFragmentManager;
 import com.m.k.seetaoism.widgets.MvpLoadingView;
 
 
-public class HomeActivity extends AppCompatActivity  {
+public class HomeActivity extends MvpBaseActivity {
 
 
     public static final String KEY_FROM = "from_1";
@@ -29,7 +30,6 @@ public class HomeActivity extends AppCompatActivity  {
 
 
     private BaseFragment mCurrent;
-    private MvpLoadingView loadingView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,12 +47,11 @@ public class HomeActivity extends AppCompatActivity  {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewGroup viewGroup = findViewById(android.R.id.content);
-
-                loadingView = (MvpLoadingView) LayoutInflater.from(HomeActivity.this).inflate(R.layout.layout_loading_view,viewGroup,false);
-
+              /*  ViewGroup viewGroup = findViewById(android.R.id.content);
+                loadingView = (MvpLoadingView) LayoutIn flater.from(HomeActivity.this).inflate(R.layout.layout_loading_view,viewGroup,false);
                 loadingView.setParentContainer(viewGroup);
-                loadingView.showLoading(MvpLoadingView.MODE_POP);
+                loadingView.showLoading(MvpLoadingView.MODE_POP);*/
+                showPopLoading();
             }
         });
 
@@ -62,7 +61,11 @@ public class HomeActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                //mCurrent = MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(),Fragment2.class,mCurrent,R.id.home_fragment_container);
-                loadingView.closeLoading();
+               // closeLoading();
+
+                onError();
+
+
             }
         });
         //MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(),RecommendFragment2.class,R.id.auth_fragment_container);

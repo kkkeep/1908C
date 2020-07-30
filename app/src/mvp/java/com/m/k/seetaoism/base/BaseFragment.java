@@ -15,6 +15,8 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.home.HomeActivity;
+import com.m.k.seetaoism.widgets.MvpLoadingView;
 
 
 public abstract class BaseFragment extends Fragment{
@@ -42,7 +44,7 @@ public abstract class BaseFragment extends Fragment{
     protected abstract void initView();
 
 
-    protected <T extends View> T findViewById(@IdRes int id){
+    public  <T extends View> T findViewById(@IdRes int id){
         return getView().findViewById(id);
     }
 
@@ -82,5 +84,9 @@ public abstract class BaseFragment extends Fragment{
     public enum Action{
         NONE,HIDE,DETACH,REMOVE
     }
+
+
+
+
 
 }
