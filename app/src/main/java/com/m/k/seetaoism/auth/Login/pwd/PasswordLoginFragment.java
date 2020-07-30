@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.base.p.IBasePresenter;
 import com.m.k.seetaoism.base.v.MvpBaseFragment;
 import com.m.k.seetaoism.data.entity.User;
 
@@ -32,8 +33,6 @@ public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContrac
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 login();
             }
         });
@@ -64,6 +63,10 @@ public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContrac
         Toast.makeText(getActivity(),"关闭加载动画",Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public IBasePresenter getPresenter() {
+        return null;
+    }
 
 
     @Override

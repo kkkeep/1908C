@@ -1,5 +1,6 @@
 package com.m.k.seetaoism.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginContract;
 import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginFragment;
+import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginPresenter;
 import com.m.k.seetaoism.base.BaseFragment;
+import com.m.k.seetaoism.base.p.IBasePresenter;
 import com.m.k.seetaoism.base.v.MvpBaseActivity;
 import com.m.k.seetaoism.manager.MvpFragmentManager;
 import com.m.k.seetaoism.widgets.MvpLoadingView;
 
 
-public class HomeActivity extends MvpBaseActivity {
+public class HomeActivity extends MvpBaseActivity<PasswordLoginContract.ILoginPresenter> {
 
 
     public static final String KEY_FROM = "from_1";
@@ -63,12 +67,34 @@ public class HomeActivity extends MvpBaseActivity {
                //mCurrent = MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(),Fragment2.class,mCurrent,R.id.home_fragment_container);
                // closeLoading();
 
-                onError();
+                onError("网络除了点问题，点击下面按钮重试", new MvpLoadingView.OnRetryCallBack() {
+                    @Override
+                    public void onRetry() {
+                        //
+
+                    }
+                });
 
 
             }
         });
         //MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(),RecommendFragment2.class,R.id.auth_fragment_container);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_home;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
+
     }
 
 
@@ -78,5 +104,18 @@ public class HomeActivity extends MvpBaseActivity {
     }
 
 
+    @Override
+    public PasswordLoginContract.ILoginPresenter createPresenter() {
+        return new PasswordLoginPresenter();
+    }
 
+    @Override
+    public Context getMvpContent() {
+        return this;
+    }
+
+    @Override
+    public IBasePresenter getPresenter() {
+        return mPresenter;
+    }
 }

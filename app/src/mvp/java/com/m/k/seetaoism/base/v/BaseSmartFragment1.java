@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
+import com.m.k.seetaoism.base.p.IBasePresenter;
 import com.m.k.seetaoism.data.net.request.MvpRequest;
+import com.m.k.seetaoism.widgets.MvpLoadingView;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -29,5 +31,6 @@ public abstract class BaseSmartFragment1<D> extends MvpBaseFragment<BaseSmartPre
     public BaseSmartPresenter1<D,?> createPresenter() {
         return new BaseSmartPresenter1<>();
     }
+
 
 }

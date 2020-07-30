@@ -8,9 +8,7 @@ public interface IBaseCallBack<T>{
 
     void onResult(MvpResponse<T> response);
 
-
     default void onStart(Disposable disposable){
-
     }
 
 }

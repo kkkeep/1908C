@@ -136,7 +136,8 @@ public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.
 
 
     @Override
-    public void cancelRequest() {
+    public boolean cancelRequest() {
 
+        return false;
     }
 }

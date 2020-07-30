@@ -45,10 +45,13 @@ public class BaseSmartPresenter1<D,V extends IBaseSmartView1<D,?>> extends BaseP
     }
 
     @Override
-    public void cancelRequest() {
+    public boolean cancelRequest() {
         if(mCompositeDisposable != null){
             mCompositeDisposable.dispose();
+            return true;
         }
+
+        return false;
     }
 
     protected  void handStart(Disposable disposable){

@@ -81,6 +81,8 @@ public  class BaseRepository  implements IBaseMode {
         return new Function<String, MvpResponse<T>>() {
             @Override
             public MvpResponse<T> apply(String s) throws Throwable {
+
+                Thread.sleep(20 * 1000);
                 // IBaseCallBack<ColumnData>
 
                 /*Type[] types = callBack.getClass().getGenericInterfaces();

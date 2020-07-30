@@ -2,25 +2,27 @@ package com.m.k.seetaoism.base.v;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.m.k.seetaoism.base.BaseFragment;
+import com.m.k.seetaoism.base.BaseView;
 import com.m.k.seetaoism.base.p.IBasePresenter;
 import com.m.k.seetaoism.widgets.MvpLoadingView;
 
-public abstract class MvpBaseFragment<P extends IBasePresenter> extends BaseFragment implements IBaseView<P> ,BaseView {
+public abstract class MvpBaseFragment<P extends IBasePresenter> extends BaseFragment implements IBaseView<P> , BaseView {
 
     protected P mPresenter;
 
-    private MvpLoadingView mLoadingView;
+    protected MvpLoadingView mLoadingView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = createPresenter();
         mPresenter.bindView(this);
+
+
     }
 
 
@@ -35,6 +37,10 @@ public abstract class MvpBaseFragment<P extends IBasePresenter> extends BaseFrag
         mPresenter.unBind();
     }
 
+    @Override
+    public IBasePresenter getPresenter() {
+        return mPresenter;
+    }
 
     @Override
     public void setLoadView(MvpLoadingView loadView) {
@@ -45,4 +51,7 @@ public abstract class MvpBaseFragment<P extends IBasePresenter> extends BaseFrag
     public MvpLoadingView getLoadingView() {
         return mLoadingView;
     }
+
+
+
 }

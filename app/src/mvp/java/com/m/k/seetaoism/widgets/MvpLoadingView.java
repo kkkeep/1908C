@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +34,7 @@ public class MvpLoadingView extends ConstraintLayout {
 
     public static final int MODE_POP = 1;
     public static final int MODE_FULL = 2;
+    private static final int MODE_ERROR= 3;// 错误
 
     private ImageView mGifBackgroundView;
     private GifView mGifView;
@@ -43,8 +45,13 @@ public class MvpLoadingView extends ConstraintLayout {
 
     private ViewGroup mParent;
 
+    private OnRetryCallBack mRetryCallBack;
+    private OnCancelCallBack mCancelCallBack;
 
     private int mCurrentMode;
+    private int mPreMode;
+
+    private boolean isEnableBackCancel; // 按返回键是否支持关闭 loading
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({MODE_POP, MODE_FULL})
@@ -75,6 +82,43 @@ public class MvpLoadingView extends ConstraintLayout {
         mErrorIcon = findViewById(R.id.mvp_loading_iv_error_icon);
         mErrorMessage = findViewById(R.id.mvp_loading_tv_error_content);
         mRetry = findViewById(R.id.mvp_loading_btn_retry);
+
+
+        mRetry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mRetryCallBack != null){
+                    mRetryCallBack.onRetry();
+                    showLoading(mPreMode);
+                }
+            }
+        });
+        setFocusableInTouchMode(true);
+        requestFocus();
+        setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // 如果支持网络取消，那么关闭自己
+                // 如果不支持，不拦截
+                if(isEnableBackCancel){
+                    if(mCancelCallBack != null){
+                        mCancelCallBack.onCancel(); // 回到外面调用者去取消网络请求
+                    }
+                    closeLoading();
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        });
+    }
+
+    public void setEnableBackCancel(boolean enableBackCancel) {
+        isEnableBackCancel = enableBackCancel;
+    }
+
+    public void setCancelCallBack(OnCancelCallBack cancelCallBack) {
+        this.mCancelCallBack = cancelCallBack;
     }
 
     @Override
@@ -131,10 +175,14 @@ public class MvpLoadingView extends ConstraintLayout {
             }
         }
 
+
+
         if(mCurrentMode == mode){
             return;
         }
 
+
+        mPreMode = mCurrentMode;
 
         mCurrentMode = mode;
 
@@ -146,13 +194,22 @@ public class MvpLoadingView extends ConstraintLayout {
             setBackgroundColor(Color.WHITE);
             mGifBackgroundView.setVisibility(GONE);
         }
+        mGifView.setVisibility(VISIBLE);
         mGifView.play();
 
-    }
+}
 
     public void onError(){
+        onError(getContext().getString(R.string.text_error_default),null);
+    }
 
+    public void onError(OnRetryCallBack onRetryCallBack){
+        onError(getContext().getString(R.string.text_error_default),onRetryCallBack);
+    }
 
+    public void onError(String errMessage,OnRetryCallBack onRetryCallBack){
+
+        mRetryCallBack = onRetryCallBack;
         mGifView.pause();
         mGifView.setVisibility(GONE);
         mGifBackgroundView.setVisibility(GONE);
@@ -162,25 +219,26 @@ public class MvpLoadingView extends ConstraintLayout {
         if(mCurrentMode != MODE_FULL){
             setBackgroundColor(Color.WHITE);
         }
+        mErrorMessage.setText(errMessage);
+        mRetry.setVisibility(mRetryCallBack == null ? GONE : VISIBLE);
 
-        // mRetry 要不要显示，要显示肯定就有有重试的功能，那么重试功能如何实现？
-        // mErrorMessage 这个 textView ，是显示默认的，还是显示app 传过来的。
-        // ErrorIcon  要不要显示？ 要显示，是显示默认的，还是 app 传过来的
+        mPreMode = mCurrentMode;
+
+        mCurrentMode = MODE_ERROR;
     }
-
-    /**
-     * 第一种出错误：不需要重试，用默认的错误消息
-     * 第二种：不需要重试，用自己的消息提示
-     * 第四种，需要重试，用默人消息
-     * 第五中：需要重试，用自己的消息
-     * 第六种：现不现实错误icon
-     */
-
 
 
     public void closeLoading() {
         if (mParent != null) {
             mParent.removeView(this);
         }
+    }
+
+
+    public interface OnRetryCallBack{
+        void onRetry();
+    }
+    public interface OnCancelCallBack{
+        void onCancel();
     }
 }
