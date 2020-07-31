@@ -26,19 +26,12 @@ public class ParamsUtils {
         HashMap<String,Object> hashMap = new HashMap();
 
         hashMap.put(KEY_FROM, VALUE_FROM);
-
         hashMap.put(KEY_LANG, VALUE_LANG);
-
-
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
         String nonce = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
-
-
         hashMap.put(KEY_NONCE, nonce);
         hashMap.put(KEY_TIMESTAMP, timestamp);
-
         hashMap.put(KEY_SIGNATURE,getSHA1(timestamp, nonce));
-
 
         return hashMap;
     }

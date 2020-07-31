@@ -24,8 +24,8 @@ android {
     }
     sourceSets {
         main {
-            java.srcDirs = ['src/mvp/java', 'src/main/java']
-            res.srcDirs = ['src/main/res','src/mvp/res']
+            java.srcDirs = ['src/mvp/java', 'src/main/java','src/test/java']
+            res.srcDirs = ['src/main/res','src/mvp/res','src/test/res']
         }
     }
     compileOptions {
@@ -77,6 +77,7 @@ dependencies {
 
     implementation deps.rxJavaX.rxjava3
     implementation deps.rxJavaX.rxAndroid3
+    implementation deps.rxJavaX.rxPermissions
     implementation deps.other.gifView
 
 
