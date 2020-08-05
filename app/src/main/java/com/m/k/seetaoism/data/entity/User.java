@@ -1,6 +1,8 @@
 package com.m.k.seetaoism.data.entity;
 
-public class User {
+import com.m.k.mvp.data.entity.IUser;
+
+public class User implements IUser {
 
 
     private Token token;
@@ -11,6 +13,24 @@ public class User {
     public Token getToken() {
         return token;
     }
+
+    @Override
+    public String getTokenValue() {
+        if(token != null){
+            return token.getValue();
+        }
+        return null;
+    }
+
+    @Override
+    public long getExpireTimeSeconds() {
+        if(token != null){
+            return token.getExpire_time();
+        }
+        return 0;
+    }
+
+
 
     public void setToken(Token token) {
         this.token = token;

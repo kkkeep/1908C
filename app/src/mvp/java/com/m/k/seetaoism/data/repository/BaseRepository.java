@@ -9,6 +9,7 @@ import com.m.k.seetaoism.data.net.ok.DataService;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.utils.ParameterizedTypeImpl;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -45,6 +46,18 @@ public  class BaseRepository  implements IBaseMode {
     }
 
     protected  <T> void doObserver(MvpRequest<T> request, Observable<String> observable, Consumer<MvpResponse<T>> consumer, IBaseCallBack<T> callBack) {
+
+
+        if(request.getType() == null){
+
+           Type [] interfaces =  callBack.getClass().getGenericInterfaces();
+
+          ParameterizedType parameterizedType = (ParameterizedType) interfaces[0];
+
+          request.setType((Class<T>) parameterizedType.getActualTypeArguments()[0]);
+
+        }
+
         observable.map(json2Data(request))
                 .doOnNext(consumer)
                 .subscribeOn(Schedulers.io())
@@ -82,7 +95,8 @@ public  class BaseRepository  implements IBaseMode {
             @Override
             public MvpResponse<T> apply(String s) throws Throwable {
 
-                Thread.sleep(20 * 1000);
+               // Type entityType = request.getType();
+
                 // IBaseCallBack<ColumnData>
 
                 /*Type[] types = callBack.getClass().getGenericInterfaces();

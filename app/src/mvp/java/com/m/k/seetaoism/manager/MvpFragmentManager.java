@@ -1,14 +1,10 @@
 package com.m.k.seetaoism.manager;
 
 import androidx.annotation.IdRes;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.m.k.seetaoism.base.BaseFragment;
-import com.m.k.seetaoism.home.Fragment1;
-
-import java.time.temporal.TemporalAccessor;
 
 public class MvpFragmentManager {
 

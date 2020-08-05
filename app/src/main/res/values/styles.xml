@@ -8,4 +8,45 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
+    <style name="Jiandao" parent="AppTheme"/>
+
+
+    <style name="Jiandao.Horizontal_Line">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:background">@color/gray_3</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+    </style>
+
+    <style name="Jiandao.EditInput">
+
+        <item name="android:layout_marginRight">45dp</item>
+        <item name="android:layout_marginStart">45dp</item>
+        <item name="android:layout_marginLeft">45dp</item>
+        <item name="android:layout_marginEnd">45dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textColorHint">@color/gray_8</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/black_3</item>
+
+
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="Jiandao.Button_style1">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ic_button_style1_background_selector</item>
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+
 </resources>

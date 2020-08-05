@@ -79,8 +79,7 @@ dependencies {
     implementation deps.rxJavaX.rxAndroid3
     implementation deps.rxJavaX.rxPermissions
     implementation deps.other.gifView
-
-
+    implementation project(path: ':mvplib')
 
 
 }

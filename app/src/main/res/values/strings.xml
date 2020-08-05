@@ -3,4 +3,12 @@
     <string name="title">你好 张三</string>
     <string name="text_error_net">没有网络，请检查网络</string>
     <string name="text_error_default">加载失败，请重试</string>
+    <string name="text_phone_number">手机号</string>
+    <string name="text_input_password">请输入密码</string>
+    <string name="text_login">登录</string>
+    <string name="text_verify_code_login">验证码登录</string>
+    <string name="text_register_immediately">立即注册</string>
+    <string name="text_login_by_social_count">社交账号登录</string>
+    <string name="text_error_invalide_phone_number">输入手机号不正确</string>
+    <string name="text_error_invalide_password">密码格式不正确</string>
 </resources>

@@ -25,6 +25,7 @@ public class BaseSmartPresenter1<D,V extends IBaseSmartView1<D,?>> extends BaseP
         mMode = new BaseRepository();
     }
 
+
     public void doRequest(MvpRequest<D> request) {
 
         request.setType(mType);

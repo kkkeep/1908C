@@ -1,20 +1,43 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.p.IBasePresenter;
+import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
+import com.m.k.seetaoism.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.base.v.MvpBaseFragment;
 import com.m.k.seetaoism.data.entity.User;
+import com.m.k.seetaoism.data.net.request.PostRequest;
+import com.m.k.seetaoism.data.net.response.MvpResponse;
+import com.m.k.seetaoism.home.HomeActivity;
+import com.m.k.seetaoism.utils.AppUtils;
+import com.m.k.seetaoism.utils.Logger;
+import com.m.k.seetaoism.utils.ParamsUtils;
+import com.m.k.seetaoism.widgets.CleanEditButton;
+import com.m.k.seetaoism.widgets.EditTextButton;
+import com.m.k.seetaoism.widgets.TogglePasswordButton;
 
-public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContract.ILoginPresenter> implements PasswordLoginContract.ILoginView{
+import java.util.HashMap;
+
+
+public class PasswordLoginFragment extends MvpBaseFragment<PasswordLoginContract.IPasswordLoginPresenter> implements PasswordLoginContract.IPasswordLoginView {
 
     private EditText mEdtCount;
     private EditText mEdtPassword;
-    private Button mBtnLogin;
+    private CleanEditButton mBtnCleanAccount;
+    private CleanEditButton mBtnCleanPassword;
+    private TogglePasswordButton mBtnTogglePassword;
+
+    private TextView mTvCodeLogin;
+    private TextView mTvRegister;
+
+    private EditTextButton mBtnLogin;
 
 
     @Override
@@ -25,93 +48,80 @@ public class PasswordLoginFragment  extends MvpBaseFragment<PasswordLoginContrac
     @Override
     protected void initView() {
 
-        mEdtCount = findViewById(R.id.auth_password_login_edt_count);
+        mEdtCount = findViewById(R.id.auth_password_login_edt_phone_number);
         mEdtPassword = findViewById(R.id.auth_password_login_edt_password);
-        mBtnLogin =  findViewById(R.id.auth_password_login_btn_login);
+        mBtnLogin = findViewById(R.id.auth_password_login_btn_login);
 
+        mBtnCleanAccount = findViewById(R.id.auth_password_login_btn_phone_number_clean);
+        mBtnCleanPassword = findViewById(R.id.auth_password_login_btn_password_clean);
+
+        mBtnTogglePassword = findViewById(R.id.auth_password_login_btn_toggle_password);
+
+
+        mTvCodeLogin = findViewById(R.id.auth_password_login_tv_go_code_login);
+        mTvRegister = findViewById(R.id.auth_password_login_tv_go_regiester);
+
+
+        mBtnCleanPassword.bindEditText(mEdtPassword);
+        mBtnTogglePassword.bindEditText(mEdtPassword);
+        mBtnCleanAccount.bindEditText(mEdtCount);
+
+        mBtnLogin.bindEditText(mEdtPassword);
 
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+
+                mPresenter.login(mEdtCount.getText().toString().trim(),mEdtPassword.getText().toString().trim());
             }
         });
+
+
+
+        mTvRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        mTvCodeLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
-
-
-
-    private void login(){
-
-        String count = mEdtCount.getText().toString().trim();
-        String password = mEdtPassword.getText().toString().trim();
-
-        mPresenter.login(count,password);
-
-
-    }
 
 
 
     @Override
-    public void showLoading(){
-        Toast.makeText(getActivity(),"显示加载动画",Toast.LENGTH_SHORT).show();
+    public void onUserResult(MvpResponse<User> response) {
+
+        if(response.isOk()){
+            Logger.d("用户登录成功");
+        }
     }
 
     @Override
-    public void closeLoading() {
-        Toast.makeText(getActivity(),"关闭加载动画",Toast.LENGTH_SHORT).show();
+    public void onInputError(String message) {
+            showToast(message);
     }
 
     @Override
-    public IBasePresenter getPresenter() {
-        return null;
-    }
-
-
-    @Override
-    public void onLoginSuccess(User user) {
-        showToast(user.getUser_info().getMy_integral());
+    public void onShowLoading() {
+        showPopLoading();
     }
 
     @Override
-    public void onLoginFail(String msg) {
-       showToast(msg);
+    public void onCloseLoading() {
+        closeLoading();
     }
 
     @Override
-    public void onRegisterSuccess(User user) {
-
-    }
-
-    @Override
-    public void onRegisterFail(String user) {
-
-    }
-
-    @Override
-    public void onForgetSuccess(String msg) {
-
-    }
-
-    @Override
-    public void onForgetFail(String msg) {
-
-    }
-
-    @Override
-    public void onNetError() {
-        showToast(R.string.text_error_net);
-    }
-
-    @Override
-    public void onInputFail(String msg) {
-        Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT).show();
-    }
-
-
-    @Override
-    public PasswordLoginContract.ILoginPresenter createPresenter() {
+    public PasswordLoginContract.IPasswordLoginPresenter createPresenter() {
         return new PasswordLoginPresenter();
     }
 }

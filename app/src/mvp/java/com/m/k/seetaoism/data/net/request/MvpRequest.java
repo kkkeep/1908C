@@ -1,5 +1,8 @@
 package com.m.k.seetaoism.data.net.request;
 
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public  class MvpRequest<T> {
@@ -15,6 +18,10 @@ public  class MvpRequest<T> {
 
 
     public MvpRequest() {
+
+
+
+
     }
 
     public Class<T> getType() {
@@ -26,6 +33,7 @@ public  class MvpRequest<T> {
     }
 
     public MvpRequest(String url) {
+        this();
         this.url = url;
     }
 

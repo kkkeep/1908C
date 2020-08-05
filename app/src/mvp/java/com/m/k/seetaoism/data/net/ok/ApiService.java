@@ -1,6 +1,7 @@
 package com.m.k.seetaoism.data.net.ok;
 
 
+import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.data.entity.ColumnData;
 import com.m.k.seetaoism.data.entity.HttpResult;
 import com.m.k.seetaoism.data.entity.User;
@@ -37,9 +38,9 @@ public interface ApiService {
      * @param params
      * @return
      */
-    @POST("/api/user/login")
+    @POST(Constrant.URL.LOGIN)
     @FormUrlEncoded
-    Observable<HttpResult<User>>  loginByPassword(@FieldMap HashMap<String,Object> params );
+    Observable<String>  loginByPassword(@FieldMap HashMap<String,Object> params );
 
     /**
      * 密码登录

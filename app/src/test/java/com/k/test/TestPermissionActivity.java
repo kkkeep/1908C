@@ -111,7 +111,6 @@ public class TestPermissionActivity extends BaseActivity {
         });
 
 
-
         findViewById(R.id.test_btn_permission_requet2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

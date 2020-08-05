@@ -1,6 +1,5 @@
 package com.m.k.seetaoism.base;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +14,6 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.home.HomeActivity;
-import com.m.k.seetaoism.widgets.MvpLoadingView;
 
 
 public abstract class BaseFragment extends Fragment{
