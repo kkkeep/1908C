@@ -6,6 +6,7 @@ import com.m.k.seetaoism.base.v.IBaseView;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
+import com.trello.rxlifecycle4.LifecycleProvider;
 
 public interface PasswordLoginContract {
 
@@ -18,6 +19,8 @@ public interface PasswordLoginContract {
         void onInputError(String message);
         void onShowLoading();
         void onCloseLoading();
+        
+
     }
 
 
@@ -30,7 +33,7 @@ public interface PasswordLoginContract {
 
     interface IPasswordLoginMode {
 
-        void login(MvpRequest<User> request, IBaseCallBack<User> back);
+        void login(LifecycleProvider provider,MvpRequest<User> request, IBaseCallBack<User> back);
     }
 
 }

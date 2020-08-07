@@ -3,6 +3,7 @@ package com.m.k.seetaoism.base.p;
 import android.content.Context;
 
 import com.m.k.seetaoism.base.v.IBaseView;
+import com.trello.rxlifecycle4.LifecycleProvider;
 
 public abstract class BasePresenter<V extends IBaseView> implements IBasePresenter<V>{
 
@@ -25,5 +26,9 @@ public abstract class BasePresenter<V extends IBaseView> implements IBasePresent
             return mView.getMvpContent();
         }
        return null;
+    }
+
+    public LifecycleProvider getLifecycleProvider(){
+        return (LifecycleProvider) mView;
     }
 }

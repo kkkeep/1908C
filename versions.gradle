@@ -12,8 +12,9 @@ versions.rxjava = "2.2.16"
 versions.rxjava3 = "3.0.4"
 versions.rxAndroid = "2.1.1"
 versions.rxAndroid3 = "3.0.0"
-versions.rxpermissions = "0.10.2"
+versions.rxpermissions = "0.12" // 支持rxjava3
 versions.rxlifecycle_components = "2.2.2"
+versions.rxlifecycle_component4 = "4.0.0"
 versions.constraint_layout = "1.1.3"
 versions.multidex = "1.0.3"
 versions.retrofit = "2.5.0"
@@ -75,6 +76,9 @@ retrofitXMap.retrofit2_adapter_rxjava = "com.squareup.retrofit2:adapter-rxjava2:
 retrofitXMap.retrofit2_adapter_rxjava3 = "com.squareup.retrofit2:adapter-rxjava3:$versions.retrofit_rxjava3"
 
 retrofitXMap.retrofit2_rxjava_components = "com.trello.rxlifecycle2:rxlifecycle-components:$versions.rxlifecycle_components"
+
+retrofitXMap.retrofit2_rxjava_components4 = "com.trello.rxlifecycle4:rxlifecycle-components:$versions.rxlifecycle_component4"
+
 subDeps.retrofitX = retrofitXMap
 
 
@@ -88,7 +92,7 @@ rxjavaXMap.rxjava3 = "io.reactivex.rxjava3:rxjava:$versions.rxjava3"
 rxjavaXMap.rxAndroid3 = "io.reactivex.rxjava3:rxandroid:$versions.rxAndroid3"
 
 
-rxjavaXMap.rxPermissions = "com.github.tbruyelle:rxpermissions:$versions.rxpermissions"
+rxjavaXMap.rxPermissions = "com.github.tbruyelle:rxpermissions:$versions.rxpermissions" //
 subDeps.rxJavaX = rxjavaXMap
 
 

@@ -1,29 +1,19 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
-import android.content.Intent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
-import com.m.k.seetaoism.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.base.v.MvpBaseFragment;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.request.PostRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
-import com.m.k.seetaoism.home.HomeActivity;
-import com.m.k.seetaoism.utils.AppUtils;
 import com.m.k.seetaoism.utils.Logger;
-import com.m.k.seetaoism.utils.ParamsUtils;
 import com.m.k.seetaoism.widgets.CleanEditButton;
 import com.m.k.seetaoism.widgets.EditTextButton;
 import com.m.k.seetaoism.widgets.TogglePasswordButton;
 
-import java.util.HashMap;
+import io.reactivex.rxjava3.core.Observable;
 
 
 public class PasswordLoginFragment extends MvpBaseFragment<PasswordLoginContract.IPasswordLoginPresenter> implements PasswordLoginContract.IPasswordLoginView {
@@ -73,6 +63,8 @@ public class PasswordLoginFragment extends MvpBaseFragment<PasswordLoginContract
             public void onClick(View v) {
 
                 mPresenter.login(mEdtCount.getText().toString().trim(),mEdtPassword.getText().toString().trim());
+
+                getActivity().finish();
             }
         });
 
@@ -102,6 +94,7 @@ public class PasswordLoginFragment extends MvpBaseFragment<PasswordLoginContract
 
         if(response.isOk()){
             Logger.d("用户登录成功");
+
         }
     }
 

@@ -6,6 +6,7 @@ import com.m.k.seetaoism.base.v.IBaseSmartView1;
 import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.BaseRepository;
+import com.trello.rxlifecycle4.LifecycleProvider;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -25,12 +26,15 @@ public class BaseSmartPresenter1<D,V extends IBaseSmartView1<D,?>> extends BaseP
         mMode = new BaseRepository();
     }
 
+    public BaseSmartPresenter1(IBaseMode baseMode) {
+        mMode = baseMode;
+    }
 
     public void doRequest(MvpRequest<D> request) {
 
         request.setType(mType);
 
-        mMode.doRequest(request, new IBaseCallBack<D>() {
+        mMode.doRequest(getLifecycleProvider(),request, new IBaseCallBack<D>() {
             @Override
             public void onStart(Disposable disposable) {
                handStart(disposable);

@@ -1,15 +1,15 @@
 package com.m.k.mvp.manager;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 
-import androidx.annotation.NonNull;
+import com.m.k.mvp.utils.MvpUtils;
+import com.m.k.mvp.utils.MvpSpUtils;
 
 public class MvpManager {
 
+    private static final String SP_VERSION_CODE = "version_code";
 
     private static  Context mApplication;
 
@@ -38,4 +38,23 @@ public class MvpManager {
 
 
      static  class UiHandler extends Handler{}
+
+
+
+     // 是否显示引导页
+     public static boolean isShowGuidePage(){
+        int versionCode = MvpSpUtils.getInt(SP_VERSION_CODE);
+
+        if(versionCode == -1 || versionCode != MvpUtils.getAppVersionCode(mApplication)){
+            MvpSpUtils.saveApply(SP_VERSION_CODE,MvpUtils.getAppVersionCode(mApplication));
+            return true;
+        }
+
+        return false;
+     }
+
+
+     public static void launchFail(){
+         MvpSpUtils.remove(SP_VERSION_CODE);
+     }
 }

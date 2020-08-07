@@ -29,7 +29,16 @@ public class MvpSpUtils {
     }
 
     public static long getLong(String spName,String key){
-        return MvpManager.getContext().getSharedPreferences(spName,Context.MODE_PRIVATE).getLong(key,0);
+        return MvpManager.getContext().getSharedPreferences(spName,Context.MODE_PRIVATE).getLong(key,-1);
+    }
+
+
+    public static int getInt(String key){
+        return getInt(DEFAULT_SP_NAME, key);
+    }
+
+    public static int getInt(String spName,String key){
+        return MvpManager.getContext().getSharedPreferences(spName,Context.MODE_PRIVATE).getInt(key,-1);
     }
 
     public static void remove(String key){

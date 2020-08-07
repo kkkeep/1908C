@@ -6,11 +6,20 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowNoTitle">true</item>
+
     </style>
+
 
 
     <style name="Jiandao" parent="AppTheme"/>
 
+    <style name="Jiandao.FullScreen">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="Jiandao.FullScreen.Splash">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+    </style>
 
     <style name="Jiandao.Horizontal_Line">
         <item name="android:layout_height">1dp</item>

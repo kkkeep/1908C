@@ -1,6 +1,8 @@
 package com.m.k.seetaoism.data.net.request;
 
 
+import com.m.k.seetaoism.utils.ParamsUtils;
+
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -18,9 +20,6 @@ public  class MvpRequest<T> {
 
 
     public MvpRequest() {
-
-
-
 
     }
 

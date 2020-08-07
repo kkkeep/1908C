@@ -11,6 +11,7 @@ public interface Constrant {
 
    interface  URL{
        String LOGIN = "app/v_1_7_2/user/login2";
+       String GET_USER = "/api/user/getuserinfo";
    }
 
 
@@ -27,6 +28,7 @@ public interface Constrant {
       String KEY_USER_ACCOUNT = "username";
       String KEY_USER_PASSWORD = "password";
       String KEY_CODE = "code";
+      String KEY_TOKEN = "token";
 
 
 

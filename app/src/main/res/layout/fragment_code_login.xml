@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
 <com.m.k.seetaoism.widgets.MinMatchParentConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="740dp">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -21,7 +22,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/auth_password_login_edt_phone_number"
+        android:id="@+id/auth_code_login_edt_phone_number"
         style="@style/Jiandao.EditInput"
         android:hint="@string/text_phone_number"
         android:text="18610306473"
@@ -41,89 +42,88 @@
 
     <EditText
         tools:ignore="MissingConstraints"
-        android:id="@+id/auth_password_login_edt_password"
+        android:id="@+id/auth_code_login_edt_code"
         style="@style/Jiandao.EditInput"
         android:hint="@string/text_input_password"
+        android:maxLength="6"
         android:text="123456"
-        android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/imageView3" />
 
 
     <com.m.k.seetaoism.widgets.CleanEditButton
-        android:id="@+id/auth_password_login_btn_phone_number_clean"
+        android:id="@+id/auth_code_login_btn_phone_number_clean"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_clean"
-        app:layout_constraintBottom_toBottomOf="@id/auth_password_login_edt_phone_number"
-        app:layout_constraintEnd_toEndOf="@+id/auth_password_login_edt_phone_number"
-        app:layout_constraintTop_toTopOf="@id/auth_password_login_edt_phone_number" />
-
-
-    <com.m.k.seetaoism.widgets.CleanEditButton
-        android:id="@+id/auth_password_login_btn_password_clean"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_clean"
-        app:layout_constraintBottom_toBottomOf="@id/auth_password_login_edt_password"
-        app:layout_constraintEnd_toEndOf="@+id/auth_password_login_edt_password"
-        app:layout_constraintTop_toTopOf="@id/auth_password_login_edt_password" />
-
-    <com.m.k.seetaoism.widgets.TogglePasswordButton
-        android:id="@+id/auth_password_login_btn_toggle_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:background="@drawable/ic_eyes_close"
-        app:layout_constraintBottom_toBottomOf="@id/auth_password_login_edt_password"
-        app:layout_constraintEnd_toStartOf="@+id/auth_password_login_btn_password_clean"
-        app:layout_constraintTop_toTopOf="@id/auth_password_login_edt_password" />
+        app:layout_constraintBottom_toBottomOf="@id/auth_code_login_edt_phone_number"
+        app:layout_constraintEnd_toEndOf="@+id/auth_code_login_edt_phone_number"
+        app:layout_constraintTop_toTopOf="@id/auth_code_login_edt_phone_number" />
 
 
     <com.m.k.seetaoism.widgets.EditTextButton
-        android:id="@+id/auth_password_login_btn_login"
+        android:id="@+id/auth_code_login_btn_login"
         style="@style/Jiandao.Button_style1"
         android:layout_marginTop="50dp"
         android:text="@string/text_login"
-        app:layout_constraintEnd_toEndOf="@+id/auth_password_login_edt_password"
-        app:layout_constraintStart_toStartOf="@+id/auth_password_login_edt_password"
+        app:layout_constraintEnd_toEndOf="@+id/auth_code_login_edt_code"
+        app:layout_constraintStart_toStartOf="@+id/auth_code_login_edt_code"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <TextView
-        android:id="@+id/auth_password_login_tv_go_code_login"
+        android:id="@+id/auth_code_login_tv_go_password_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="@string/text_verify_code_login"
+        android:text="@string/text_password_login"
         android:textColor="@color/gray_6"
         android:textSize="12dp"
-        app:layout_constraintStart_toStartOf="@+id/auth_password_login_btn_login"
-        app:layout_constraintTop_toBottomOf="@+id/auth_password_login_btn_login" />
+        app:layout_constraintStart_toStartOf="@+id/auth_code_login_btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/auth_code_login_btn_login" />
 
     <TextView
-        android:id="@+id/auth_password_login_tv_go_regiester"
+        android:id="@+id/auth_code_login_tv_go_regiester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_register_immediately"
         android:textColor="@color/gray_6"
         android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/auth_password_login_btn_login"
-        app:layout_constraintTop_toTopOf="@+id/auth_password_login_tv_go_code_login" />
+        app:layout_constraintEnd_toEndOf="@+id/auth_code_login_btn_login"
+        app:layout_constraintTop_toTopOf="@+id/auth_code_login_tv_go_password_login" />
+
+    <TextView
+        android:id="@+id/auth_code_login_tv_get_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_get_code"
+        app:layout_constraintBottom_toBottomOf="@+id/auth_code_login_edt_code"
+        app:layout_constraintEnd_toEndOf="@+id/auth_code_login_edt_code"
+        app:layout_constraintTop_toTopOf="@+id/auth_code_login_edt_code" />
+
+    <TextView
+        android:id="@+id/auth_code_login_tv_license"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_user_license"
+        android:textColor="@color/gray_6"
+        android:layout_marginTop="15dp"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/auth_code_login_edt_code"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
 
-    <!-- 下面抽出去-->
+
+
 
     <View
         android:id="@+id/anchor"
-        app:layout_constraintStart_toStartOf="@id/auth_password_login_tv_go_code_login"
-        app:layout_constraintTop_toBottomOf="@id/auth_password_login_tv_go_code_login"
+        app:layout_constraintStart_toStartOf="@id/auth_code_login_tv_go_password_login"
+        app:layout_constraintTop_toBottomOf="@id/auth_code_login_tv_go_password_login"
         android:layout_width="0dp"
         android:background="@color/black_2"
         android:layout_height="0dp"/>
 
-
     <include layout="@layout/layout_auth_common"/>
 
 </com.m.k.seetaoism.widgets.MinMatchParentConstraintLayout>
-
 
 </ScrollView>

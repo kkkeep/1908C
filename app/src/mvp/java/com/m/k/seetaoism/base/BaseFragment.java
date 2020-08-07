@@ -5,29 +5,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.appcompat.widget.ContentFrameLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.m.k.seetaoism.R;
+import com.trello.rxlifecycle4.components.support.RxFragment;
 
 
-public abstract class BaseFragment extends Fragment{
+public abstract class BaseFragment extends RxFragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v  = inflater.inflate(getLayoutId(),container,false);
 
-        FrameLayout frameLayout = new FrameLayout(getContext());
+        String viewClassName = v.getClass().getName();
 
-        frameLayout.addView(v);
+        if(viewClassName.equals(RelativeLayout.class.getName())
+                || viewClassName.equals(ConstraintLayout.class.getName())
+                || viewClassName.equals(FrameLayout.class.getName())
+                || viewClassName.equals(ContentFrameLayout.class.getName())){
 
-        return frameLayout;
+            return v;
+        }else{
+            FrameLayout frameLayout = new FrameLayout(getContext());
+            frameLayout.addView(v);
+
+            return frameLayout;
+        }
+
     }
 
     @Override

@@ -4,18 +4,14 @@ import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.base.p.BasePresenter;
-import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.request.PostRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.PasswordLoginRepository;
-import com.m.k.seetaoism.utils.AppUtils;
+import com.m.k.mvp.utils.MvpUtils;
 import com.m.k.seetaoism.utils.ParamsUtils;
 
 import java.util.HashMap;
-
-import io.reactivex.rxjava3.disposables.Disposable;
 
 public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.IPasswordLoginView> implements PasswordLoginContract.IPasswordLoginPresenter {
 
@@ -29,11 +25,11 @@ public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.
     @Override
     public void login(String account, String password) {
 
-        if(!AppUtils.isValidUserCount(account)){
+        if(!MvpUtils.isValidUserCount(account)){
             mView.onInputError(getMvpContent().getResources().getString(R.string.text_error_invalide_phone_number));
             return;
         }
-        if(!AppUtils.isValidUserPasssword(password)){
+        if(!MvpUtils.isValidUserPasssword(password)){
             mView.onInputError(getMvpContent().getResources().getString(R.string.text_error_invalide_password));
             return;
         }
@@ -48,11 +44,14 @@ public class PasswordLoginPresenter extends BasePresenter<PasswordLoginContract.
         request.setParams(params);
 
         mView.onShowLoading();
-        mode.login(request, new IBaseCallBack<User>() {
+        mode.login(getLifecycleProvider(),request, new IBaseCallBack<User>() {
             @Override
             public void onResult(MvpResponse<User> response) {
-                mView.onCloseLoading();
+                if(mView != null){
+                    mView.onCloseLoading();
                 mView.onUserResult(response);
+            }
+
             }
         });
 

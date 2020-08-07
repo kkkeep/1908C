@@ -6,19 +6,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.MailTo;
 import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.base.BaseActivity;
-import com.m.k.seetaoism.manager.MkPermissionManager;
+import com.m.k.mvp.manager.MkPermissionManager;
 import com.m.k.seetaoism.utils.Logger;
 
 import java.util.ArrayList;

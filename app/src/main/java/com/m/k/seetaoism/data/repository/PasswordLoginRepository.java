@@ -10,6 +10,7 @@ import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
+import com.trello.rxlifecycle4.LifecycleProvider;
 
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -19,9 +20,9 @@ public class PasswordLoginRepository extends BaseRepository implements PasswordL
 
 
     @Override
-    public void login(MvpRequest<User> request, IBaseCallBack<User> back) {
+    public void login(LifecycleProvider provider,MvpRequest<User> request, IBaseCallBack<User> back) {
 
-        doRequest(request, new Consumer<MvpResponse<User>>() {
+        doRequest(provider,request, new Consumer<MvpResponse<User>>() {
             @Override
             public void accept(MvpResponse<User> userMvpResponse) throws Throwable {
 

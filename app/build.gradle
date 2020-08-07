@@ -72,14 +72,16 @@ dependencies {
     implementation deps.retrofitX.retrofit2
     implementation deps.retrofitX.retrofit_converter_gson
     implementation deps.retrofitX.retrofit2_adapter_rxjava3
-    implementation deps.retrofitX.retrofit2_rxjava_components
 
 
     implementation deps.rxJavaX.rxjava3
     implementation deps.rxJavaX.rxAndroid3
     implementation deps.rxJavaX.rxPermissions
+    implementation deps.retrofitX.retrofit2_rxjava_components4
     implementation deps.other.gifView
     implementation project(path: ':mvplib')
+
+    implementation 'com.m.k:system-ui:1.0.0-alpha01'
 
 
 }

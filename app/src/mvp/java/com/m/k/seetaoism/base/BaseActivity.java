@@ -9,14 +9,19 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-public abstract class BaseActivity extends AppCompatActivity {
+import com.trello.rxlifecycle4.components.support.RxAppCompatActivity;
+
+
+public abstract class BaseActivity extends RxAppCompatActivity {
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
-        initView();
+        if(getLayoutId() > 0){
+            setContentView(getLayoutId());
+            initView();
+        }
     }
 
     protected void showToast(String content) {

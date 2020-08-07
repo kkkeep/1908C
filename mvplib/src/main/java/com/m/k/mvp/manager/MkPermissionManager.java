@@ -1,4 +1,4 @@
-package com.m.k.seetaoism.manager;
+package com.m.k.mvp.manager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -6,12 +6,14 @@ import android.app.Activity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import com.tbruyelle.rxpermissions3.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.functions.Consumer;
+
 
 /*
  * ActivityCompat.shouldShowRequestPermissionRationale 它返回一个boolean 类型，但是分两种情况：

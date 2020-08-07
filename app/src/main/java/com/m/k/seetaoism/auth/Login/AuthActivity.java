@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.m.k.mvp.data.entity.IUser;
 import com.m.k.mvp.manager.MvpUserManager;
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.auth.Login.code.CodeLoginFragment;
 import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginFragment;
 import com.m.k.seetaoism.base.BaseActivity;
 import com.m.k.seetaoism.data.entity.User;
@@ -29,17 +30,15 @@ public class AuthActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
 
-        showToast(MvpUserManager.getToken());
+        //showToast(MvpUserManager.getToken());
 
-        MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(), PasswordLoginFragment.class,null,R.id.auth_fragment_container);
+        MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(), CodeLoginFragment.class,null,R.id.auth_fragment_container);
 
 
         userCallBack  = MvpUserManager.registerUserStateCallBack(new MvpUserManager.IUserCallBack<User>() {
             @Override
             public void onUserLogin(User user) {
                 String token = MvpUserManager.getToken();
-
-
                 showToast(token);
 
             }

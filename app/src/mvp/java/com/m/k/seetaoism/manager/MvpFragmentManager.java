@@ -47,7 +47,7 @@ public class MvpFragmentManager {
                  *
                  * 比如：从A 里面 要显示B 。 B 就是将要显示的fragment .A 就是上一个 fragment
                  * 第一个 enter : 表示将要显示的 fragment 进入的动画
-                 * 第二个 exit : 表示上一个fragment 退出的动画
+                 * 第二个 exit : 新fragment 进入，上一个fragment 退出的动画
                  * 第三个 popEnter : 表示按返回键时上一个fragment 弹进的动画
                  * 第四个 popExit: 表示按返回键时 将要显示的fragment 被弹出的动画
                  */
