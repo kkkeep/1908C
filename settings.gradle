@@ -1,3 +1,4 @@
 include ':app'
 rootProject.name = "1908C"
 include ':mvplib'
+include ':libbanner'

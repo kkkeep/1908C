@@ -81,13 +81,14 @@ public  class BaseRepository  implements IBaseMode {
                 .observeOn(AndroidSchedulers.mainThread());
 
 
+        if(lifecycleProvider != null){
 
-        if(lifecycleProvider instanceof RxAppCompatActivity){
-            observable1 = observable1.compose(RxLifecycle.bindUntilEvent(lifecycleProvider.lifecycle(),ActivityEvent.DESTROY));
-        }else{
-           observable1 =  observable1.compose(RxLifecycle.bindUntilEvent(lifecycleProvider.lifecycle(),FragmentEvent.DESTROY));
+            if(lifecycleProvider instanceof RxAppCompatActivity){
+                observable1 = observable1.compose(RxLifecycle.bindUntilEvent(lifecycleProvider.lifecycle(),ActivityEvent.DESTROY));
+            }else{
+               observable1 =  observable1.compose(RxLifecycle.bindUntilEvent(lifecycleProvider.lifecycle(),FragmentEvent.DESTROY));
         }
-
+        }
         observable1.subscribe(new Observer<MvpResponse<T>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

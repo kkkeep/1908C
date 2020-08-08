@@ -1,6 +1,5 @@
 package com.m.k.seetaoism.data.repository;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.m.k.JDApplication;
 import com.m.k.mvp.manager.MvpUserManager;

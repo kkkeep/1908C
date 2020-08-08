@@ -2,40 +2,27 @@ package com.m.k.seetaoism.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.m.k.banner.Banner;
 import com.m.k.mvp.manager.MvpManager;
 import com.m.k.mvp.manager.MvpUserManager;
-import com.m.k.mvp.widgets.MvpCommonPopView;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.auth.Login.AuthActivity;
 import com.m.k.seetaoism.base.BaseActivity;
 import com.m.k.seetaoism.base.IBaseCallBack;
+import com.m.k.seetaoism.data.entity.NewsBanner;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.seetaoism.data.net.request.GetRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.BaseRepository;
-import com.m.k.seetaoism.home.HomeActivity;
-import com.m.k.seetaoism.utils.Logger;
 import com.m.k.seetaoism.utils.ParamsUtils;
 import com.m.k.systemui.SystemBarConfig;
-import com.trello.rxlifecycle4.RxLifecycle;
-import com.trello.rxlifecycle4.android.ActivityEvent;
-import com.trello.rxlifecycle4.android.RxLifecycleAndroid;
 
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -88,8 +75,24 @@ public class SplashActivity extends BaseActivity {
             // 设置为全屏
             SystemBarConfig config = new SystemBarConfig(this).enterFullScreen(SystemBarConfig.MODE_HIDE_LEAN_BACK);
             config.apply();
-            startActivity(new Intent(this, AuthActivity.class));
-            getUserInfo();
+           // startActivity(new Intent(this, AuthActivity.class));
+           // getUserInfo();
+
+
+            setContentView(R.layout.item_home_recomment_banner);
+
+            Banner banner = findViewById(R.id.banner);
+
+            ArrayList<NewsBanner> arrayList = new ArrayList<>();
+
+            arrayList.add(new NewsBanner("我是banner Tittle 1"));
+            arrayList.add(new NewsBanner("我是banner Tittle 2"));
+            arrayList.add(new NewsBanner("我是banner Tittle 3"));
+            arrayList.add(new NewsBanner("我是banner Tittle 4"));
+
+            banner.setData(arrayList);
+
+
             // 获取用户信息。
             // 发送一个网络请求获取用户信息。之所以在此处获取用户信息，是为了用户进入我的页面时，用户信息以及提前准备好了。
 
@@ -135,7 +138,7 @@ public class SplashActivity extends BaseActivity {
         userRequest.setType(User.class);
 
 
-       /* new BaseRepository().doRequest(userRequest, new Consumer<MvpResponse<User>>() {
+        new BaseRepository().doRequest(null, userRequest, new Consumer<MvpResponse<User>>() {
             @Override
             public void accept(MvpResponse<User> response) throws Throwable {
 
@@ -143,11 +146,20 @@ public class SplashActivity extends BaseActivity {
                     MvpUserManager.login(response.getData());
                 }
             }
-        }, null);*/
+        }, new IBaseCallBack<User>() {
+            @Override
+            public void onStart(Disposable disposable) {
 
+            }
 
+            @Override
+            public void onResult(MvpResponse<User> response) {
+
+            }
+        });
 
     }
+
 
     @Override
     protected void onDestroy() {

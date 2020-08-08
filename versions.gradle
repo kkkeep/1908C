@@ -70,13 +70,12 @@ subDeps.okhttp3X = okhttp3XMap
 def retrofitXMap = [:]
 retrofitXMap.retrofit2 = "com.squareup.retrofit2:retrofit:$versions.retrofit"
 retrofitXMap.retrofit_converter_gson = "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+
 retrofitXMap.retrofit2_adapter_rxjava = "com.squareup.retrofit2:adapter-rxjava2:$versions.retrofit"
+retrofitXMap.retrofit2_rxjava_components = "com.trello.rxlifecycle2:rxlifecycle-components:$versions.rxlifecycle_components"
 
 // 配套rxjava3 使用
 retrofitXMap.retrofit2_adapter_rxjava3 = "com.squareup.retrofit2:adapter-rxjava3:$versions.retrofit_rxjava3"
-
-retrofitXMap.retrofit2_rxjava_components = "com.trello.rxlifecycle2:rxlifecycle-components:$versions.rxlifecycle_components"
-
 retrofitXMap.retrofit2_rxjava_components4 = "com.trello.rxlifecycle4:rxlifecycle-components:$versions.rxlifecycle_component4"
 
 subDeps.retrofitX = retrofitXMap
@@ -92,7 +91,7 @@ rxjavaXMap.rxjava3 = "io.reactivex.rxjava3:rxjava:$versions.rxjava3"
 rxjavaXMap.rxAndroid3 = "io.reactivex.rxjava3:rxandroid:$versions.rxAndroid3"
 
 
-rxjavaXMap.rxPermissions = "com.github.tbruyelle:rxpermissions:$versions.rxpermissions" //
+rxjavaXMap.rxPermissions = "com.github.tbruyelle:rxpermissions:$versions.rxpermissions" // 0.12 支持rxjAVA3
 subDeps.rxJavaX = rxjavaXMap
 
 

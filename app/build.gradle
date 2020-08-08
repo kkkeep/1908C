@@ -82,6 +82,7 @@ dependencies {
     implementation project(path: ':mvplib')
 
     implementation 'com.m.k:system-ui:1.0.0-alpha01'
+    implementation project(path: ':libbanner')
 
 
 }
