@@ -85,10 +85,11 @@ public class SplashActivity extends BaseActivity {
 
             ArrayList<NewsBanner> arrayList = new ArrayList<>();
 
-            arrayList.add(new NewsBanner("我是banner Tittle 1"));
-            arrayList.add(new NewsBanner("我是banner Tittle 2"));
-            arrayList.add(new NewsBanner("我是banner Tittle 3"));
-            arrayList.add(new NewsBanner("我是banner Tittle 4"));
+            for(int i = 0 ;i < 4;i ++){
+
+                arrayList.add(new NewsBanner("我是banner Tittle 我是banner Tittle我是banner Tittle" + i ));
+            }
+
 
             banner.setData(arrayList);
 

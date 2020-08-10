@@ -6,4 +6,7 @@ public interface IBannerData {
     String getImageUrl();
     String getTitle();
 
+
+
+
 }

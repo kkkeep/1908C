@@ -2,10 +2,15 @@ package com.m.k.banner;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.viewpager2.widget.ViewPager2;
@@ -15,12 +20,22 @@ import java.util.ArrayList;
 public class Banner extends ConstraintLayout {
 
 
+
+    private static final int DEFAULT_INTERVAL = 3000;
+
     private ViewPager2 mPager;
     private TextView mTitle;
+
+    private Indicator mIndicator;
 
     private ArrayList<? extends IBannerData> mDatas;
 
     private int mIds = 0x1000;
+
+    private int mIndicatorEndMargin;
+
+    private int mInterval;  // 切换间隔时间
+    private boolean isAutoLoop = true; // 是否自动循环
 
 
 
@@ -43,8 +58,17 @@ public class Banner extends ConstraintLayout {
         super.onFinishInflate();
 
 
+        initValue();
         initView();
 
+    }
+
+
+    private void initValue(){
+        mIndicatorEndMargin = dip2px(15);
+
+
+        mInterval = DEFAULT_INTERVAL;
     }
 
 
@@ -53,7 +77,6 @@ public class Banner extends ConstraintLayout {
 
 
         // Step1 : 添加一个ViewPager2
-
 
         mPager = new ViewPager2(getContext());
         mPager.setId(mIds++);
@@ -65,6 +88,7 @@ public class Banner extends ConstraintLayout {
 
                 mTitle.setText(mDatas.get(position % mDatas.size()).getTitle());
 
+                mIndicator.setCurrent(position % mDatas.size());
             }
         });
 
@@ -84,7 +108,6 @@ public class Banner extends ConstraintLayout {
         constraintSet.constrainHeight(mPager.getId(),ConstraintSet.MATCH_CONSTRAINT);
 
 
-
         // Step2： 添加一个Title 的 半透明背景
 
 
@@ -101,18 +124,39 @@ public class Banner extends ConstraintLayout {
         constraintSet.constrainHeight(mask.getId(),dip2px(50));
 
 
+        // step3 添加indicator
 
 
-        // step3 添加 title
+        mIndicator = new CircleIndicator(getContext());
+        mIndicator.setUnSelectColor(Color.WHITE); // TODO
+        mIndicator.setSelectColor(Color.RED);
+        mIndicator.setRadio(10);
+        mIndicator.setMargin(10);
+        mIndicator.setId(mIds++);
+        addView((View) mIndicator);
+
+        constraintSet.connect(mIndicator.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END,mIndicatorEndMargin);
+        constraintSet.connect(mIndicator.getId(),ConstraintSet.BOTTOM,mask.getId(),ConstraintSet.BOTTOM);
+        constraintSet.connect(mIndicator.getId(),ConstraintSet.TOP,mask.getId(),ConstraintSet.TOP);
+
+        constraintSet.constrainWidth(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
+        constraintSet.constrainHeight(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
+
+        // step4 添加 title
 
 
         mTitle = new TextView(getContext());
         mTitle.setId(mIds++);
         mTitle.setTextColor(Color.WHITE);
+        mTitle.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        mTitle.setSelected(true);
+        mTitle.setSingleLine(true);
+        mTitle.setMarqueeRepeatLimit(-1);
+
         addView(mTitle);
 
         constraintSet.connect(mTitle.getId(),ConstraintSet.START,ConstraintSet.PARENT_ID,ConstraintSet.START);
-        constraintSet.connect(mTitle.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END);
+        constraintSet.connect(mTitle.getId(),ConstraintSet.END,mIndicator.getId(),ConstraintSet.START,mIndicatorEndMargin);
 
         constraintSet.connect(mTitle.getId(),ConstraintSet.BOTTOM,mask.getId(),ConstraintSet.BOTTOM);
         constraintSet.connect(mTitle.getId(),ConstraintSet.TOP,mask.getId(),ConstraintSet.TOP);
@@ -127,10 +171,27 @@ public class Banner extends ConstraintLayout {
     }
 
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
 
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:{
+                stopLoop();
+                break;
+            }
+
+            case MotionEvent.ACTION_UP:{
+                startLoop();
+            }
+        }
+
+
+        return super.dispatchTouchEvent(ev);
+
+
+    }
 
     public void setData(ArrayList<? extends IBannerData> data){
-
 
         mDatas = data;
 
@@ -140,11 +201,49 @@ public class Banner extends ConstraintLayout {
 
         mPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
 
-        mPager.setCurrentItem(0);
+        int initPosition = Integer.MAX_VALUE /2;
 
+        initPosition  =  initPosition - (initPosition % data.size());
+
+        mPager.setCurrentItem(initPosition);
+
+        mIndicator.setCount(data.size());
+        mIndicator.setCurrent(initPosition % mDatas.size());
 
     }
 
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if(visibility == VISIBLE){
+            startLoop();
+        }else{
+            stopLoop();
+        }
+    }
+
+
+    private Runnable mLoopTask = new Runnable() {
+        @Override
+        public void run() {
+            int cIndex = mPager.getCurrentItem();
+            mPager.setCurrentItem(++cIndex, true);
+            getHandler().postDelayed(this, mInterval);
+        }
+    };
+
+    private void startLoop(){
+        if(isAutoLoop  && mDatas != null &&  mDatas.size() > 1){
+            getHandler().postDelayed(mLoopTask, mInterval);
+        }
+    }
+
+
+
+
+    private void stopLoop(){
+        getHandler().removeCallbacks(mLoopTask);
+    }
 
 
     public  int dip2px(float dpValue) {

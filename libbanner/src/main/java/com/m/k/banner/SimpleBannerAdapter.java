@@ -32,7 +32,6 @@ public class SimpleBannerAdapter extends RecyclerView.Adapter<SimpleBannerAdapte
         imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-        Log.d("Test","创建页面 " + ++mCount);
         imageView.setTag(mCount);
 
         return new SimpleBannerHolder(imageView);
@@ -40,7 +39,6 @@ public class SimpleBannerAdapter extends RecyclerView.Adapter<SimpleBannerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SimpleBannerHolder holder, int position) {
-        Log.d("Test","绑定页面 " + (position+1));
         position = position % mDatas.size();
 
         if(position == 0){
