@@ -2,12 +2,18 @@ package com.m.k.seetaoism.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.m.k.banner.Banner;
+import com.m.k.banner.BannerAdapter;
+import com.m.k.banner.IBannerData;
 import com.m.k.mvp.manager.MvpManager;
 import com.m.k.mvp.manager.MvpUserManager;
+import com.m.k.mvp.widgets.BottomNavigation;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.auth.Login.AuthActivity;
@@ -92,6 +98,14 @@ public class SplashActivity extends BaseActivity {
 
 
             banner.setData(arrayList);
+
+            BottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
+
+            bottomNavigation.addItem(R.drawable.tab_recommend_selector,"推荐列表")
+                    .addItem(R.drawable.tab_video_selector,"视频")
+                    .addItem(R.drawable.tab_special_selector,"专题")
+                    .addItem(R.drawable.tab_mine_selector,"我的")
+                    .apply();
 
 
             // 获取用户信息。
