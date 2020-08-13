@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Banner">
+
+        <!--
+          private int mIndicatorEndMargin;
+        private int mInterval;  // 切换间隔时间
+        private int mScrollTime; // 动画执行时间
+        private int mScrollMode; //  切换模式，垂直或者水平方向
+        private int mMarginTitleStart;
+        private int mTitleTextSize;
+        private int mTitleTextColor;
+        private int mTitleBgViewHeight;
+        private int mIndicatorRadio;
+        private int mIndicatorSelectColor;
+        private int mIndicatorUnSelectColor;
+
+
+        -->
+        <attr name="bannerIndicatorEndMargin" format="dimension|reference" />
+        <attr name="bannerPageSwitchInterval" format="integer" />
+        <attr name="bannerPageScrollTime" format="integer" />
+        <attr name="bannerMarginTitleStart" format="dimension|reference" />
+        <attr name="bannerTitleTextSize" format="dimension|reference" />
+        <attr name="bannerTitleMarginTop" format="dimension|reference" />
+        <attr name="bannerTitleMarquee" format="boolean" />
+
+        <attr name="bannerTitleMarginBottom" format="dimension|reference" />
+        <attr name="bannerTitleTextColor" format="color|reference" />
+        <attr name="bannerIndicatorRadio" format="dimension|reference" />
+        <attr name="bannerIndicatorSelectColor" format="color|reference" />
+        <attr name="bannerIndicatorUnSelectColor" format="color|reference" />
+        <attr name="bannerIndicatorMargin" format="dimension|reference" />
+
+        <attr name="bannerIsShowTitleBgView" format="boolean" />
+        <attr name="bannerIsAutoLoop" format="boolean" />
+
+
+        <attr name="bannerPageScrollMode" >
+            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="0"/>
+        </attr>
+
+
+
+    </declare-styleable>
+</resources>

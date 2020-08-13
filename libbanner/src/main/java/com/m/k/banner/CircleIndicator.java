@@ -61,9 +61,7 @@ public class CircleIndicator extends View implements Indicator {
 
     private void calculation(){
         mHeight = mRatio * 2;
-
         mCount = Math.min(mRealCount,MAX_COUNT);
-
         mWidth = (mCount * mRatio * 2) + (mCount - 1) * mMargin;
         invalidate(); // 刷新页面，重新onMeasure onLayout,onDraw
     }
@@ -72,6 +70,7 @@ public class CircleIndicator extends View implements Indicator {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
         setMeasuredDimension(MeasureSpec.makeMeasureSpec(mWidth,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(mHeight,MeasureSpec.EXACTLY));
     }
 

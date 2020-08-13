@@ -1,8 +1,13 @@
 package com.m.k.mvp.widgets;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +17,15 @@ import androidx.annotation.DrawableRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.m.k.mvp.R;
+import com.m.k.mvp.utils.MvpUtils;
+
 import java.util.ArrayList;
 
 public class BottomNavigation extends ConstraintLayout {
 
+    private static final int HORIZONTAL_MARGIN_DP = 32;
+    private static final int VERTICAL_MARGIN_DP = 12;
 
     private NavigationAdapter mAdapter;
 
@@ -25,6 +35,12 @@ public class BottomNavigation extends ConstraintLayout {
     private int mMarginBottom;
     private int mMarginRight;
     private int mMarginTop;
+    private int mDrawableMargin;
+    private int mTextSize;
+    private int mDrawableIconWidth;
+    private int mDrawableIconHeight;
+    private ColorStateList mTextColorStateList;
+
 
     public BottomNavigation(Context context) {
         super(context);
@@ -32,15 +48,36 @@ public class BottomNavigation extends ConstraintLayout {
 
     public BottomNavigation(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initValue(attrs);
     }
 
     public BottomNavigation(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initValue(attrs);
+
     }
 
 
 
+    private void initValue(AttributeSet set){
 
+      TypedArray array =  getContext().obtainStyledAttributes(set, R.styleable.BottomNavigation);
+
+      mMarginLeft = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationLeftMargin, MvpUtils.dip2px(getContext(),HORIZONTAL_MARGIN_DP));
+      mMarginRight = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationRightMargin, MvpUtils.dip2px(getContext(),HORIZONTAL_MARGIN_DP));
+      mMarginTop = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationTopMargin, MvpUtils.dip2px(getContext(),VERTICAL_MARGIN_DP));
+      mMarginBottom = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationBottomMargin, MvpUtils.dip2px(getContext(),VERTICAL_MARGIN_DP));
+      mDrawableIconWidth = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableWidth, 0);
+      mDrawableIconHeight = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableHeight, 0);
+
+      mDrawableMargin = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableMargin,0);
+      mTextSize = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationTextSize,0);
+
+      mTextColorStateList = array.getColorStateList(R.styleable.BottomNavigation_bottomNavigationTextColor);
+
+      array.recycle();
+
+    }
 
 
     public BottomNavigation addItem(@DrawableRes  int drawableId, String title){
@@ -63,6 +100,7 @@ public class BottomNavigation extends ConstraintLayout {
             }
             mAdapter = new SimpleNavigationAdapter(list);
 
+
             initView();
         }
 
@@ -73,11 +111,38 @@ public class BottomNavigation extends ConstraintLayout {
 
         removeAllViews();
 
+
+        int minTabWidth = Integer.MAX_VALUE; // 所有tab 中最小的那一个的宽度
+        int maxTabHeight = 0; // 所有tab 中最高哪一个的高度
+        int maxTabHeightIndex = 0; // 最高tab 的index
+
         for(int i = 0; i < mAdapter.getCount(); i++){
             TabHolder holder = mAdapter.createHolder(this,i);
             addView(holder.mItemView);
             mAdapter.bindData(holder,i);
+
+            // 计算每一个tab 的宽和高
+            holder.mItemView.measure(MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED),MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED));
+
+            if(holder.mItemView.getMeasuredWidth() < minTabWidth){
+                minTabWidth = holder.mItemView.getMeasuredWidth();
+            }
+
+
+            if(holder.mItemView.getMeasuredHeight() > maxTabHeight){
+                maxTabHeight = holder.mItemView.getMeasuredHeight();
+                maxTabHeightIndex = i;
+            }
+
         }
+
+
+
+
+
+
+
+
 
 
         // 添加约束条件
@@ -90,25 +155,38 @@ public class BottomNavigation extends ConstraintLayout {
 
         // 在使用链的时候，如果是水平的链，那么就只需要把链上的所有控件的垂直方向上的约束添加上即可
 
-        for(int i = 0; i < mAdapter.getCount(); i++){
+        // 先把最高的那一个tab 固定好
 
-            view = mAdapter.getHolderByPosition(i).mItemView;
 
-            ids[i] = view.getId();
+        view = mAdapter.getHolderByPosition(maxTabHeightIndex).mItemView;
 
-            if (i == 0) { // 第 0 个 tab
-                constraintSet.connect(view.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 20);
-                constraintSet.connect(view.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 20);
-            } else {
+        constraintSet.connect(view.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        constraintSet.connect(view.getId(), ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+        ids[maxTabHeightIndex] = view.getId();
+        previousId = view.getId();
+
+
+        if(maxTabHeightIndex > 0){
+            for(int i = maxTabHeightIndex-1;i >= 0; i--){
+                view = mAdapter.getHolderByPosition(i).mItemView;
                 constraintSet.connect(view.getId(), ConstraintSet.BOTTOM, previousId, ConstraintSet.BOTTOM);
+                previousId = view.getId();
+                ids[i] = view.getId();
             }
-            constraintSet.constrainWidth(view.getId(), ConstraintSet.WRAP_CONTENT);
-            constraintSet.constrainHeight(view.getId(), ConstraintSet.WRAP_CONTENT);
-
-            previousId = view.getId();
-
 
         }
+
+
+
+        if(maxTabHeightIndex < mAdapter.getCount()-1){
+            for(int i = maxTabHeightIndex +1; i < mAdapter.getCount(); i++){
+                view = mAdapter.getHolderByPosition(i).mItemView;
+                constraintSet.connect(view.getId(), ConstraintSet.BOTTOM, previousId, ConstraintSet.BOTTOM);
+                previousId = view.getId();
+                ids[i] = view.getId();
+            }
+        }
+
 
 
 
@@ -123,7 +201,18 @@ public class BottomNavigation extends ConstraintLayout {
 
         constraintSet.applyTo(this);
 
-        setPadding(20,0,20,0);
+
+
+        // 通过设置 tab 的 padding  来扩大点击事件区域
+
+        int padding = Math.max(mMarginBottom,mMarginTop);
+        int paddingOffset  = Math.min(minTabWidth /2,Math.min(mMarginLeft,mMarginRight));
+        for(int i = 0; i < mAdapter.getCount();i++){
+            mAdapter.getHolderByPosition(i).mItemView.setPadding(paddingOffset,padding,paddingOffset,padding);
+        }
+
+        //
+        setPadding(mMarginLeft - paddingOffset,0,mMarginRight -paddingOffset,0);
     }
 
 
@@ -135,8 +224,8 @@ public class BottomNavigation extends ConstraintLayout {
         private int mId = 1000;
 
         private ArrayList<TabData> mTabData;
-
         private ArrayList<SimpleTabHolder> mHolders = new ArrayList<>();
+        private boolean isFirst = true;
 
         SimpleNavigationAdapter(ArrayList<TabData> tabData) {
             this.mTabData = tabData;
@@ -145,10 +234,19 @@ public class BottomNavigation extends ConstraintLayout {
         @Override
         public SimpleTabHolder createHolder(ViewGroup parent, int position) {
 
+            BottomNavigation navigation = ((BottomNavigation)parent);
             CheckBox tabView = new CheckBox(parent.getContext());
             tabView.setId(mId + position);
             tabView.setButtonDrawable(null);
             tabView.setGravity(Gravity.CENTER);
+            tabView.setTextColor(navigation.mTextColorStateList);
+            int textSize  = navigation.mTextSize;
+            if(textSize > 0 ){
+                tabView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+            }
+
+
+
             SimpleTabHolder holder =  new SimpleTabHolder(tabView);
 
             mHolders.add(holder);
@@ -159,8 +257,19 @@ public class BottomNavigation extends ConstraintLayout {
         public void bindData(SimpleTabHolder holder, int position) {
 
             Drawable topDrawable = holder.mItemView.getContext().getResources().getDrawable(mTabData.get(position).getDrawableId());
-            holder.mItemView.setCompoundDrawablesWithIntrinsicBounds(null,topDrawable,null,null);
+
+            BottomNavigation navigation = (BottomNavigation) holder.mItemView.getParent();
+
+            if(navigation.mDrawableIconWidth > 0 && navigation.mDrawableIconHeight > 0){
+                topDrawable.setBounds(0,0,navigation.mDrawableIconWidth,navigation.mDrawableIconHeight);
+                holder.mItemView.setCompoundDrawables(null,topDrawable,null,null);
+            }else{
+                holder.mItemView.setCompoundDrawablesWithIntrinsicBounds(null,topDrawable,null,null);
+            }
+
+
             holder.mItemView.setText(mTabData.get(position).getTitle());
+
 
         }
 

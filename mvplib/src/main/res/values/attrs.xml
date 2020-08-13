@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomNavigation">
+        <attr name="bottomNavigationLeftMargin" format="dimension|reference"/>
+        <attr name="bottomNavigationRightMargin" format="dimension|reference"/>
+        <attr name="bottomNavigationTopMargin" format="dimension|reference"/>
+        <attr name="bottomNavigationBottomMargin" format="dimension|reference"/>
+        <attr name="bottomNavigationDrawableMargin" format="dimension|reference"/>
+        <attr name="bottomNavigationDrawableWidth" format="dimension|reference"/>
+        <attr name="bottomNavigationDrawableHeight" format="dimension|reference"/>
+
+        <attr name="bottomNavigationTextColor" format="color|reference"/>
+        <attr name="bottomNavigationTextSize" format="dimension|reference"/>
+    </declare-styleable>
+</resources>

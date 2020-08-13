@@ -12,6 +12,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:bannerTitleTextSize="14dp"
+        app:bannerMarginTitleStart="13dp"
+        app:bannerTitleTextColor="@color/white"
+        app:bannerIndicatorRadio="3dp"
+        app:bannerIndicatorMargin="3dp"
+        app:bannerIndicatorSelectColor="@color/red"
+        app:bannerIndicatorUnSelectColor="@color/white"
+        app:bannerIndicatorEndMargin="13dp"
+        app:bannerPageScrollTime="1000"
+        app:bannerPageSwitchInterval="3000"
+        app:bannerTitleMarginTop="10dp"
+        app:bannerTitleMarginBottom="10dp"
+        app:bannerPageScrollMode="horizontal"
+        app:bannerTitleMarquee="false"
+        />
+
+
+    <com.m.k.mvp.widgets.BottomNavigation
+        android:background="@color/white"
+        android:id="@+id/bottomNavigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:bottomNavigationTextColor="@color/bottom_navigation_text_color"
+        app:bottomNavigationTextSize="10dp"
+        app:bottomNavigationLeftMargin="27dp"
+        app:bottomNavigationRightMargin="27dp"
+        app:bottomNavigationTopMargin="6dp"
+        app:bottomNavigationBottomMargin="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

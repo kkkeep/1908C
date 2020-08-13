@@ -12,7 +12,7 @@ import com.example.libbanner.R;
 
 import java.util.ArrayList;
 
-public class SimpleBannerAdapter extends RecyclerView.Adapter<SimpleBannerAdapter.SimpleBannerHolder> {
+public class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdapter.SimpleBannerHolder> {
 
 
     private static int mCount =0;
@@ -66,6 +66,10 @@ public class SimpleBannerAdapter extends RecyclerView.Adapter<SimpleBannerAdapte
         Log.d("Test","回收 页面 " + holder.itemView.getTag());
     }
 
+    @Override
+    protected   ArrayList<? extends IBannerData> getDataList() {
+        return mDatas;
+    }
 
 
     public class SimpleBannerHolder extends RecyclerView.ViewHolder{
