@@ -3,7 +3,9 @@ package com.m.k.mvp.widgets;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.annotation.DrawableRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.m.k.mvp.R;
 import com.m.k.mvp.utils.MvpUtils;
 
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 
 public class BottomNavigation extends ConstraintLayout {
@@ -31,6 +35,11 @@ public class BottomNavigation extends ConstraintLayout {
 
     private ArrayList<Integer> mDrawableRes = new ArrayList<>();
     private ArrayList<String> mTitles = new ArrayList<>();
+    private ColorStateList mTextColorStateList;
+    private OnTabSelectedListener mTabSelectedListener;
+
+    private Paint mLinePaint;
+
     private int mMarginLeft;
     private int mMarginBottom;
     private int mMarginRight;
@@ -39,7 +48,13 @@ public class BottomNavigation extends ConstraintLayout {
     private int mTextSize;
     private int mDrawableIconWidth;
     private int mDrawableIconHeight;
-    private ColorStateList mTextColorStateList;
+    private int mDeliverLineWidth;
+    private int mDeliverLineColor;
+
+    private int mCurrentPosition = 0;
+
+
+    private boolean mHasDeliverLine; // 是否显示分割线
 
 
     public BottomNavigation(Context context) {
@@ -58,29 +73,47 @@ public class BottomNavigation extends ConstraintLayout {
     }
 
 
+    private void initValue(AttributeSet set) {
 
-    private void initValue(AttributeSet set){
+        TypedArray array = getContext().obtainStyledAttributes(set, R.styleable.BottomNavigation);
 
-      TypedArray array =  getContext().obtainStyledAttributes(set, R.styleable.BottomNavigation);
+        mMarginLeft = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationLeftMargin, MvpUtils.dip2px(getContext(), HORIZONTAL_MARGIN_DP));
+        mMarginRight = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationRightMargin, MvpUtils.dip2px(getContext(), HORIZONTAL_MARGIN_DP));
+        mMarginTop = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationTopMargin, MvpUtils.dip2px(getContext(), VERTICAL_MARGIN_DP));
+        mMarginBottom = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationBottomMargin, MvpUtils.dip2px(getContext(), VERTICAL_MARGIN_DP));
+        mDrawableIconWidth = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableWidth, 0);
+        mDrawableIconHeight = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableHeight, 0);
 
-      mMarginLeft = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationLeftMargin, MvpUtils.dip2px(getContext(),HORIZONTAL_MARGIN_DP));
-      mMarginRight = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationRightMargin, MvpUtils.dip2px(getContext(),HORIZONTAL_MARGIN_DP));
-      mMarginTop = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationTopMargin, MvpUtils.dip2px(getContext(),VERTICAL_MARGIN_DP));
-      mMarginBottom = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationBottomMargin, MvpUtils.dip2px(getContext(),VERTICAL_MARGIN_DP));
-      mDrawableIconWidth = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableWidth, 0);
-      mDrawableIconHeight = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableHeight, 0);
+        mDrawableMargin = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableMargin, 0);
+        mTextSize = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationTextSize, 0);
 
-      mDrawableMargin = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDrawableMargin,0);
-      mTextSize = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationTextSize,0);
+        mTextColorStateList = array.getColorStateList(R.styleable.BottomNavigation_bottomNavigationTextColor);
 
-      mTextColorStateList = array.getColorStateList(R.styleable.BottomNavigation_bottomNavigationTextColor);
+        mHasDeliverLine = array.getBoolean(R.styleable.BottomNavigation_bottomNavigationDeliverLine, true);
+        mDeliverLineWidth = array.getDimensionPixelSize(R.styleable.BottomNavigation_bottomNavigationDeliverLineWidth, MvpUtils.dip2px(getContext(), 1));
+        mDeliverLineColor = array.getColor(R.styleable.BottomNavigation_bottomNavigationDeliverLineColor, Color.GRAY);
 
-      array.recycle();
+        array.recycle();
 
+
+        mLinePaint = new Paint();
+        mLinePaint.setAntiAlias(true);
+        mLinePaint.setColor(mDeliverLineColor);
+        mLinePaint.setStrokeWidth(mDeliverLineWidth);
+
+        setWillNotDraw(!mHasDeliverLine);
     }
 
+    public void setTabSelectedListener(OnTabSelectedListener tabSelectedListener) {
+        this.mTabSelectedListener = tabSelectedListener;
+        if (mAdapter != null) {
+            View tabView = mAdapter.getHolderByPosition(mCurrentPosition).mItemView;
+            mTabSelectedListener.onTabSelect(tabView, (Integer) tabView.getTag());
 
-    public BottomNavigation addItem(@DrawableRes  int drawableId, String title){
+        }
+    }
+
+    public BottomNavigation addItem(@DrawableRes int drawableId, String title) {
 
         mDrawableRes.add(drawableId);
         mTitles.add(title);
@@ -88,26 +121,41 @@ public class BottomNavigation extends ConstraintLayout {
     }
 
 
-    public void apply(){
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+
+    }
+
+    public BottomNavigation setCurrentPosition(int position) {
+
+        mCurrentPosition = position;
+        return this;
+    }
+
+    public void apply() {
+
         // 把这些drawable 和 title  应用到 我的布局上
-        if(mDrawableRes.size() > 0 ){
-
+        if (mDrawableRes.size() > 0) {
             ArrayList<TabData> list = new ArrayList<>();
-
-            for(int i = 0; i < mDrawableRes.size(); i++){
-                list.add(new TabData(mDrawableRes.get(i),mTitles.get(i)));
+            for (int i = 0; i < mDrawableRes.size(); i++) {
+                list.add(new TabData(mDrawableRes.get(i), mTitles.get(i)));
 
             }
-            mAdapter = new SimpleNavigationAdapter(list);
-
-
-            initView();
+            apply(new SimpleNavigationAdapter(list));
         }
 
     }
 
+    public void apply(NavigationAdapter<? extends TabHolder> adapter) {
+        mAdapter = adapter;
+        initView();
 
-    private void initView(){
+    }
+
+
+    private void initView() {
 
         removeAllViews();
 
@@ -116,33 +164,28 @@ public class BottomNavigation extends ConstraintLayout {
         int maxTabHeight = 0; // 所有tab 中最高哪一个的高度
         int maxTabHeightIndex = 0; // 最高tab 的index
 
-        for(int i = 0; i < mAdapter.getCount(); i++){
-            TabHolder holder = mAdapter.createHolder(this,i);
+        for (int i = 0; i < mAdapter.getCount(); i++) {
+            TabHolder holder = mAdapter.createHolder(this, i);
             addView(holder.mItemView);
-            mAdapter.bindData(holder,i);
+
+            mAdapter.bindData(holder, i);
+
 
             // 计算每一个tab 的宽和高
-            holder.mItemView.measure(MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED),MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED));
+            holder.mItemView.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
-            if(holder.mItemView.getMeasuredWidth() < minTabWidth){
+            if (holder.mItemView.getMeasuredWidth() < minTabWidth) {
                 minTabWidth = holder.mItemView.getMeasuredWidth();
             }
 
 
-            if(holder.mItemView.getMeasuredHeight() > maxTabHeight){
+            if (holder.mItemView.getMeasuredHeight() > maxTabHeight) {
                 maxTabHeight = holder.mItemView.getMeasuredHeight();
                 maxTabHeightIndex = i;
             }
 
+
         }
-
-
-
-
-
-
-
-
 
 
         // 添加约束条件
@@ -151,7 +194,7 @@ public class BottomNavigation extends ConstraintLayout {
 
         int previousId = 0; // 用于记录上一个 id
         View view;
-        int ids [] = new int[mAdapter.getCount()];
+        int ids[] = new int[mAdapter.getCount()];
 
         // 在使用链的时候，如果是水平的链，那么就只需要把链上的所有控件的垂直方向上的约束添加上即可
 
@@ -166,8 +209,8 @@ public class BottomNavigation extends ConstraintLayout {
         previousId = view.getId();
 
 
-        if(maxTabHeightIndex > 0){
-            for(int i = maxTabHeightIndex-1;i >= 0; i--){
+        if (maxTabHeightIndex > 0) {
+            for (int i = maxTabHeightIndex - 1; i >= 0; i--) {
                 view = mAdapter.getHolderByPosition(i).mItemView;
                 constraintSet.connect(view.getId(), ConstraintSet.BOTTOM, previousId, ConstraintSet.BOTTOM);
                 previousId = view.getId();
@@ -177,17 +220,14 @@ public class BottomNavigation extends ConstraintLayout {
         }
 
 
-
-        if(maxTabHeightIndex < mAdapter.getCount()-1){
-            for(int i = maxTabHeightIndex +1; i < mAdapter.getCount(); i++){
+        if (maxTabHeightIndex < mAdapter.getCount() - 1) {
+            for (int i = maxTabHeightIndex + 1; i < mAdapter.getCount(); i++) {
                 view = mAdapter.getHolderByPosition(i).mItemView;
                 constraintSet.connect(view.getId(), ConstraintSet.BOTTOM, previousId, ConstraintSet.BOTTOM);
                 previousId = view.getId();
                 ids[i] = view.getId();
             }
         }
-
-
 
 
         // 第一个参数： 你这个链的左端需要连接到的控件的Id
@@ -202,30 +242,40 @@ public class BottomNavigation extends ConstraintLayout {
         constraintSet.applyTo(this);
 
 
-
         // 通过设置 tab 的 padding  来扩大点击事件区域
 
-        int padding = Math.max(mMarginBottom,mMarginTop);
-        int paddingOffset  = Math.min(minTabWidth /2,Math.min(mMarginLeft,mMarginRight));
-        for(int i = 0; i < mAdapter.getCount();i++){
-            mAdapter.getHolderByPosition(i).mItemView.setPadding(paddingOffset,padding,paddingOffset,padding);
+        int padding = Math.max(mMarginBottom, mMarginTop);
+        int paddingOffset = Math.min(minTabWidth / 2, Math.min(mMarginLeft, mMarginRight));
+        int paddingTop = mHasDeliverLine ? padding + mDeliverLineWidth : padding;
+        for (int i = 0; i < mAdapter.getCount(); i++) {
+            mAdapter.getHolderByPosition(i).mItemView.setPadding(paddingOffset, paddingTop, paddingOffset, padding);
         }
 
         //
-        setPadding(mMarginLeft - paddingOffset,0,mMarginRight -paddingOffset,0);
+        setPadding(mMarginLeft - paddingOffset, 0, mMarginRight - paddingOffset, 0);
+
+
     }
 
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (mHasDeliverLine) {
+            canvas.drawLine(0, 0, getWidth(), 0, mLinePaint);
+        }
 
+    }
 
-
-    public static class SimpleNavigationAdapter implements NavigationAdapter<SimpleNavigationAdapter.SimpleTabHolder>{
+    public static class SimpleNavigationAdapter implements NavigationAdapter<SimpleNavigationAdapter.SimpleTabHolder> {
 
         private int mId = 1000;
 
         private ArrayList<TabData> mTabData;
         private ArrayList<SimpleTabHolder> mHolders = new ArrayList<>();
         private boolean isFirst = true;
+
+        private CheckBox mPreCheckedTab;
 
         SimpleNavigationAdapter(ArrayList<TabData> tabData) {
             this.mTabData = tabData;
@@ -234,23 +284,65 @@ public class BottomNavigation extends ConstraintLayout {
         @Override
         public SimpleTabHolder createHolder(ViewGroup parent, int position) {
 
-            BottomNavigation navigation = ((BottomNavigation)parent);
+            BottomNavigation navigation = ((BottomNavigation) parent);
             CheckBox tabView = new CheckBox(parent.getContext());
+            tabView.setTag(position);
             tabView.setId(mId + position);
             tabView.setButtonDrawable(null);
             tabView.setGravity(Gravity.CENTER);
             tabView.setTextColor(navigation.mTextColorStateList);
-            int textSize  = navigation.mTextSize;
-            if(textSize > 0 ){
-                tabView.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
+            int textSize = navigation.mTextSize;
+            if (textSize > 0) {
+                tabView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             }
 
 
+            tabView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-            SimpleTabHolder holder =  new SimpleTabHolder(tabView);
+                    if (navigation.mTabSelectedListener != null) {
+
+                        if (isChecked) {
+
+                            if (mPreCheckedTab != buttonView) {
+                                navigation.mTabSelectedListener.onTabSelect(buttonView, (Integer) buttonView.getTag());
+
+                                if (mPreCheckedTab != null) {
+                                    navigation.mTabSelectedListener.onTabUnSelect(mPreCheckedTab, (Integer) mPreCheckedTab.getTag());
+
+                                    CheckBox temp = mPreCheckedTab;
+                                    mPreCheckedTab = (CheckBox) buttonView;
+                                    temp.setChecked(false);
+                                    return;
+
+                                }
+
+                                mPreCheckedTab = (CheckBox) buttonView;
+                            }
+
+                        } else {
+
+                            if (mPreCheckedTab == buttonView) {
+                                navigation.mTabSelectedListener.onTabReSelected(buttonView, (Integer) buttonView.getTag());
+                                mPreCheckedTab.setChecked(true);
+                            }
+
+                        }
+
+                    }
+                }
+            });
+
+
+            SimpleTabHolder holder = new SimpleTabHolder(tabView);
 
             mHolders.add(holder);
             return holder;
+        }
+
+        private void select(int position) {
+            getHolderByPosition(position).mItemView.setChecked(true);
         }
 
         @Override
@@ -260,15 +352,24 @@ public class BottomNavigation extends ConstraintLayout {
 
             BottomNavigation navigation = (BottomNavigation) holder.mItemView.getParent();
 
-            if(navigation.mDrawableIconWidth > 0 && navigation.mDrawableIconHeight > 0){
-                topDrawable.setBounds(0,0,navigation.mDrawableIconWidth,navigation.mDrawableIconHeight);
-                holder.mItemView.setCompoundDrawables(null,topDrawable,null,null);
-            }else{
-                holder.mItemView.setCompoundDrawablesWithIntrinsicBounds(null,topDrawable,null,null);
+            if (navigation.mDrawableIconWidth > 0 && navigation.mDrawableIconHeight > 0) {
+                topDrawable.setBounds(0, 0, navigation.mDrawableIconWidth, navigation.mDrawableIconHeight);
+                holder.mItemView.setCompoundDrawables(null, topDrawable, null, null);
+            } else {
+                holder.mItemView.setCompoundDrawablesWithIntrinsicBounds(null, topDrawable, null, null);
             }
 
 
             holder.mItemView.setText(mTabData.get(position).getTitle());
+
+
+            if (navigation.mCurrentPosition == position) {
+                holder.mItemView.setChecked(true);
+                if(navigation.mTabSelectedListener == null){
+                    mPreCheckedTab = holder.mItemView;
+                }
+
+            }
 
 
         }
@@ -284,7 +385,7 @@ public class BottomNavigation extends ConstraintLayout {
             return mHolders.size() == 0 ? null : mHolders.get(position);
         }
 
-        static class SimpleTabHolder extends TabHolder<CheckBox>{
+        static class SimpleTabHolder extends TabHolder<CheckBox> {
 
             SimpleTabHolder(CheckBox itemView) {
                 super(itemView);
@@ -295,20 +396,20 @@ public class BottomNavigation extends ConstraintLayout {
     }
 
 
-    private static abstract class TabHolder<T extends View> {
-         T mItemView;
+    public static abstract class TabHolder<T extends View> {
+       protected T mItemView;
 
-        TabHolder(T itemView) {
+       public TabHolder(T itemView) {
             this.mItemView = itemView;
         }
 
     }
 
-    public interface NavigationAdapter<TH extends TabHolder>{
+    public interface NavigationAdapter<TH extends TabHolder> {
 
         TH createHolder(ViewGroup parent, int position);
 
-        void bindData(TH holder,int position);
+        void bindData(TH holder, int position);
 
         int getCount();
 
@@ -316,7 +417,7 @@ public class BottomNavigation extends ConstraintLayout {
 
     }
 
-    private static class TabData{
+    private static class TabData {
         private int drawableId;
         private String title;
 
@@ -332,5 +433,14 @@ public class BottomNavigation extends ConstraintLayout {
         String getTitle() {
             return title;
         }
+    }
+
+    public interface OnTabSelectedListener {
+
+        void onTabSelect(View tab, int position);
+
+        void onTabUnSelect(View tab, int position);
+
+        void onTabReSelected(View tab, int position);
     }
 }

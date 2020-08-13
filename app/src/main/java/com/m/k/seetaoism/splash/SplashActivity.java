@@ -2,15 +2,12 @@ package com.m.k.seetaoism.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.m.k.banner.Banner;
-import com.m.k.banner.BannerAdapter;
-import com.m.k.banner.IBannerData;
 import com.m.k.mvp.manager.MvpManager;
 import com.m.k.mvp.manager.MvpUserManager;
 import com.m.k.mvp.widgets.BottomNavigation;
@@ -101,6 +98,24 @@ public class SplashActivity extends BaseActivity {
 
             BottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
 
+
+            bottomNavigation.setTabSelectedListener(new BottomNavigation.OnTabSelectedListener() {
+                @Override
+                public void onTabSelect(View tab, int position) {
+                    showToast("选中" + position);
+                }
+
+                @Override
+                public void onTabUnSelect(View tab, int position) {
+                    showToast("取消选中" + position);
+                }
+
+                @Override
+                public void onTabReSelected(View tab, int position) {
+                    showToast("再次选中" + position);
+                }
+            });
+
             bottomNavigation.addItem(R.drawable.tab_recommend_selector,"推荐列表")
                     .addItem(R.drawable.tab_video_selector,"视频")
                     .addItem(R.drawable.tab_special_selector,"专题")
@@ -108,9 +123,15 @@ public class SplashActivity extends BaseActivity {
                     .apply();
 
 
+
+
+            int count = 4;
+            int arr1 [] =new int []{8,10,25,37,36,54,55};
+            int arr2 []  = new int[]{10,3,16,20,5,9,14};
+
+
             // 获取用户信息。
             // 发送一个网络请求获取用户信息。之所以在此处获取用户信息，是为了用户进入我的页面时，用户信息以及提前准备好了。
-
 
         }
 

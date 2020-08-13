@@ -8,6 +8,10 @@
         <attr name="bottomNavigationDrawableMargin" format="dimension|reference"/>
         <attr name="bottomNavigationDrawableWidth" format="dimension|reference"/>
         <attr name="bottomNavigationDrawableHeight" format="dimension|reference"/>
+        <attr name="bottomNavigationDeliverLine" format="boolean"/>
+        <attr name="bottomNavigationDeliverLineWidth" format="dimension|reference"/>
+        <attr name="bottomNavigationDeliverLineColor" format="color|reference"/>
+
 
         <attr name="bottomNavigationTextColor" format="color|reference"/>
         <attr name="bottomNavigationTextSize" format="dimension|reference"/>

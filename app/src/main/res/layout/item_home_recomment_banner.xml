@@ -30,7 +30,6 @@
 
 
     <com.m.k.mvp.widgets.BottomNavigation
-        android:background="@color/white"
         android:id="@+id/bottomNavigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -40,6 +39,9 @@
         app:bottomNavigationRightMargin="27dp"
         app:bottomNavigationTopMargin="6dp"
         app:bottomNavigationBottomMargin="6dp"
+        app:bottomNavigationDeliverLine="true"
+        app:bottomNavigationDeliverLineWidth="1dp"
+        app:bottomNavigationDeliverLineColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
