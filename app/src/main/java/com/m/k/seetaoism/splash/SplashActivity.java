@@ -2,6 +2,7 @@ package com.m.k.seetaoism.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,11 +17,13 @@ import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.auth.Login.AuthActivity;
 import com.m.k.seetaoism.base.BaseActivity;
 import com.m.k.seetaoism.base.IBaseCallBack;
+import com.m.k.seetaoism.base.NoResultCallBack;
 import com.m.k.seetaoism.data.entity.NewsBanner;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.seetaoism.data.net.request.GetRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.BaseRepository;
+import com.m.k.seetaoism.home.HomeActivity;
 import com.m.k.seetaoism.utils.ParamsUtils;
 import com.m.k.systemui.SystemBarConfig;
 
@@ -31,7 +34,7 @@ import io.reactivex.rxjava3.functions.Consumer;
 
 public class SplashActivity extends BaseActivity {
 
-    private static final int SPLASH_TIME = 3000; //  3秒后跳转。
+    private static final int SPLASH_TIME = 300; //  3秒后跳转。
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,56 +81,16 @@ public class SplashActivity extends BaseActivity {
             // 设置为全屏
             SystemBarConfig config = new SystemBarConfig(this).enterFullScreen(SystemBarConfig.MODE_HIDE_LEAN_BACK);
             config.apply();
-           // startActivity(new Intent(this, AuthActivity.class));
-           // getUserInfo();
 
-
-            setContentView(R.layout.item_home_recomment_banner);
-
-            Banner banner = findViewById(R.id.banner);
-
-            ArrayList<NewsBanner> arrayList = new ArrayList<>();
-
-            for(int i = 0 ;i < 4;i ++){
-
-                arrayList.add(new NewsBanner("我是banner Tittle 我是banner Tittle我是banner Tittle" + i ));
-            }
-
-
-            banner.setData(arrayList);
-
-            BottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
-
-
-            bottomNavigation.setTabSelectedListener(new BottomNavigation.OnTabSelectedListener() {
+            getWindow().getDecorView().postDelayed(new Runnable() {
                 @Override
-                public void onTabSelect(View tab, int position) {
-                    showToast("选中" + position);
+                public void run() {
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                    finish();
                 }
+            },SPLASH_TIME);
 
-                @Override
-                public void onTabUnSelect(View tab, int position) {
-                    showToast("取消选中" + position);
-                }
-
-                @Override
-                public void onTabReSelected(View tab, int position) {
-                    showToast("再次选中" + position);
-                }
-            });
-
-            bottomNavigation.addItem(R.drawable.tab_recommend_selector,"推荐列表")
-                    .addItem(R.drawable.tab_video_selector,"视频")
-                    .addItem(R.drawable.tab_special_selector,"专题")
-                    .addItem(R.drawable.tab_mine_selector,"我的")
-                    .apply();
-
-
-
-
-            int count = 4;
-            int arr1 [] =new int []{8,10,25,37,36,54,55};
-            int arr2 []  = new int[]{10,3,16,20,5,9,14};
+            getUserInfo();
 
 
             // 获取用户信息。
@@ -155,18 +118,13 @@ public class SplashActivity extends BaseActivity {
     }
 
 
-
-    private Disposable disposable;
-
     private void getUserInfo(){
 
       String token =   MvpUserManager.getToken();
 
-     /* if(TextUtils.isEmpty(token)){
+      if(TextUtils.isEmpty(token)){
           return;
-      }*/
-
-
+      }
 
         GetRequest<User> userRequest = new GetRequest<>(Constrant.URL.GET_USER);
         userRequest.setParams(ParamsUtils.getCommonParams());
@@ -177,22 +135,11 @@ public class SplashActivity extends BaseActivity {
         new BaseRepository().doRequest(null, userRequest, new Consumer<MvpResponse<User>>() {
             @Override
             public void accept(MvpResponse<User> response) throws Throwable {
-
                 if (response.isOk()) {
                     MvpUserManager.login(response.getData());
                 }
             }
-        }, new IBaseCallBack<User>() {
-            @Override
-            public void onStart(Disposable disposable) {
-
-            }
-
-            @Override
-            public void onResult(MvpResponse<User> response) {
-
-            }
-        });
+        }, new NoResultCallBack<>());
 
     }
 
@@ -200,6 +147,5 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       // disposable.dispose();
     }
 }

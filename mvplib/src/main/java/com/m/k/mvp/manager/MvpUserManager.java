@@ -104,13 +104,12 @@ public class MvpUserManager {
 
 
     public static String getToken() {
-        long start = System.currentTimeMillis();
+
         if(mToken == null){
             mToken = MvpSpUtils.getString(SP_TOKEN);
             mExpireTime = MvpSpUtils.getLong(SP_TOKEN_EXPIRE_TIME);
         }
 
-        Log.d("Test","------" + (System.currentTimeMillis()- start));
 
         if (System.currentTimeMillis() / 1000 < mExpireTime) {
             return  mToken;

@@ -33,6 +33,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+        viewBinding{
+
+           enabled = true
+        }
+
 
 }
 
@@ -83,6 +88,7 @@ dependencies {
 
     implementation 'com.m.k:system-ui:1.0.0-alpha01'
     implementation project(path: ':libbanner')
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.2@aar'
 
 
 }

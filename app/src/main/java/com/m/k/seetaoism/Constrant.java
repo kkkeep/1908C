@@ -12,6 +12,7 @@ public interface Constrant {
    interface  URL{
        String LOGIN = "app/v_1_7_2/user/login2";
        String GET_USER = "/api/user/getuserinfo";
+       String COLUMN_MANAGER = "/api/column/columnmanagelist";
    }
 
 

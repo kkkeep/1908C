@@ -1,5 +1,7 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
+import android.view.View;
+
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
 import com.m.k.seetaoism.base.p.BaseSmartPresenter2;
@@ -16,11 +18,9 @@ public class PasswordLoginFragment2 extends BaseSmartFragment1<User> {
         return R.layout.fragment_password_login;
     }
 
+
     @Override
-    protected void initView() {
-
-
-
+    protected void bindView(View view) {
     }
 
     @Override

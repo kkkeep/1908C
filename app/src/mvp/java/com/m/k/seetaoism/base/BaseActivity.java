@@ -8,18 +8,21 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewbinding.ViewBinding;
 
 import com.trello.rxlifecycle4.components.support.RxAppCompatActivity;
 
 
 public abstract class BaseActivity extends RxAppCompatActivity {
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getLayoutId() > 0){
-            setContentView(getLayoutId());
+            View view = getLayoutInflater().inflate(getLayoutId(),findViewById(android.R.id.content),false);
+            setContentView(view);
+
+            bindingView(view);
             initView();
         }
     }
@@ -32,8 +35,13 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         Toast.makeText(this, id, Toast.LENGTH_SHORT).show();
     }
 
+    protected void bindingView(View view){
+
+    }
 
     protected abstract  int getLayoutId();
+
+
 
     protected abstract void initView();
 

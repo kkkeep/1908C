@@ -1,21 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     >
 
 
-    <FrameLayout
-        android:id="@+id/home_fragment_container"
-        android:layout_width="0dp"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        >
+
+        <FrameLayout
+            android:id="@+id/home_fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 
+        <include layout="@layout/layout_home_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.m.k.mvp.widgets.BottomNavigation
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bottomNavigationBottomMargin="6dp"
+        app:bottomNavigationDeliverLine="true"
+        app:bottomNavigationDeliverLineColor="@color/gray"
+        app:bottomNavigationDeliverLineWidth="1dp"
+        app:bottomNavigationLeftMargin="27dp"
+        app:bottomNavigationRightMargin="27dp"
+        app:bottomNavigationTextColor="@color/bottom_navigation_text_color"
+        app:bottomNavigationTextSize="10dp"
+        app:bottomNavigationTopMargin="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout>

@@ -64,7 +64,7 @@ public class PasswordLoginFragment extends MvpBaseFragment<PasswordLoginContract
 
                 mPresenter.login(mEdtCount.getText().toString().trim(),mEdtPassword.getText().toString().trim());
 
-                getActivity().finish();
+                //getActivity().finish();
             }
         });
 

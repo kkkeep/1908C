@@ -63,7 +63,6 @@ public  class BaseRepository  implements IBaseMode {
 
         if(request.getType() == null && callBack != null){
 
-
             Type [] interfaces =  callBack.getClass().getGenericInterfaces();
 
           ParameterizedType parameterizedType = (ParameterizedType) interfaces[0];

@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:theme="@style/Jiandao.FullScreen">
+        android:theme="@style/Jiandao">
         <activity android:name=".splash.SplashActivity"
             android:theme="@style/Jiandao.FullScreen.Splash"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -29,7 +29,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".home.HomeActivity" />
-        <activity android:name=".auth.Login.AuthActivity"/>
 
     </application>
 

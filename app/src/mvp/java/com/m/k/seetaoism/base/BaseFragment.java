@@ -25,6 +25,9 @@ public abstract class BaseFragment extends RxFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if(getLayoutId() == 0){
+            return null;
+        }
         View v  = inflater.inflate(getLayoutId(),container,false);
 
         String viewClassName = v.getClass().getName();
@@ -47,12 +50,22 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        bindView(view);
+
         initView();
     }
 
+    protected void bindView(View view){
+
+    }
+
+
     protected abstract int getLayoutId();
 
-    protected abstract void initView();
+    protected  void initView(){
+
+    }
 
 
     public  <T extends View> T findViewById(@IdRes int id){
