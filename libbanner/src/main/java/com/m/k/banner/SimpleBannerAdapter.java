@@ -12,7 +12,7 @@ import com.example.libbanner.R;
 
 import java.util.ArrayList;
 
-public class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdapter.SimpleBannerHolder> {
+public abstract class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdapter.SimpleBannerHolder> {
 
 
     private static int mCount =0;
@@ -27,12 +27,10 @@ public class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdapter.Simpl
     @NonNull
     @Override
     public SimpleBannerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         ImageView imageView = new ImageView(parent.getContext());
         imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-
         imageView.setTag(mCount);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         return new SimpleBannerHolder(imageView);
     }
@@ -41,18 +39,10 @@ public class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdapter.Simpl
     public void onBindViewHolder(@NonNull SimpleBannerHolder holder, int position) {
         position = position % mDatas.size();
 
-        if(position == 0){
-            holder.setData(R.drawable.banner2);
-        }else if(position == 1){
-            holder.setData(R.drawable.banner3);
-        }
-        else if(position == 2){
-            holder.setData(R.drawable.baner4);
-        }
-        else if(position == 3){
-            holder.setData(R.drawable.banner5);
-        }
+        bindData((ImageView) holder.itemView,mDatas.get(position));
     }
+
+    public abstract void bindData(ImageView view,IBannerData data);
 
     @Override
     public int getItemCount() {
@@ -82,4 +72,6 @@ public class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdapter.Simpl
             itemView.setBackgroundResource(id);
         }
     }
+
+
 }

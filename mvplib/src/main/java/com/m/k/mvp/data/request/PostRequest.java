@@ -1,6 +1,4 @@
-package com.m.k.seetaoism.data.net.request;
-
-import java.lang.reflect.ParameterizedType;
+package com.m.k.mvp.data.request;
 
 public class PostRequest<T> extends MvpRequest<T> {
     public PostRequest(String url) {

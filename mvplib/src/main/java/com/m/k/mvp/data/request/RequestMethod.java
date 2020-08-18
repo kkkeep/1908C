@@ -1,4 +1,4 @@
-package com.m.k.seetaoism.data.net.request;
+package com.m.k.mvp.data.request;
 
 public enum RequestMethod {
     GET,POST

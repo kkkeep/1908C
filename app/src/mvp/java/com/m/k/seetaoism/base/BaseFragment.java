@@ -39,8 +39,10 @@ public abstract class BaseFragment extends RxFragment {
 
             return v;
         }else{
+
             FrameLayout frameLayout = new FrameLayout(getContext());
             frameLayout.addView(v);
+            frameLayout.setTag("wrap");
 
             return frameLayout;
         }
@@ -51,9 +53,15 @@ public abstract class BaseFragment extends RxFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bindView(view);
+        if(view.getTag() != null){
+             bindView(((ViewGroup)view).getChildAt(0));
+        }else{
+            bindView(view);
+        }
 
         initView();
+
+        loadData();
     }
 
     protected void bindView(View view){
@@ -63,10 +71,12 @@ public abstract class BaseFragment extends RxFragment {
 
     protected abstract int getLayoutId();
 
-    protected  void initView(){
+    protected  void initView(){ }
 
-    }
 
+    protected void loadData(){
+
+    };
 
     public  <T extends View> T findViewById(@IdRes int id){
         return getView().findViewById(id);
@@ -81,7 +91,13 @@ public abstract class BaseFragment extends RxFragment {
         Toast.makeText(getContext(),id,Toast.LENGTH_SHORT).show();
     }
 
+
+    public boolean isNeedAnimation(){
+        return true;
+    }
+
     public int  getEnterAnimation(){
+
         return R.anim.common_page_right_in;
     }
 

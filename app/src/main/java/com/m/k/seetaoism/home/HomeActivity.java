@@ -7,6 +7,7 @@ import android.view.View;
 
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.m.k.mvp.widgets.BottomNavigation;
 import com.m.k.seetaoism.R;
@@ -28,6 +29,7 @@ public class HomeActivity extends BaseActivity {
         SystemBarConfig config = new SystemBarConfig(this);
         config.setStatusBarLightMode(true);
         config.setStatusBarColor(Color.WHITE).apply();
+
     }
 
     @Override

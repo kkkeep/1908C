@@ -1,10 +1,10 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
+import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.base.p.IBasePresenter;
 import com.m.k.seetaoism.base.v.IBaseView;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.trello.rxlifecycle4.LifecycleProvider;
 
@@ -33,7 +33,7 @@ public interface PasswordLoginContract {
 
     interface IPasswordLoginMode {
 
-        void login(LifecycleProvider provider,MvpRequest<User> request, IBaseCallBack<User> back);
+        void login(LifecycleProvider provider, MvpRequest<User> request, IBaseCallBack<User> back);
     }
 
 }

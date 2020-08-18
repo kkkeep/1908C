@@ -3,10 +3,10 @@ package com.m.k.seetaoism.data.repository;
 import androidx.lifecycle.Lifecycle;
 
 import com.google.gson.Gson;
+import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.base.m.IBaseMode;
 import com.m.k.seetaoism.data.entity.HttpResult;
-import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.ok.DataService;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.utils.ParameterizedTypeImpl;

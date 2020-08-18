@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.m.k.mvp.MvpConfig;
 import com.m.k.mvp.utils.MvpUtils;
 import com.m.k.mvp.utils.MvpSpUtils;
 
@@ -12,15 +13,20 @@ public class MvpManager {
     private static final String SP_VERSION_CODE = "version_code";
 
     private static  Context mApplication;
+    private static  MvpConfig mConfig;
 
     private static  UiHandler mUiHandler;
 
-    public static void init(Context context){
+    public static void init(MvpConfig config){
         if(Looper.getMainLooper().getThread() != Thread.currentThread()){
             throw new IllegalThreadStateException("Mvp.init(context) 方法 必须调用在主线程进行初始化，不用担心，Mvp 的具体初始化操作不会占用主线程");
         }
+
+        mConfig = config;
         mUiHandler = new UiHandler();
-        mApplication = context;
+        mApplication = config.getContext();
+
+
     }
 
 
@@ -56,5 +62,10 @@ public class MvpManager {
 
      public static void launchFail(){
          MvpSpUtils.remove(SP_VERSION_CODE);
+     }
+
+
+     public static MvpConfig getConfig(){
+        return mConfig;
      }
 }

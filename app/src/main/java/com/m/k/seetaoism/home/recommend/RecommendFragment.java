@@ -11,17 +11,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.m.k.mvp.data.request.GetRequest;
 import com.m.k.mvp.manager.MvpUserManager;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.data.entity.ColumnData;
-import com.m.k.seetaoism.data.net.request.GetRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.databinding.FragmentRecommendBinding;
 import com.m.k.seetaoism.home.recommend.page.PageFragment;
 import com.m.k.seetaoism.utils.Logger;
 import com.m.k.seetaoism.utils.ParamsUtils;
+import com.m.k.seetaoism.widgets.MvpLoadingView;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,9 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
             }
 
             @Override
-            public void onPageSelected(int position) { }
+            public void onPageSelected(int position) {
+
+            }
 
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -69,53 +72,64 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
             }
         });
 
-
+        showFullLoading();
         loadColumnData();
     }
 
 
+    @Override
+    public boolean isNeedAddToBackStack() {
+        return false;
+    }
+
+
+    @Override
+    public boolean isNeedAnimation() {
+        return false;
+    }
 
     private void changeTabColor(int position, float offset) {
 
         int current =  binding.newsViewPager.getCurrentItem();
 
-
         int next;
-        if(current > position){ // 反着滑动
+        if(current > position){ // 反
             next = current - 1;
         }else{
             next  = current + 1;
         }
-
-        if(next >= current){
+        if(next >= current){ // 正
             if(offset > 0.2){
                 setTabViewTextColor(current,Color.BLACK);
-                binding.slidingTabLayout.setIndicatorColor(getColumnColor(next));
+                setTabIndicatorColor(next);
             }else if( offset >= 0){
                 setTabViewTextColor(current,Color.WHITE);
-                binding.slidingTabLayout.setIndicatorColor(getColumnColor(current));
+                setTabIndicatorColor(current);
             }
         }else {
 
             if(offset < 0.8){
                 setTabViewTextColor(current,Color.BLACK);
-                binding.slidingTabLayout.setIndicatorColor(getColumnColor(next));
+                setTabIndicatorColor(next);
             }else if (offset < 1){
                 setTabViewTextColor(current,Color.WHITE);
-                binding.slidingTabLayout.setIndicatorColor(getColumnColor(current));
+                setTabIndicatorColor(current);
             }
         }
-
     }
 
 
-    private int getColumnColor(int index){
+
+
+    private void setTabIndicatorColor(int index){
         NewsPagerAdapter pagerAdapter = (NewsPagerAdapter) binding.newsViewPager.getAdapter();
-        return Color.parseColor("#" + pagerAdapter.getColumns().get(index).getBack_color());
+        ColumnData.Column column =  pagerAdapter.getColumns().get(index);
+
+        if(binding.slidingTabLayout.getIndicatorColor() != column.getColor()){
+            binding.slidingTabLayout.setIndicatorColor(column.getColor());
+        }
     }
-
     private void setTabViewTextColor(int index, int color){
-
         TextView view = binding.slidingTabLayout.getTitleView(index);
         if(view.getPaint().getColor() != color){
             Logger.d("---------------- %s 由 %s 变成 %s",view.getText().toString(),getColorString(view.getPaint().getColor()),getColorString(color));
@@ -151,8 +165,16 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
     @Override
     public void onResult1(MvpResponse<ColumnData> response) {
         if (response.isOk()) {
+            closeLoading();
             binding.newsViewPager.setAdapter(new NewsPagerAdapter(getChildFragmentManager(), response.getData().getList().getMyColumn()));
             binding.slidingTabLayout.setViewPager(binding.newsViewPager);
+        }else{
+            onError(response.getMsg(), new MvpLoadingView.OnRetryCallBack() {
+                @Override
+                public void onRetry() {
+                    loadColumnData();
+                }
+            });
         }
     }
 
@@ -174,7 +196,7 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            return PageFragment.newInstance(mColumns.get(position).getId());
+            return PageFragment.newInstance(mColumns.get(position).getId(),mColumns.get(position).getName());
         }
 
 

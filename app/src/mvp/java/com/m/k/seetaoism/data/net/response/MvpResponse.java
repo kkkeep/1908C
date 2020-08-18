@@ -1,6 +1,6 @@
 package com.m.k.seetaoism.data.net.response;
 
-import com.m.k.seetaoism.data.net.request.RequestType;
+import com.m.k.mvp.data.request.RequestType;
 
 public class MvpResponse<D> {
 

@@ -1,11 +1,11 @@
 package com.m.k.seetaoism.auth.Login.pwd;
 
+import com.m.k.mvp.data.request.PostRequest;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.base.p.BasePresenter;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.request.PostRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.PasswordLoginRepository;
 import com.m.k.mvp.utils.MvpUtils;

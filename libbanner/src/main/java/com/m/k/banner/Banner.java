@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -21,7 +26,7 @@ import com.example.libbanner.R;
 
 import java.util.ArrayList;
 
-public class Banner extends ConstraintLayout {
+public class Banner extends ConstraintLayout implements LifecycleObserver{
 
 
 
@@ -29,12 +34,18 @@ public class Banner extends ConstraintLayout {
     private static final int DEFAULT_SCROLL_TIME = 1000;
 
     private static final int SCROLL_MODE_VERTICAL = 1;
-    private static final int SCROLL_MODE_HORIZONTA = 0;
+    private static final int SCROLL_MODE_HORIZONTAL = 0;
+    private static final int INDICATOR_STYLE_CIRCLE = 1;
+    private static final int INDICATOR_STYLE_PROGRESS = 2;
+
 
     private static final int DEFAULT_MARGIN_DP = 12;
     private static final int DEFAULT_INDICATOR_RADIO = 3;
     private static final int DEFAULT_TITLE_SIZE_DP = 12;
 
+
+
+    LifecycleOwner mLifecycleOwner;
 
     private ViewPager2 mPager;
     private TextView mTitle;
@@ -58,6 +69,7 @@ public class Banner extends ConstraintLayout {
     private int mIndicatorMargin;
     private int mTitleMarginTop;
     private int mTitleMarginBottom;
+    private int mIndicatorStyle;
 
 
 
@@ -66,6 +78,7 @@ public class Banner extends ConstraintLayout {
     private boolean mIsShowTitleBgView; // 是否显示 title 的那个半透明背景
 
     private boolean mIsAutoLoop = true; // 是否自动循环
+
 
 
 
@@ -94,7 +107,9 @@ public class Banner extends ConstraintLayout {
         super.onFinishInflate();
         initView();
 
+
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -138,7 +153,7 @@ public class Banner extends ConstraintLayout {
         mInterval = array.getInt(R.styleable.Banner_bannerPageSwitchInterval,DEFAULT_INTERVAL);
 
         mScrollTime = array.getInt(R.styleable.Banner_bannerPageScrollTime,DEFAULT_SCROLL_TIME);
-        mScrollMode = array.getInt(R.styleable.Banner_bannerPageScrollMode,SCROLL_MODE_HORIZONTA);
+        mScrollMode = array.getInt(R.styleable.Banner_bannerPageScrollMode,SCROLL_MODE_HORIZONTAL);
         mMarginTitleStart = array.getDimensionPixelSize(R.styleable.Banner_bannerMarginTitleStart,DEFAULT_MARGIN_DP);
         mTitleTextSize = array.getDimensionPixelSize(R.styleable.Banner_bannerTitleTextSize,dip2px(DEFAULT_TITLE_SIZE_DP));
         mTitleTextColor = array.getColor(R.styleable.Banner_bannerTitleTextColor,Color.WHITE);
@@ -146,6 +161,7 @@ public class Banner extends ConstraintLayout {
 
         mTitleMarquee = array.getBoolean(R.styleable.Banner_bannerTitleMarquee,true);
 
+        mIndicatorStyle = array.getInt(R.styleable.Banner_bannerIndicatorStyle,INDICATOR_STYLE_CIRCLE);
 
         array.recycle();
 
@@ -236,20 +252,40 @@ public class Banner extends ConstraintLayout {
         // step3 添加indicator
 
 
-        mIndicator = new CircleIndicator(getContext());
+        if(mIndicatorStyle == INDICATOR_STYLE_CIRCLE){
+            mIndicator = new CircleIndicator(getContext());
+            mIndicator.setMargin(mIndicatorMargin);
+        }else{
+            mIndicator = new ProgressIndicator(getContext());
+        }
+
+
         mIndicator.setUnSelectColor(mIndicatorUnSelectColor);
         mIndicator.setSelectColor(mIndicatorSelectColor);
         mIndicator.setRadio(mIndicatorRadio);
-        mIndicator.setMargin(mIndicatorMargin);
         mIndicator.setId(mIds++);
         addView((View) mIndicator);
 
-        constraintSet.connect(mIndicator.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END,mIndicatorEndMargin);
-        constraintSet.connect(mIndicator.getId(),ConstraintSet.BOTTOM,mask.getId(),ConstraintSet.BOTTOM);
-        constraintSet.connect(mIndicator.getId(),ConstraintSet.TOP,mask.getId(),ConstraintSet.TOP);
 
-        constraintSet.constrainWidth(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
-        constraintSet.constrainHeight(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
+        if(mIndicatorStyle == INDICATOR_STYLE_CIRCLE){
+            constraintSet.connect(mIndicator.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END,mIndicatorEndMargin);
+            constraintSet.connect(mIndicator.getId(),ConstraintSet.BOTTOM,mask.getId(),ConstraintSet.BOTTOM);
+            constraintSet.connect(mIndicator.getId(),ConstraintSet.TOP,mask.getId(),ConstraintSet.TOP);
+
+            constraintSet.constrainWidth(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
+            constraintSet.constrainHeight(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
+        }else{
+
+            constraintSet.connect(mIndicator.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END,mIndicatorEndMargin);
+            constraintSet.connect(mIndicator.getId(),ConstraintSet.START,ConstraintSet.PARENT_ID,ConstraintSet.START,mIndicatorEndMargin);
+            constraintSet.connect(mIndicator.getId(),ConstraintSet.BOTTOM,ConstraintSet.PARENT_ID,ConstraintSet.BOTTOM);
+            constraintSet.connect(mIndicator.getId(),ConstraintSet.TOP,mask.getId(),ConstraintSet.BOTTOM);
+
+            constraintSet.constrainWidth(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
+            constraintSet.constrainHeight(mIndicator.getId(),ConstraintSet.WRAP_CONTENT);
+        }
+
+
 
         // step4 添加 title
 
@@ -272,30 +308,27 @@ public class Banner extends ConstraintLayout {
         addView(mTitle);
 
         constraintSet.connect(mTitle.getId(),ConstraintSet.START,ConstraintSet.PARENT_ID,ConstraintSet.START,mMarginTitleStart);
-        constraintSet.connect(mTitle.getId(),ConstraintSet.END,mIndicator.getId(),ConstraintSet.START,mIndicatorEndMargin);
+
+        if(mIndicatorStyle == INDICATOR_STYLE_CIRCLE){
+            constraintSet.connect(mTitle.getId(),ConstraintSet.END,mIndicator.getId(),ConstraintSet.START,mIndicatorEndMargin);
+
+        }else{
+            constraintSet.connect(mTitle.getId(),ConstraintSet.END,ConstraintSet.PARENT_ID,ConstraintSet.END,mIndicatorEndMargin);
+        }
 
         constraintSet.connect(mTitle.getId(),ConstraintSet.TOP,mask.getId(),ConstraintSet.TOP,mTitleMarginTop);
 
         constraintSet.constrainWidth(mTitle.getId(),ConstraintSet.MATCH_CONSTRAINT);
         constraintSet.constrainHeight(mTitle.getId(),ConstraintSet.WRAP_CONTENT);
 
-
-    ;
-
-
-
-
-
-
-
         constraintSet.applyTo(this);
 
 
     }
 
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+
 
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:{
@@ -303,15 +336,29 @@ public class Banner extends ConstraintLayout {
                 break;
             }
 
+            case MotionEvent.ACTION_MOVE:{
+                if(mScrollMode == SCROLL_MODE_HORIZONTAL){
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                }
+            }
+
             case MotionEvent.ACTION_UP:{
                 startLoop();
             }
+
         }
 
 
-        return super.dispatchTouchEvent(ev);
+        return  super.dispatchTouchEvent(ev);
 
 
+    }
+
+
+    public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
+        this.mLifecycleOwner = lifecycleOwner;
+
+        mLifecycleOwner.getLifecycle().addObserver(this);
     }
 
     public void setData(BannerAdapter adapter){
@@ -326,7 +373,7 @@ public class Banner extends ConstraintLayout {
 
         mPager.setUserInputEnabled(true);
 
-        if(mScrollMode == SCROLL_MODE_HORIZONTA){
+        if(mScrollMode == SCROLL_MODE_HORIZONTAL){
             mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         }else{
             mPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
@@ -343,13 +390,11 @@ public class Banner extends ConstraintLayout {
 
         mIndicator.setCount(mDatas.size());
         mIndicator.setCurrent(initPosition % mDatas.size());
+
+        startLoop();
     }
 
-    public void setData(ArrayList<? extends IBannerData> data){
 
-        setData(new SimpleBannerAdapter(data));
-
-    }
 
     @Override
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
@@ -367,16 +412,40 @@ public class Banner extends ConstraintLayout {
         public void run() {
             int cIndex = mPager.getCurrentItem();
             mPager.setCurrentItem(++cIndex, true);
+            Log.d("Test3"," start switch " + Banner.this.hashCode());
             getHandler().postDelayed(this, mInterval);
         }
     };
 
-    private void startLoop(){
-        if(mIsAutoLoop && mDatas != null &&  mDatas.size() > 1){
+    private boolean isOnResume = false;
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void onResume(){
+        isOnResume = true;
+        startLoop();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void onPause(){
+        isOnResume = false;
+        stopLoop();
+    }
+
+
+    public void startLoop(){
+        Log.d("Test3"," start Loop " + hashCode());
+
+        stopLoop();
+        if(mIsAutoLoop && (mDatas != null &&  mDatas.size() > 1) && (getVisibility() == VISIBLE) && isOnResume ){
             getHandler().postDelayed(mLoopTask, mInterval);
         }
     }
 
+
+
+    public void stopLoop(){
+        Log.d("Test3"," stop Loop " + hashCode());
+        getHandler().removeCallbacks(mLoopTask);
+    }
 
 
     public int getScrollTime(){
@@ -391,15 +460,13 @@ public class Banner extends ConstraintLayout {
     }
 
 
-    private void stopLoop(){
-        getHandler().removeCallbacks(mLoopTask);
-    }
 
 
     public  int dip2px(float dpValue) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
 
 
 }

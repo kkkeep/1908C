@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.seetaoism.base.p.BaseSmartPresenter2;
-import com.m.k.seetaoism.data.net.request.MvpRequest;
 
 import java.lang.reflect.ParameterizedType;
 

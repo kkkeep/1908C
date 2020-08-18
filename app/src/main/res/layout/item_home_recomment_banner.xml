@@ -25,6 +25,7 @@
         app:bannerTitleMarginTop="10dp"
         app:bannerTitleMarginBottom="10dp"
         app:bannerPageScrollMode="horizontal"
+        app:bannerIndicatorStyle="progress"
         app:bannerTitleMarquee="false"
         />
 

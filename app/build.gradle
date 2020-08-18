@@ -83,7 +83,17 @@ dependencies {
     implementation deps.rxJavaX.rxAndroid3
     implementation deps.rxJavaX.rxPermissions
     implementation deps.retrofitX.retrofit2_rxjava_components4
+
+    implementation deps.glideX.glide
+    annotationProcessor deps.glideX.compiler
+
+
+
     implementation deps.other.gifView
+    implementation deps.other.smartRefreshLayout
+    implementation deps.other.smartRefreshHeader
+
+
     implementation project(path: ':mvplib')
 
     implementation 'com.m.k:system-ui:1.0.0-alpha01'

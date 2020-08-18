@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 
 import com.m.k.banner.Banner;
+import com.m.k.mvp.data.request.GetRequest;
 import com.m.k.mvp.manager.MvpManager;
 import com.m.k.mvp.manager.MvpUserManager;
 import com.m.k.mvp.widgets.BottomNavigation;
@@ -20,7 +21,6 @@ import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.base.NoResultCallBack;
 import com.m.k.seetaoism.data.entity.NewsBanner;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.request.GetRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.BaseRepository;
 import com.m.k.seetaoism.home.HomeActivity;

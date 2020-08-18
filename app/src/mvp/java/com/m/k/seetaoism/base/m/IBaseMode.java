@@ -1,7 +1,7 @@
 package com.m.k.seetaoism.base.m;
 
+import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.seetaoism.base.IBaseCallBack;
-import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.trello.rxlifecycle4.LifecycleProvider;
 
 

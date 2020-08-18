@@ -1,9 +1,9 @@
 package com.m.k.seetaoism.base.p;
 
+import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.base.m.IBaseMode;
 import com.m.k.seetaoism.base.v.IBaseSmartView1;
-import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.BaseRepository;
 import com.trello.rxlifecycle4.LifecycleProvider;

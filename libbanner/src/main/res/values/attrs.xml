@@ -35,6 +35,11 @@
         <attr name="bannerIsShowTitleBgView" format="boolean" />
         <attr name="bannerIsAutoLoop" format="boolean" />
 
+        <attr name="bannerIndicatorStyle">
+            <enum name="circle" value="1"/>
+            <enum name="progress" value="2"/>
+
+        </attr>
 
         <attr name="bannerPageScrollMode" >
             <enum name="vertical" value="1"/>

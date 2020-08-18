@@ -1,10 +1,10 @@
 package com.m.k.seetaoism.data.repository;
 
+import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.mvp.manager.MvpUserManager;
 import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginContract;
 import com.m.k.seetaoism.base.IBaseCallBack;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.request.MvpRequest;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
 import com.trello.rxlifecycle4.LifecycleProvider;
 
@@ -14,7 +14,7 @@ public class PasswordLoginRepository2 extends BaseRepository  {
 
 
     @Override
-    public <T> void doRequest(LifecycleProvider provider,MvpRequest<T> request, IBaseCallBack<T> callBack) {
+    public <T> void doRequest(LifecycleProvider provider, MvpRequest<T> request, IBaseCallBack<T> callBack) {
 
         doRequest(provider,request, new Consumer<MvpResponse<T>>() {
             @Override

@@ -13,6 +13,7 @@ public interface Constrant {
        String LOGIN = "app/v_1_7_2/user/login2";
        String GET_USER = "/api/user/getuserinfo";
        String COLUMN_MANAGER = "/api/column/columnmanagelist";
+       String RECOMMEND_LIST = "/app/v_1_6/article/recommendlist";
    }
 
 
@@ -30,6 +31,10 @@ public interface Constrant {
       String KEY_USER_PASSWORD = "password";
       String KEY_CODE = "code";
       String KEY_TOKEN = "token";
+
+      String KEY_START = "start";
+      String KEY_NUMBER = "number";
+      String KEY_POINT_TIME = "point_time";
 
 
 

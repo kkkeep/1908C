@@ -1,25 +1,28 @@
-package com.m.k.seetaoism.data.net.request;
+package com.m.k.mvp.data.request;
 
 
-import com.m.k.seetaoism.utils.ParamsUtils;
+import com.m.k.mvp.MvpConfig;
+import com.m.k.mvp.manager.MvpManager;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 
-public  class MvpRequest<T> {
+public class MvpRequest<T> {
 
     protected String url;
     protected RequestType requestType = RequestType.FIRST;  // 第一次请求 0，刷新1 加载更多2
     protected RequestMethod requestMethod; // 1 post,2 get
-    protected HashMap<String,Object> params; // 请求参数
-    protected HashMap<String,Object> headers; // 请求头
+    protected HashMap<String, Object> params; // 请求参数
+    protected HashMap<String, Object> headers; // 请求头
     private Class<T> type;
 
     protected boolean isEnableCancel;  // 网络请求是否支持取消
 
 
     public MvpRequest() {
+        if (MvpManager.getConfig().getParamsGetter() != null) {
+            params = MvpManager.getConfig().getParamsGetter().getParams();
+            headers = MvpManager.getConfig().getParamsGetter().getHeaders();
+        }
 
     }
 
@@ -62,12 +65,27 @@ public  class MvpRequest<T> {
     }
 
     public HashMap<String, Object> getParams() {
-        return params;
+        return params == null ? new HashMap<>() : params;
     }
 
     public void setParams(HashMap<String, Object> params) {
-        this.params = params;
+        if (this.params != null) {
+            this.params.putAll(params);
+        } else {
+            this.params = params;
+        }
     }
+
+
+    public MvpRequest<T> putParams(String key, Object value) {
+        if (params == null) {
+            params = new HashMap<>();
+        }
+
+        params.put(key, value);
+        return this;
+    }
+
 
     public HashMap<String, Object> getHeaders() {
         return headers == null ? new HashMap<>() : headers;

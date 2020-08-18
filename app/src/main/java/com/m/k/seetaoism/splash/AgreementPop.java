@@ -61,7 +61,7 @@ public class AgreementPop extends MvpCommonPopView {
 
         setContentView(v);
 
-       setOnBackKeyDismiss(false);
+        setOnBackKeyDismiss(false);
 
 
 
@@ -74,6 +74,7 @@ public class AgreementPop extends MvpCommonPopView {
         void onAgree();
         void onUserAgreement();
         void onPrivacyPolicy();
+
     }
 
 }

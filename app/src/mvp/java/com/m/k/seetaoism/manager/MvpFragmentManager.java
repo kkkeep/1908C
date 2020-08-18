@@ -51,10 +51,12 @@ public class MvpFragmentManager {
                  * 第三个 popEnter : 表示按返回键时上一个fragment 弹进的动画
                  * 第四个 popExit: 表示按返回键时 将要显示的fragment 被弹出的动画
                  */
-                transaction.setCustomAnimations(willShowFragmentInstance.getEnterAnimation(),
-                        (preFragment == null ? 0 :preFragment.getExitAnimation()),
-                        (preFragment == null ? 0 :preFragment.getPopEnterAnimation())
-                        ,willShowFragmentInstance.getPopExitAnimation());
+                transaction.setCustomAnimations(
+
+                        willShowFragmentInstance.isNeedAnimation() ?   willShowFragmentInstance.getEnterAnimation() : 0,
+                        (preFragment == null ? 0 : (preFragment.isNeedAnimation() ? preFragment.getExitAnimation() :0)),
+                        (preFragment == null ? 0 : (preFragment .isNeedAnimation() ? preFragment.getPopEnterAnimation() : 0))
+                        , willShowFragmentInstance .isNeedAnimation() ? willShowFragmentInstance.getPopExitAnimation() : 0);
 
                 transaction.add(containerId,willShowFragmentInstance, tag);
 

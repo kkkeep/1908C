@@ -1,5 +1,7 @@
 package com.m.k.seetaoism.data.entity;
 
+import android.graphics.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,8 @@ public class ColumnData {
         private String back_color;
         private int type;
 
+        private int color;
+
 
         public String getId() {
             return id;
@@ -69,6 +73,13 @@ public class ColumnData {
 
         public String getBack_color() {
             return back_color;
+        }
+
+        public int getColor() {
+            if(color == 0){
+                color = Color.parseColor("#" + back_color);
+            }
+            return color;
         }
 
         public void setBack_color(String back_color) {
