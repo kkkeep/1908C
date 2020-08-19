@@ -138,12 +138,12 @@ public  class BaseRepository  implements IBaseMode {
                 HttpResult<T> data = gson.fromJson(s, type);
                 if (data.getCode() == 1) {
                     if (data.getData() != null) {
-                        return new MvpResponse<T>().setData(data.getData()).setCode(data.getCode());
+                        return new MvpResponse<T>().setData(data.getData()).setCode(data.getCode()).requestType(request.getRequestType());
                     } else {
-                        return new MvpResponse<T>().setCode(data.getCode()).message("服务器异常");
+                        return new MvpResponse<T>().setCode(data.getCode()).message("服务器异常").requestType(request.getRequestType());
                     }
                 } else {
-                    return new MvpResponse<T>().setCode(data.getCode()).message(data.getMessage());
+                    return new MvpResponse<T>().setCode(data.getCode()).message(data.getMessage()).requestType(request.getRequestType());
                 }
             }
         };

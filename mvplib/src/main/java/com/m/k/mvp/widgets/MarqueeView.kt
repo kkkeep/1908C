@@ -114,7 +114,7 @@ class MarqueeView : HorizontalScrollView {
 
     private fun initLayout() {
         val relativeLayout = RelativeLayout(context)
-        val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         relativeLayout.layoutParams = layoutParams
         addView(relativeLayout)
 
@@ -200,7 +200,7 @@ class MarqueeView : HorizontalScrollView {
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,12f);
 
 
-        val layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT)
+        val layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         textView.layoutParams = layoutParams
         textView.gravity = Gravity.CENTER_VERTICAL
         textView.movementMethod = LinkMovementMethod.getInstance()

@@ -444,7 +444,11 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
 
     public void stopLoop(){
         Log.d("Test3"," stop Loop " + hashCode());
-        getHandler().removeCallbacks(mLoopTask);
+        if(getHandler() != null){
+            getHandler().removeCallbacks(mLoopTask);
+        }
+
+
     }
 
 

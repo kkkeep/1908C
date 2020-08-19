@@ -92,7 +92,7 @@ dependencies {
     implementation deps.other.gifView
     implementation deps.other.smartRefreshLayout
     implementation deps.other.smartRefreshHeader
-
+    implementation 'me.codeboy.android:align-text-view:2.3.2'
 
     implementation project(path: ':mvplib')
 

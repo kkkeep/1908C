@@ -6,6 +6,8 @@ import com.m.k.seetaoism.Animal;
 import com.m.k.seetaoism.Dog;
 import com.m.k.seetaoism.Person;
 
+import java.text.DecimalFormat;
+
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
@@ -21,6 +23,20 @@ public class Test {
 
         saySomething(dog);
         move(dog);
+
+        DecimalFormat df = new DecimalFormat("000");
+
+        String str2 = df.format(20);
+
+        System.out.println(str2);
+
+       //System.out.println(String.format("%03",1));
+       //System.out.println(String.format("%03",23));
+
+
+
+        // mMaskView.setBackgroundResource();
+
 
     }
 
