@@ -173,12 +173,11 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
                 ArrayList<BannerAdapter.BannerWrapData> arrayList = new ArrayList<>();
                 arrayList.add(new BannerAdapter.BannerWrapData(response.getData().getBannerList(),response.getData().getFlashNews()));
-               mBannerAdapter.submitList(arrayList );
+                mBannerAdapter.submitList(arrayList );
                 mNewsAdapter.submitList(response.getData().getNews());
                 start = response.getData().getStart();
                 number = response.getData().getNumber();
                 pointTime = response.getData().getPointTime();
-
                 binging.smartRefreshLayout.finishRefresh();
 
 
@@ -188,7 +187,6 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
                 number = response.getData().getNumber();
                 pointTime = response.getData().getPointTime();
                 binging.smartRefreshLayout.finishLoadMore(500);
-
             }
 
 
