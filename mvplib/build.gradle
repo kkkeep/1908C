@@ -41,6 +41,8 @@ dependencies {
     implementation deps.rxJavaX.rxjava3
     implementation deps.rxJavaX.rxPermissions
     implementation deps.retrofitX.retrofit2_rxjava_components4
+    implementation 'com.google.code.gson:gson:2.8.6'
+
 
 }
 

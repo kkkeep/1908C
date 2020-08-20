@@ -22,7 +22,6 @@
     <ImageView
         android:id="@+id/cover"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="w,1:1.77"

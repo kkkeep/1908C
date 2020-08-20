@@ -61,22 +61,23 @@ public abstract class BaseFragment extends RxFragment {
 
         initView();
 
-        loadData();
+
     }
 
     protected void bindView(View view){
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 
     protected abstract int getLayoutId();
 
     protected  void initView(){ }
 
 
-    protected void loadData(){
-
-    };
 
     public  <T extends View> T findViewById(@IdRes int id){
         return getView().findViewById(id);

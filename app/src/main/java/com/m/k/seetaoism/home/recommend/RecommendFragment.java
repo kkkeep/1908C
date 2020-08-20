@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -42,7 +43,7 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
     protected void bindView(View view) {
         super.bindView(view);
         binding = FragmentRecommendBinding.bind(view);
-
+        binding.newsViewPager.setOffscreenPageLimit(1);
 
         binding.newsViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -202,7 +203,7 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
 
         @Override
         public int getCount() {
-            return mColumns == null ? 0 : mColumns.size();
+            return mColumns == null ? 0 : 1;
         }
 
         @Nullable

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.AsyncDifferConfig;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -28,8 +29,10 @@ import java.util.ArrayList;
 public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,BannerAdapter.BannerHolder> {
 
 
+    private LifecycleOwner mLifecycleOwner;
 
-    protected BannerAdapter() {
+    protected BannerAdapter(LifecycleOwner owner) {
+
        super(new DiffUtil.ItemCallback<BannerWrapData>() {
            @Override
            public boolean areItemsTheSame(@NonNull BannerWrapData oldItem, @NonNull BannerWrapData newItem) {
@@ -41,6 +44,7 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
                return oldItem.areContentsTheSame(newItem);
            }
        });
+        mLifecycleOwner = owner;
     }
 
 
@@ -68,6 +72,7 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
         public BannerHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemHomeBannerBinding.bind(itemView);
+            binding.banner.setLifecycleOwner(mLifecycleOwner);
         }
 
 

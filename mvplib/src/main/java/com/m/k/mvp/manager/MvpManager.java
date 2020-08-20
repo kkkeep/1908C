@@ -8,6 +8,8 @@ import com.m.k.mvp.MvpConfig;
 import com.m.k.mvp.utils.MvpUtils;
 import com.m.k.mvp.utils.MvpSpUtils;
 
+import java.io.File;
+
 public class MvpManager {
 
     private static final String SP_VERSION_CODE = "version_code";
@@ -67,5 +69,10 @@ public class MvpManager {
 
      public static MvpConfig getConfig(){
         return mConfig;
+     }
+
+
+     public static File getExternalCacheDir(){
+        return mApplication.getExternalCacheDir();
      }
 }

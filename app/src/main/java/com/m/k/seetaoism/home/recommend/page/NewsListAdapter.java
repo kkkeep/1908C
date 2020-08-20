@@ -1,11 +1,11 @@
 package com.m.k.seetaoism.home.recommend.page;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +24,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
+public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolder> {
 
 
     private static final int TYPE_LEFT_PIC = 0x1; // 左图
@@ -33,41 +33,38 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     private static final int TYPE_VIDEO_PIC = 0x4; // video
     private static final int TYPE_SPECIAL_PIC = 0x2; //  big pic
 
+    public NewsListAdapter() {
+        super(new DiffUtil.ItemCallback<News>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull News oldItem, @NonNull News newItem) {
+                return oldItem.getId().equals(newItem.getId());
+            }
 
-    private ArrayList<News> news;
-
-
-    public NewsAdapter() {
-
+            @Override
+            public boolean areContentsTheSame(@NonNull News oldItem, @NonNull News newItem) {
+                return oldItem.getTheme().equals(newItem.getTheme());
+            }
+        });
     }
 
 
-    public void set(ArrayList<News> moreData){
-        this.news = moreData;
-        Logger.d(" adapter list code = %s",news.hashCode());
-        notifyDataSetChanged();
-    }
-
-    public void refresh(ArrayList<News> moreData){
-        set(moreData);
-    }
 
 
     public void loadMore(ArrayList<News> moreData){
-        int start = news.size();
-
-        Logger.d("+++++++ 原来size = %s",start);
+        List<News> news = new ArrayList<>();
+        news.addAll(getCurrentList());
+        Logger.d("------- 原来的size = %s",news.size() );
         news.addAll(moreData);
-        Logger.d("+++++++ load more 过后 size = %s",news.size());
-        notifyItemRangeInserted(start,moreData.size());
 
+        Logger.d("------- 后来的的size = %s",news.size() );
+        submitList(news);
     }
 
 
 
     @NonNull
     @Override
-    public NewsAdapter.NewsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NewsListAdapter.NewsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         Logger.d();
 
@@ -105,7 +102,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
 
         try {
-            Constructor<? extends NewsHolder> constructor = aClass.getConstructor(NewsAdapter.class,View.class);
+            Constructor<? extends NewsHolder> constructor = aClass.getConstructor(NewsListAdapter.class,View.class);
             return constructor.newInstance(this,LayoutInflater.from(parent.getContext()).inflate(layoutId,parent,false));
         } catch (Exception e) {
             e.printStackTrace();
@@ -115,22 +112,30 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NewsAdapter.NewsHolder holder, int position) {
+    public void submitList(@Nullable List<News> list) {
+        super.submitList(list);
+        Logger.d("------- 原来的size = %s",getItemCount() );
+    }
+
+
+
+    @Override
+    public void onBindViewHolder(@NonNull NewsListAdapter.NewsHolder holder, int position) {
         Logger.d();
 
-        holder.bindData(news.get(position));
+        holder.bindData(getCurrentList().get(position));
     }
 
 
     @Override
     public int getItemViewType(int position) {
-        return news.get(position).getView_type();
+        return getCurrentList().get(position).getView_type();
     }
-
+/*
     @Override
     public int getItemCount() {
         return news == null ? 0 : news.size();
-    }
+    }*/
 
 
     public  class NewsHolder extends RecyclerView.ViewHolder{

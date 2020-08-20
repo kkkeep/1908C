@@ -20,6 +20,7 @@
         app:bannerPageScrollTime="1000"
         app:bannerPageSwitchInterval="3000"
         app:bannerTitleMarginBottom="10dp"
+
         app:bannerTitleMarginTop="10dp"
         app:bannerTitleMarquee="false"
         app:bannerTitleTextColor="@color/white"

@@ -19,6 +19,7 @@ import com.m.k.mvp.data.request.RequestType;
 import com.m.k.mvp.widgets.MarqueeView;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
 import com.m.k.seetaoism.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.data.entity.AlbumNews;
 import com.m.k.seetaoism.data.entity.BannerNews;
@@ -26,6 +27,8 @@ import com.m.k.seetaoism.data.entity.News;
 import com.m.k.seetaoism.data.entity.RecommendData;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.seetaoism.data.net.response.MvpResponse;
+import com.m.k.seetaoism.data.net.response.ResponseType;
+import com.m.k.seetaoism.data.repository.RecommendNewsRepository;
 import com.m.k.seetaoism.databinding.FragmentRecommendNewsPageBinding;
 import com.m.k.seetaoism.utils.Logger;
 import com.m.k.seetaoism.widgets.MvpLoadingView;
@@ -46,12 +49,17 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
    private AlbumAdapter mAlbumAdapter;
 
 
+   private MvpResponse<RecommendData> response;
     private String mColumnId;
 
     private int number;
     private int start;
     private long pointTime;
     private String name;
+
+
+
+
 
 
     public static PageFragment newInstance(String columnId,String name){
@@ -85,7 +93,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     @Override
     protected void bindView(View view) {
         super.bindView(view);
-        binging = FragmentRecommendNewsPageBinding.bind(view);
+       binging = FragmentRecommendNewsPageBinding.bind(view);
     }
 
     @Override
@@ -111,7 +119,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
         });
 
         mAdapter = new MergeAdapter();
-        mBannerAdapter = new BannerAdapter();
+        mBannerAdapter = new BannerAdapter(this);
         mNewsAdapter = new NewsAdapter();
 
 
@@ -122,9 +130,14 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
         binging.newsRecyclerView.setAdapter(mAdapter);
         binging.newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+
+
+        loadData();
+
     }
 
-    @Override
     protected void loadData() {
         showFullLoading();
         loadData(RequestType.FIRST,start,number,pointTime);
@@ -148,7 +161,9 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
         request.setRequestType(type);
         doRequest(request);
+
     }
+
 
 
 
@@ -157,24 +172,34 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
     @Override
     public void onResult1(MvpResponse<RecommendData> response) {
-        if(response.isOk()){
 
+
+        if(response.isOk()){
             if(response.getRequestType() == RequestType.FIRST){
                 closeLoading();
-                ArrayList<BannerAdapter.BannerWrapData> arrayList = new ArrayList<>();
-                arrayList.add(new BannerAdapter.BannerWrapData(response.getData().getBannerList(),response.getData().getFlashNews()));
-                mBannerAdapter.submitList(arrayList );
-                mNewsAdapter.submitList(response.getData().getNews());
 
-                start = response.getData().getStart();
-                number = response.getData().getNumber();
-                pointTime = response.getData().getPointTime();
+
+                    ArrayList<BannerAdapter.BannerWrapData> arrayList = new ArrayList<>();
+                    arrayList.add(new BannerAdapter.BannerWrapData(response.getData().getBannerList(),response.getData().getFlashNews()));
+                    mBannerAdapter.submitList(arrayList );
+                    mNewsAdapter.set(response.getData().getNews());
+
+                    start = response.getData().getStart();
+                    number = response.getData().getNumber();
+                    pointTime = response.getData().getPointTime();
+
+
+                if(response.getType() == ResponseType.SDCARD){
+                    binging.smartRefreshLayout.autoRefresh(500);
+
+                }
+
             }else if(response.getRequestType() == RequestType.REFRESH){
 
                 ArrayList<BannerAdapter.BannerWrapData> arrayList = new ArrayList<>();
                 arrayList.add(new BannerAdapter.BannerWrapData(response.getData().getBannerList(),response.getData().getFlashNews()));
                 mBannerAdapter.submitList(arrayList );
-                mNewsAdapter.submitList(response.getData().getNews());
+                mNewsAdapter.refresh(response.getData().getNews());
                 start = response.getData().getStart();
                 number = response.getData().getNumber();
                 pointTime = response.getData().getPointTime();
@@ -182,6 +207,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
 
             }else if(response.getRequestType() == RequestType.LOAD_MORE){
+
                 mNewsAdapter.loadMore(response.getData().getNews());
                 start = response.getData().getStart();
                 number = response.getData().getNumber();
@@ -202,4 +228,8 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     }
 
 
+    @Override
+    public BaseSmartPresenter1<RecommendData, ?> createPresenter() {
+        return new BaseSmartPresenter1<>(RecommendNewsRepository.getInstance());
+    }
 }

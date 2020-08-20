@@ -103,7 +103,7 @@ public class SplashActivity extends BaseActivity {
 
     private void showGuidePage(){
         setContentView(R.layout.activity_splash);
-        startActivity(new Intent(this, AuthActivity.class));
+        startActivity(new Intent(this, HomeActivity.class));
 
     }
 

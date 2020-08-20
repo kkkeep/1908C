@@ -108,13 +108,23 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
         initView();
 
 
+
     }
 
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopLoop("从 window 移除");
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+
+
 
     private void initValue(AttributeSet attributeSet){
 
@@ -332,7 +342,7 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
 
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:{
-                stopLoop();
+                stopLoop("按下");
                 break;
             }
 
@@ -343,7 +353,7 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
             }
 
             case MotionEvent.ACTION_UP:{
-                startLoop();
+                startLoop("抬起");
             }
 
         }
@@ -391,7 +401,7 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
         mIndicator.setCount(mDatas.size());
         mIndicator.setCurrent(initPosition % mDatas.size());
 
-        startLoop();
+        startLoop("设置数据");
     }
 
 
@@ -400,9 +410,9 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
     protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
         if(visibility == VISIBLE){
-            startLoop();
+            startLoop("可见");
         }else{
-            stopLoop();
+            stopLoop("不可见");
         }
     }
 
@@ -413,7 +423,13 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
             int cIndex = mPager.getCurrentItem();
             mPager.setCurrentItem(++cIndex, true);
             Log.d("Test3"," start switch " + Banner.this.hashCode());
-            getHandler().postDelayed(this, mInterval);
+
+            try {
+                getHandler().postDelayed(this, mInterval);
+
+            }catch (Exception e){
+                Log.d("Test3"," start switch error---------" + Banner.this.hashCode() + " parent = " + isAttachedToWindow());
+            }
         }
     };
 
@@ -421,30 +437,31 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void onResume(){
         isOnResume = true;
-        startLoop();
+        startLoop("resume");
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     public void onPause(){
         isOnResume = false;
-        stopLoop();
+        stopLoop("pause");
     }
 
 
-    public void startLoop(){
-        Log.d("Test3"," start Loop " + hashCode());
-
-        stopLoop();
-        if(mIsAutoLoop && (mDatas != null &&  mDatas.size() > 1) && (getVisibility() == VISIBLE) && isOnResume ){
+    public void startLoop(String from){
+        stopLoop(from +" 开始之前停止 ");
+        Log.d("Test3"," start Loop " + from   + hashCode() );
+        if(mIsAutoLoop && (mDatas != null &&  mDatas.size() > 1) && (getVisibility() == VISIBLE) && isOnResume && getHandler() != null ){
             getHandler().postDelayed(mLoopTask, mInterval);
+
         }
     }
 
 
 
-    public void stopLoop(){
-        Log.d("Test3"," stop Loop " + hashCode());
+    public void stopLoop(String from){
+      ;
         if(getHandler() != null){
+            Log.d("Test3"," stop Loop " + from + hashCode());
             getHandler().removeCallbacks(mLoopTask);
         }
 

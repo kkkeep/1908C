@@ -28,7 +28,7 @@ public class MvpResponse<D> {
         return type;
     }
 
-    public MvpResponse<D> type(ResponseType type) {
+    public MvpResponse<D> responseType(ResponseType type) {
         this.type = type;
         return this;
     }
