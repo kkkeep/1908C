@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -72,6 +74,12 @@ public class BottomNavigation extends ConstraintLayout {
 
     }
 
+
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
+    }
 
     private void initValue(AttributeSet set) {
 

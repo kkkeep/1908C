@@ -95,6 +95,7 @@ dependencies {
     implementation 'me.codeboy.android:align-text-view:2.3.2'
 
     implementation project(path: ':mvplib')
+    annotationProcessor project(path: ':libMvpAnotation:compiler')
 
     implementation 'com.m.k:system-ui:1.0.0-alpha01'
     implementation project(path: ':libbanner')

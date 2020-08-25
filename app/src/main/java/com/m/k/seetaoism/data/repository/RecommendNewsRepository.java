@@ -33,7 +33,7 @@ public class RecommendNewsRepository extends BaseRepository{
     private RecommendNewsRepository(){
 
     }
-
+    // 内存缓存， key 对应的栏目Id, value : 该栏目对应的数据
    private HashMap<String, RecommendData> mMemoryCache = new HashMap<>();
 
 
@@ -61,42 +61,31 @@ public class RecommendNewsRepository extends BaseRepository{
 
         switch (request.getRequestType()){
 
-            case FIRST:{
+            case FIRST:{ // 第一次
                 // step1  先从内存里面查找，有直接回调到P
                 MvpResponse response = getFromMemory(columnId);
                 if(response != null){
-                    callBack.onResult(response);
+                    callBack.onResult(response); // 指的是viewpager 切换时发生的请求
                     return;
                 }
 
 
                 // step2 如果内存没有，从sdcard 查找 然后回调到P
 
-               Observable.create(new ObservableOnSubscribe<MvpResponse>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<MvpResponse> emitter) throws Throwable {
+               Observable.create((ObservableOnSubscribe<MvpResponse>) emitter -> {
+                   MvpResponse<RecommendData> cacheData = readFromSdcard(columnId);
+                   if(cacheData != null){
+                       saveToMemory(cacheData,RequestType.FIRST,columnId);
+                       emitter.onNext(cacheData);
+                   }else{
+                       emitter.onError(new NullPointerException("no cache data from sdcard"));
+                   }
 
-                        MvpResponse cacheData = readFromSdcard(columnId);
-
-                        if(cacheData != null){
-                            emitter.onNext(cacheData);
-                            emitter.onComplete();
-                        }else{
-                            emitter.onError(new NullPointerException("no cache data from sdcard"));
-                        }
-
-                    }
-                }).subscribeOn(Schedulers.io())
+               }).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-                       .subscribe(new Consumer<MvpResponse>() {
+                       .subscribe(mvpResponse -> callBack.onResult(mvpResponse), new Consumer<Throwable>() {
                     @Override
-                    public void accept(MvpResponse mvpResponse) throws Throwable {
-                        callBack.onResult(mvpResponse);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Throwable {
-
+                    public void accept(Throwable throwable) {
                         // step3 ,如果sdcard 没有，就从服务器取
                        doRequest(lifecycleProvider,request,new CacheTask<>(request),callBack);
                     }
@@ -106,7 +95,7 @@ public class RecommendNewsRepository extends BaseRepository{
                 break;
             }
 
-            default:{
+            default:{ // 刷新和加载更多
                 // 请求服务器
                 doRequest(lifecycleProvider,request,new CacheTask<>(request),callBack);
                 break;
@@ -127,8 +116,13 @@ public class RecommendNewsRepository extends BaseRepository{
         @SuppressWarnings("ALL")
         @Override
         public void accept(MvpResponse<T> mvpResponse) throws Throwable {
+
+            // 接收到上游发送的数据，做缓存
+
             String key =  request.getParams().get(Constrant.RequestKey.KEY_COLUMN_ID).toString();
-                saveToMemory((MvpResponse<RecommendData>) mvpResponse,request.getRequestType(),key);
+
+            saveToMemory((MvpResponse<RecommendData>) mvpResponse,request.getRequestType(),key);
+
             saveToSdcard((MvpResponse<RecommendData>) mvpResponse,key);
         }
     }
@@ -136,8 +130,10 @@ public class RecommendNewsRepository extends BaseRepository{
 
     private void saveToMemory(MvpResponse<RecommendData> response, RequestType type,String key){
 
-        if(type != RequestType.LOAD_MORE){
+        if(type != RequestType.LOAD_MORE){ // 不是加载更多的情况下，清空，替换
             mMemoryCache.remove(key); // 清空内存
+
+
             RecommendData recommendData = new RecommendData();
             RecommendData serverData = response.getData();
             recommendData.setAlbumId(serverData.getAlbumId());
@@ -149,11 +145,15 @@ public class RecommendNewsRepository extends BaseRepository{
             recommendData.setMore(serverData.getMore());
             recommendData.setPointTime(serverData.getPointTime());
             recommendData.setStart(serverData.getStart());
+
+
             recommendData.setNews(new ArrayList<>(serverData.getNews()));
             mMemoryCache.put(key,recommendData);
 
             Logger.d(" list code = %s",response.getData().getNews().hashCode());
         }else{
+
+            // 加载更多，追加
             RecommendData cacheData = mMemoryCache.get(key);
 
             RecommendData serverData = response.getData();
@@ -186,7 +186,7 @@ public class RecommendNewsRepository extends BaseRepository{
         return null;
     }
 
-    private MvpResponse readFromSdcard(String key){
+    private MvpResponse<RecommendData> readFromSdcard(String key){
       RecommendData data =  MvpDataFileCacheUtils.getencryptedDataFromFile(getCacheDataSdcardFile(key),RecommendData.class);
 
       if( data != null){

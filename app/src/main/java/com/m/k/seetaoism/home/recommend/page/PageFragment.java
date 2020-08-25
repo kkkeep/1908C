@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.MergeAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.m.k.GlideApp;
 import com.m.k.banner.IBannerData;
@@ -52,17 +53,23 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
    private MvpResponse<RecommendData> response;
     private String mColumnId;
 
+    private String name;
+    private long pointTime;
     private int number;
     private int start;
-    private long pointTime;
-    private String name;
+    private int targetPosition;
+    private int targetOffset;
 
 
 
 
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+    }
 
-    public static PageFragment newInstance(String columnId,String name){
+    public static PageFragment newInstance(String columnId, String name){
 
         PageFragment pageFragment = new PageFragment();
         Bundle bundle = new Bundle();
@@ -94,12 +101,62 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     protected void bindView(View view) {
         super.bindView(view);
        binging = FragmentRecommendNewsPageBinding.bind(view);
+
+        binging.newsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Logger.d("newState = %s",newState);
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Logger.d("dx = %s dy = %s",dx,dy);
+
+            }
+        });
+
+       binging.go.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+
+
+
+
+
+           }
+       });
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        LinearLayoutManager layoutManager =  ((LinearLayoutManager)binging.newsRecyclerView.getLayoutManager());
+        int fistVisiblePosition =  layoutManager.findFirstVisibleItemPosition();
+        View itemView = layoutManager.findViewByPosition(fistVisiblePosition);
+        int y = (int) itemView.getY();
+
+        outState.putInt("position",fistVisiblePosition);
+        outState.putInt("offset",y);
+
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.d("onCreate %s",name);
+
+       // binging.newsRecyclerView.
+        if(savedInstanceState != null){
+
+            targetPosition = savedInstanceState.getInt("position");
+            targetOffset = savedInstanceState.getInt("offset");
+        }
+
+
     }
 
 
@@ -189,9 +246,11 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
                     pointTime = response.getData().getPointTime();
 
 
+                scrollToTargetPosition();
+
+
                 if(response.getType() == ResponseType.SDCARD){
                     binging.smartRefreshLayout.autoRefresh(500);
-
                 }
 
             }else if(response.getRequestType() == RequestType.REFRESH){
@@ -225,6 +284,22 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
             });
         }
 
+    }
+
+    private void scrollToTargetPosition() {
+
+        binging.newsRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) binging.newsRecyclerView.getLayoutManager();
+                int position = layoutManager.findFirstVisibleItemPosition();
+
+                if(position != targetPosition){
+                    layoutManager.scrollToPositionWithOffset(targetPosition,targetOffset);
+                }
+
+            }
+        });
     }
 
 

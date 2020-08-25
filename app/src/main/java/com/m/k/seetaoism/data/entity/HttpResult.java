@@ -1,13 +1,17 @@
 package com.m.k.seetaoism.data.entity;
 
-public class HttpResult<T> {
+
+import com.m.k.anotaion.IMvpEntity;
+import com.m.k.anotaion.MvpEntity;
+
+@MvpEntity
+public class HttpResult<T> implements IMvpEntity {
 
     /**
      * 'code': '1',
      * 'message': '成功提示',
      * 'data':
      */
-
     private int code;
 
     private String message;
@@ -20,6 +24,11 @@ public class HttpResult<T> {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    @Override
+    public boolean isOk() {
+        return code == 1 && data != null;
     }
 
     public String getMessage() {

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LifecycleOwner;
 
@@ -17,6 +18,7 @@ import com.m.k.seetaoism.data.repository.RecommendNewsRepository;
 import com.m.k.seetaoism.databinding.ActivityHomeBinding;
 import com.m.k.seetaoism.home.recommend.RecommendFragment;
 import com.m.k.seetaoism.manager.MvpFragmentManager;
+import com.m.k.seetaoism.utils.Logger;
 import com.m.k.systemui.SystemBarConfig;
 
 import java.util.HashMap;
@@ -32,6 +34,7 @@ public class HomeActivity extends BaseActivity {
         SystemBarConfig config = new SystemBarConfig(this);
         config.setStatusBarLightMode(true);
         config.setStatusBarColor(Color.WHITE).apply();
+
 
     }
 
@@ -77,6 +80,29 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Logger.d();
+}
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Logger.d();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Logger.d("++++++++------");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Logger.d("++++++++");
+    }
 
     @Override
     protected void onDestroy() {

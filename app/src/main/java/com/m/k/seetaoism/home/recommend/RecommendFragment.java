@@ -203,7 +203,7 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
 
         @Override
         public int getCount() {
-            return mColumns == null ? 0 : 1;
+            return mColumns == null ? 0 : mColumns.size();
         }
 
         @Nullable
