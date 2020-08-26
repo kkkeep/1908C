@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 
-import com.m.k.mvp.MvpConfig;
+import com.m.k.mvp.ParamsGetter;
 import com.m.k.mvp.manager.MvpManager;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.data.entity.User;
+import com.m.k.seetaoism.data.entity.HttpResult;
 import com.m.k.seetaoism.utils.ParamsUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
@@ -18,8 +18,6 @@ import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
 import java.util.HashMap;
 
@@ -31,16 +29,8 @@ public class JDApplication extends Application {
         super.onCreate();
 
 
-        MvpConfig mvpConfig = new MvpConfig(this, new MvpConfig.ParamsGetter() {
-            @Override
-            public HashMap<String, Object> getParams() {
-                return ParamsUtils.getCommonParams();
-            }
+        MvpManager.setParamsGetter(ParamsUtils::getCommonParams);
 
-        });
-        MvpManager.init(mvpConfig);
-
-/*
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @NonNull
             @Override
@@ -56,7 +46,7 @@ public class JDApplication extends Application {
             public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
                 return (RefreshFooter) LayoutInflater.from(context).inflate(R.layout.layout_refresh_footer,null,false);
             }
-        });*/
+        });
 
    /*     SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {//设置全局的Header构建器
             @Override
