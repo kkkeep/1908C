@@ -1,7 +1,6 @@
 package com.m.k.mvp.data.request;
 
 
-import com.m.k.mvp.MvpConfig;
 import com.m.k.mvp.manager.MvpManager;
 
 import java.util.HashMap;
@@ -19,9 +18,9 @@ public class MvpRequest<T> {
 
 
     public MvpRequest() {
-        if (MvpManager.getConfig().getParamsGetter() != null) {
-            params = MvpManager.getConfig().getParamsGetter().getParams();
-            headers = MvpManager.getConfig().getParamsGetter().getHeaders();
+        if (MvpManager.getParamsGetter() != null) {
+            params = MvpManager.getParamsGetter().getParams();
+            headers = MvpManager.getParamsGetter().getHeaders();
         }
 
     }

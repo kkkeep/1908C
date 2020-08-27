@@ -14,10 +14,10 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.BaseActivity;
+import com.m.k.mvp.base.BaseActivity;
 import com.m.k.mvp.manager.MkPermissionManager;
-import com.m.k.seetaoism.utils.Logger;
 
 import java.util.ArrayList;
 

@@ -3,33 +3,23 @@ package com.m.k.seetaoism.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 
-import com.m.k.banner.Banner;
+import com.m.k.mvp.data.BaseRepository;
 import com.m.k.mvp.data.request.GetRequest;
 import com.m.k.mvp.manager.MvpManager;
 import com.m.k.mvp.manager.MvpUserManager;
-import com.m.k.mvp.widgets.BottomNavigation;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.auth.Login.AuthActivity;
-import com.m.k.seetaoism.base.BaseActivity;
-import com.m.k.seetaoism.base.IBaseCallBack;
-import com.m.k.seetaoism.base.NoResultCallBack;
-import com.m.k.seetaoism.data.entity.NewsBanner;
+import com.m.k.mvp.base.BaseActivity;
+import com.m.k.mvp.base.NoResultCallBack;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
-import com.m.k.seetaoism.data.repository.BaseRepository;
+import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.seetaoism.home.HomeActivity;
 import com.m.k.seetaoism.utils.ParamsUtils;
 import com.m.k.systemui.SystemBarConfig;
 
-import java.util.ArrayList;
-
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 
 public class SplashActivity extends BaseActivity {

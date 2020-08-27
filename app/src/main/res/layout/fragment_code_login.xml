@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toTopOf="@+id/imageView3" />
 
 
-    <com.m.k.seetaoism.widgets.CleanEditButton
+    <com.m.k.mvp.widgets.CleanEditButton
         android:id="@+id/auth_code_login_btn_phone_number_clean"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

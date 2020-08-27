@@ -2,42 +2,30 @@ package com.m.k.seetaoism.home.recommend.page;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
-import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.MergeAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.m.k.GlideApp;
-import com.m.k.banner.IBannerData;
-import com.m.k.banner.SimpleBannerAdapter;
 import com.m.k.mvp.data.request.GetRequest;
 import com.m.k.mvp.data.request.RequestType;
-import com.m.k.mvp.widgets.MarqueeView;
+import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
-import com.m.k.seetaoism.base.v.BaseSmartFragment1;
-import com.m.k.seetaoism.data.entity.AlbumNews;
-import com.m.k.seetaoism.data.entity.BannerNews;
-import com.m.k.seetaoism.data.entity.News;
+import com.m.k.mvp.base.p.BaseSmartPresenter1;
+import com.m.k.mvp.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.data.entity.RecommendData;
-import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
-import com.m.k.seetaoism.data.net.response.ResponseType;
+import com.m.k.mvp.data.response.MvpResponse;
+import com.m.k.mvp.data.response.ResponseType;
 import com.m.k.seetaoism.data.repository.RecommendNewsRepository;
 import com.m.k.seetaoism.databinding.FragmentRecommendNewsPageBinding;
-import com.m.k.seetaoism.utils.Logger;
-import com.m.k.seetaoism.widgets.MvpLoadingView;
+import com.m.k.mvp.widgets.MvpLoadingView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PageFragment extends BaseSmartFragment1<RecommendData> {
     private static final String KEY =  "columnId";

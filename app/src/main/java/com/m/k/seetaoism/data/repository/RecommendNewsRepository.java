@@ -1,15 +1,16 @@
 package com.m.k.seetaoism.data.repository;
 
+import com.m.k.mvp.data.BaseRepository;
 import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.mvp.data.request.RequestType;
 import com.m.k.mvp.manager.MvpManager;
+import com.m.k.mvp.utils.Logger;
 import com.m.k.mvp.utils.MvpDataFileCacheUtils;
 import com.m.k.seetaoism.Constrant;
-import com.m.k.seetaoism.base.IBaseCallBack;
+import com.m.k.mvp.base.IBaseCallBack;
 import com.m.k.seetaoism.data.entity.RecommendData;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
-import com.m.k.seetaoism.data.net.response.ResponseType;
-import com.m.k.seetaoism.utils.Logger;
+import com.m.k.mvp.data.response.MvpResponse;
+import com.m.k.mvp.data.response.ResponseType;
 import com.trello.rxlifecycle4.LifecycleProvider;
 
 import java.io.File;
@@ -17,15 +18,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import kotlin.jvm.Synchronized;
 
-public class RecommendNewsRepository extends BaseRepository{
+public class RecommendNewsRepository extends BaseRepository {
 
     private volatile static RecommendNewsRepository mInstance;
 

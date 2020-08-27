@@ -1,9 +1,7 @@
 package com.m.k.seetaoism.auth.Login.code;
 
 import android.graphics.Color;
-import android.os.CountDownTimer;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
@@ -13,12 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.m.k.mvp.manager.MvpFragmentManager;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginFragment;
-import com.m.k.seetaoism.base.v.BaseSmartFragment1;
+import com.m.k.mvp.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
-import com.m.k.seetaoism.manager.MvpFragmentManager;
+import com.m.k.mvp.data.response.MvpResponse;
 
 public class CodeLoginFragment extends BaseSmartFragment1<User> {
 

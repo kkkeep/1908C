@@ -95,11 +95,13 @@ dependencies {
     implementation 'me.codeboy.android:align-text-view:2.3.2'
 
     implementation project(path: ':mvplib')
-    annotationProcessor project(path: ':libMvpAnotation:compiler')
+    annotationProcessor project(path: ':mvplib:libMvpAnotation:compiler')
 
     implementation 'com.m.k:system-ui:1.0.0-alpha01'
     implementation project(path: ':libbanner')
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.2@aar'
+
+    implementation 'androidx.startup:startup-runtime:1.0.0-alpha01'
 
 
 }

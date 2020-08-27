@@ -8,22 +8,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.m.k.mvp.data.request.GetRequest;
 import com.m.k.mvp.manager.MvpUserManager;
+import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.v.BaseSmartFragment1;
+import com.m.k.mvp.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.data.entity.ColumnData;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
+import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.seetaoism.databinding.FragmentRecommendBinding;
 import com.m.k.seetaoism.home.recommend.page.PageFragment;
-import com.m.k.seetaoism.utils.Logger;
 import com.m.k.seetaoism.utils.ParamsUtils;
-import com.m.k.seetaoism.widgets.MvpLoadingView;
+import com.m.k.mvp.widgets.MvpLoadingView;
 
 import java.util.ArrayList;
 

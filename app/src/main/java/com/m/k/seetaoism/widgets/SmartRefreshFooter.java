@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cunoraz.gifview.library.GifView;
+import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.utils.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshKernel;
@@ -71,6 +71,7 @@ public class SmartRefreshFooter extends ConstraintLayout implements RefreshFoote
 
     @Override
     public void onMoving(boolean isDragging, float percent, int offset, int height, int maxDragHeight) {
+
         Logger.d("%s,isDragging = %s,percent = %s","footer",isDragging,percent);
         if (isDragging && percent <= 1) {
             if(!mGifView.isPlaying()){

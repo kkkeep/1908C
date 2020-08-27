@@ -16,12 +16,12 @@ import com.m.k.GlideApp;
 import com.m.k.banner.Banner;
 import com.m.k.banner.IBannerData;
 import com.m.k.banner.SimpleBannerAdapter;
+import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.data.entity.BannerNews;
 import com.m.k.seetaoism.data.entity.BaseNews;
 import com.m.k.seetaoism.data.entity.FlashNews;
 import com.m.k.seetaoism.databinding.ItemHomeBannerBinding;
-import com.m.k.seetaoism.utils.Logger;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

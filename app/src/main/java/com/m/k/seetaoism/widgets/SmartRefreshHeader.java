@@ -10,7 +10,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.cunoraz.gifview.library.GifView;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.utils.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshKernel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;

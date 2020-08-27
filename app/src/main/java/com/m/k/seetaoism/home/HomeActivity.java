@@ -8,20 +8,16 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
 
+import com.m.k.mvp.manager.MvpFragmentManager;
+import com.m.k.mvp.utils.Logger;
 import com.m.k.mvp.widgets.BottomNavigation;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.BaseActivity;
-import com.m.k.seetaoism.data.entity.RecommendData;
+import com.m.k.mvp.base.BaseActivity;
 import com.m.k.seetaoism.data.repository.RecommendNewsRepository;
 import com.m.k.seetaoism.databinding.ActivityHomeBinding;
 import com.m.k.seetaoism.home.recommend.RecommendFragment;
-import com.m.k.seetaoism.manager.MvpFragmentManager;
-import com.m.k.seetaoism.utils.Logger;
 import com.m.k.systemui.SystemBarConfig;
-
-import java.util.HashMap;
 
 public class HomeActivity extends BaseActivity {
 

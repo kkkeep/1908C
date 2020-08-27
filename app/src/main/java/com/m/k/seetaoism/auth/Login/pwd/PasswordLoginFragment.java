@@ -4,16 +4,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.m.k.mvp.utils.Logger;
+import com.m.k.mvp.widgets.TogglePasswordButton;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.v.MvpBaseFragment;
+import com.m.k.mvp.base.v.MvpBaseFragment;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
-import com.m.k.seetaoism.utils.Logger;
-import com.m.k.seetaoism.widgets.CleanEditButton;
+import com.m.k.mvp.data.response.MvpResponse;
+import com.m.k.mvp.widgets.CleanEditButton;
 import com.m.k.seetaoism.widgets.EditTextButton;
-import com.m.k.seetaoism.widgets.TogglePasswordButton;
-
-import io.reactivex.rxjava3.core.Observable;
 
 
 public class PasswordLoginFragment extends MvpBaseFragment<PasswordLoginContract.IPasswordLoginPresenter> implements PasswordLoginContract.IPasswordLoginView {

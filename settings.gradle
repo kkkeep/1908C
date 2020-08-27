@@ -2,5 +2,5 @@ include ':app'
 rootProject.name = "1908C"
 include ':mvplib'
 include ':libbanner'
-include ':libMvpAnotation'
-include ':libMvpAnotation:compiler'
+include ':mvplib:libMvpAnotation'
+include ':mvplib:libMvpAnotation:compiler'

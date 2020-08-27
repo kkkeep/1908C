@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.databinding.TestActivityRecyclerBinding;
-import com.m.k.seetaoism.utils.Logger;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

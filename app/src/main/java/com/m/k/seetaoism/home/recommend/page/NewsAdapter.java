@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.m.k.GlideApp;
+import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.data.entity.News;
 import com.m.k.seetaoism.databinding.ItemNewsFlashBinding;
@@ -18,7 +19,6 @@ import com.m.k.seetaoism.databinding.ItemNewsNewsLeftBinding;
 import com.m.k.seetaoism.databinding.ItemNewsNewsRightBinding;
 import com.m.k.seetaoism.databinding.ItemNewsSpecialBinding;
 import com.m.k.seetaoism.databinding.ItemNewsVideoBinding;
-import com.m.k.seetaoism.utils.Logger;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;

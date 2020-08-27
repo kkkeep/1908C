@@ -1,16 +1,16 @@
 package com.m.k.seetaoism.data.repository;
 
+import com.m.k.mvp.data.BaseRepository;
 import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.mvp.manager.MvpUserManager;
-import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginContract;
-import com.m.k.seetaoism.base.IBaseCallBack;
+import com.m.k.mvp.base.IBaseCallBack;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
+import com.m.k.mvp.data.response.MvpResponse;
 import com.trello.rxlifecycle4.LifecycleProvider;
 
 import io.reactivex.rxjava3.functions.Consumer;
 
-public class PasswordLoginRepository2 extends BaseRepository  {
+public class PasswordLoginRepository2 extends BaseRepository {
 
 
     @Override

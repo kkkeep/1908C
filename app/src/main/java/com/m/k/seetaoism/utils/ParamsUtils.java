@@ -21,6 +21,7 @@ public class ParamsUtils {
     private static String SHA1_KEY = "K;9)Bq|ScMF1h=Vp5uA-G87d(_fi[aP,.w^{vQ:W";
 
 
+
     public static HashMap<String,Object> getCommonParams(){
 
         HashMap<String,Object> hashMap = new HashMap();

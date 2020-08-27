@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.m.k.mvp.MvpConfig;
+import com.m.k.mvp.ParamsGetter;
 import com.m.k.mvp.utils.MvpUtils;
 import com.m.k.mvp.utils.MvpSpUtils;
 
@@ -15,21 +15,26 @@ public class MvpManager {
     private static final String SP_VERSION_CODE = "version_code";
 
     private static  Context mApplication;
-    private static  MvpConfig mConfig;
-
+    private static  ParamsGetter mParamsGetter;
     private static  UiHandler mUiHandler;
 
-    public static void init(MvpConfig config){
+
+
+    public static void init(Context config){
         if(Looper.getMainLooper().getThread() != Thread.currentThread()){
             throw new IllegalThreadStateException("Mvp.init(context) 方法 必须调用在主线程进行初始化，不用担心，Mvp 的具体初始化操作不会占用主线程");
         }
 
-        mConfig = config;
         mUiHandler = new UiHandler();
-        mApplication = config.getContext();
-
+        mApplication = config.getApplicationContext();
 
     }
+
+
+    public static void setParamsGetter(ParamsGetter getter){
+        mParamsGetter = getter;
+    }
+
 
 
      public static Context getContext(){
@@ -38,7 +43,6 @@ public class MvpManager {
         }
         return mApplication;
     }
-
 
      static  void postUI(Runnable runnable){
         mUiHandler.post(runnable);
@@ -67,12 +71,11 @@ public class MvpManager {
      }
 
 
-     public static MvpConfig getConfig(){
-        return mConfig;
-     }
+    public static ParamsGetter getParamsGetter() {
+        return mParamsGetter;
+    }
 
-
-     public static File getExternalCacheDir(){
+    public static File getExternalCacheDir(){
         return mApplication.getExternalCacheDir();
      }
 }

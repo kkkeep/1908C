@@ -1,11 +1,11 @@
 package com.m.k.seetaoism.data.entity;
 
 
-import com.m.k.anotaion.IMvpEntity;
+import com.m.k.mvp.data.entity.IMvpEntity;
 import com.m.k.anotaion.MvpEntity;
 
 @MvpEntity
-public class HttpResult<T> implements IMvpEntity {
+public  class HttpResult<T> implements IMvpEntity<T> {
 
     /**
      * 'code': '1',

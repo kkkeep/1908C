@@ -13,10 +13,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/libMvpAnotation" />
-            <option value="$PROJECT_DIR$/libMvpAnotation/compiler" />
             <option value="$PROJECT_DIR$/libbanner" />
             <option value="$PROJECT_DIR$/mvplib" />
+            <option value="$PROJECT_DIR$/mvplib/libMvpAnotation" />
+            <option value="$PROJECT_DIR$/mvplib/libMvpAnotation/compiler" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

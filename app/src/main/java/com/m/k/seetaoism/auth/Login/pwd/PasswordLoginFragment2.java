@@ -3,13 +3,10 @@ package com.m.k.seetaoism.auth.Login.pwd;
 import android.view.View;
 
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.base.p.BaseSmartPresenter1;
-import com.m.k.seetaoism.base.p.BaseSmartPresenter2;
-import com.m.k.seetaoism.base.v.BaseSmartFragment1;
-import com.m.k.seetaoism.base.v.BaseSmartFragment2;
-import com.m.k.seetaoism.data.entity.ColumnData;
+import com.m.k.mvp.base.p.BaseSmartPresenter1;
+import com.m.k.mvp.base.v.BaseSmartFragment1;
 import com.m.k.seetaoism.data.entity.User;
-import com.m.k.seetaoism.data.net.response.MvpResponse;
+import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.seetaoism.data.repository.PasswordLoginRepository2;
 
 public class PasswordLoginFragment2 extends BaseSmartFragment1<User> {
