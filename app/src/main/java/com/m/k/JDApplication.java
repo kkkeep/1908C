@@ -1,11 +1,14 @@
 package com.m.k;
 
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
+import androidx.multidex.MultiDex;
 
 import com.m.k.mvp.ParamsGetter;
 import com.m.k.mvp.manager.MvpManager;
@@ -20,6 +23,10 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
 import java.util.HashMap;
+
+import me.jessyan.autosize.AutoSizeConfig;
+import me.jessyan.autosize.onAdaptListener;
+import me.jessyan.autosize.utils.ScreenUtils;
 
 public class JDApplication extends Application {
 
@@ -70,5 +77,34 @@ public class JDApplication extends Application {
                         .setPrimaryColor(0xfffafafa);//全局设置主题颜色
             }
         });*/
+
+     /*   AutoSizeConfig.getInstance().setOnAdaptListener(new onAdaptListener() {
+            @Override
+            public void onAdaptBefore(Object target, Activity activity) {
+                //使用以下代码, 可支持 Android 的分屏或缩放模式, 但前提是在分屏或缩放模式下当用户改变您 App 的窗口大小时
+                //系统会重绘当前的页面, 经测试在某些机型, 某些情况下系统不会重绘当前页面, ScreenUtils.getScreenSize(activity) 的参数一定要不要传 Application!!!
+                int w = ScreenUtils.getScreenSize(activity)[0];
+                int h = ScreenUtils.getScreenSize(activity)[1];
+
+                int sw =  Math.min(w,h);
+                int sh = Math.max(w,h);
+
+               AutoSizeConfig.getInstance().setScreenWidth(sw);
+               AutoSizeConfig.getInstance().setScreenHeight(sh);
+
+            }
+
+            @Override
+            public void onAdaptAfter(Object target, Activity activity) {
+
+            }
+        });*/
+
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
     }
 }

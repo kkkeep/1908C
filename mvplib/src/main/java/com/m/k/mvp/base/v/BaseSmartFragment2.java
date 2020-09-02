@@ -8,6 +8,7 @@ import com.m.k.mvp.data.request.MvpRequest;
 import com.m.k.mvp.base.p.BaseSmartPresenter2;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 public abstract class BaseSmartFragment2<D1,D2> extends MvpBaseFragment<BaseSmartPresenter2<D1,D2,?>> implements IBaseSmartView2<D1,D2, BaseSmartPresenter2<D1,D2,?>>{
 
@@ -17,8 +18,8 @@ public abstract class BaseSmartFragment2<D1,D2> extends MvpBaseFragment<BaseSmar
         super.onCreate(savedInstanceState);
         ParameterizedType superClass = (ParameterizedType) getClass().getGenericSuperclass();
 
-        Class<D1> aClass = (Class<D1>) superClass.getActualTypeArguments()[0];
-        Class<D2> aClass2 = (Class<D2>) superClass.getActualTypeArguments()[1];
+        Type aClass =  superClass.getActualTypeArguments()[0];
+        Type aClass2 =  superClass.getActualTypeArguments()[1];
 
         mPresenter.setType(aClass);
         mPresenter.setType2(aClass2);

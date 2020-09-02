@@ -1,8 +1,10 @@
 package com.m.k.seetaoism.home.recommend.page;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,11 +16,20 @@ import com.m.k.GlideApp;
 import com.m.k.mvp.utils.Logger;
 import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.data.entity.News;
+import com.m.k.seetaoism.databinding.ItemAdPicBigBinding;
+import com.m.k.seetaoism.databinding.ItemAdPicSmallBinding;
+import com.m.k.seetaoism.databinding.ItemAdVideoBinding;
 import com.m.k.seetaoism.databinding.ItemNewsFlashBinding;
 import com.m.k.seetaoism.databinding.ItemNewsNewsLeftBinding;
 import com.m.k.seetaoism.databinding.ItemNewsNewsRightBinding;
 import com.m.k.seetaoism.databinding.ItemNewsSpecialBinding;
 import com.m.k.seetaoism.databinding.ItemNewsVideoBinding;
+import com.m.k.seetaoism.video.SmallVideoPlayer;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
+import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
+import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
+import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -33,18 +44,49 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
     private static final int TYPE_VIDEO_PIC = 0x4; // video
     private static final int TYPE_SPECIAL_PIC = 0x2; //  big pic
 
-    public NewsListAdapter() {
+
+
+    private static final int TYPE_AD_SMALL_PIC = 0X6; //  小图广告
+    private static final int TYPE_AD_BIG_PIC = 0X7; //  大图广告
+    private static final int TYPE_AD_VIDEO = 0X8; //  视频广告
+
+
+
+    private String mPlayTag;
+
+    public NewsListAdapter(String playTag) {
         super(new DiffUtil.ItemCallback<News>() {
             @Override
             public boolean areItemsTheSame(@NonNull News oldItem, @NonNull News newItem) {
-                return oldItem.getId().equals(newItem.getId());
+
+                if(oldItem.getType() != newItem.getType()){
+                    return false;
+                }
+
+                if(oldItem.getType() == 7){
+                    return oldItem.getAd().getId().equals(newItem.getAd().getId());
+                }else{
+                    return oldItem.getId().equals(newItem.getId());
+                }
+
             }
 
             @Override
             public boolean areContentsTheSame(@NonNull News oldItem, @NonNull News newItem) {
-                return oldItem.getTheme().equals(newItem.getTheme());
+
+                if(oldItem.getType() != newItem.getType()){
+                    return false;
+                }
+
+                if(oldItem.getType() == 7){
+                    return oldItem.getAd().getAd_url().equals(newItem.getAd().getAd_url());
+                }else{
+                    return oldItem.getTheme().equals(newItem.getTheme());
+                }
+
             }
         });
+        mPlayTag = playTag;
     }
 
 
@@ -53,10 +95,7 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
     public void loadMore(ArrayList<News> moreData){
         List<News> news = new ArrayList<>();
         news.addAll(getCurrentList());
-        Logger.d("------- 原来的size = %s",news.size() );
         news.addAll(moreData);
-
-        Logger.d("------- 后来的的size = %s",news.size() );
         submitList(news);
     }
 
@@ -91,6 +130,21 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
             case TYPE_VIDEO_PIC:{
                 layoutId = R.layout.item_news_video;
                 aClass = VideoHolder.class;
+                break;
+            }
+            case TYPE_AD_SMALL_PIC:{
+                layoutId = R.layout.item_ad_pic_small;
+                aClass = AdSmallHolder.class;
+                break;
+            }
+            case TYPE_AD_BIG_PIC:{
+                layoutId = R.layout.item_ad_pic_big;
+                aClass = AdBigHolder.class;
+                break;
+            }
+            case TYPE_AD_VIDEO:{
+                layoutId = R.layout.item_ad_video;
+                aClass = AdVideoHolder.class;
                 break;
             }
             default:{
@@ -129,7 +183,28 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
 
     @Override
     public int getItemViewType(int position) {
-        return getCurrentList().get(position).getView_type();
+        if(getCurrentList().get(position).getType() != 7){
+            return getCurrentList().get(position).getView_type();
+        }else{
+           int adType = getCurrentList().get(position).getAd().getLayout();
+           if(adType == 3){
+               return TYPE_AD_SMALL_PIC;
+           }else if(adType == 4 || adType == 5){
+               return TYPE_AD_BIG_PIC;
+           }else if(adType == 6 || adType == 7){
+               return TYPE_AD_VIDEO;
+           }else{
+               return TYPE_AD_SMALL_PIC;
+           }
+
+        }
+
+    }
+
+
+    public News getNewsByPosition(int position){
+
+        return getCurrentList().get(position);
     }
 /*
     @Override
@@ -202,6 +277,8 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
     private  class FlashHolder extends NewsHolder{
 
         private ItemNewsFlashBinding binding;
+
+
         public FlashHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemNewsFlashBinding.bind(itemView);
@@ -216,22 +293,173 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
         }
     }
 
-
-    private   class VideoHolder extends NewsHolder{
+    private  class VideoHolder extends NewsHolder {
 
         private ItemNewsVideoBinding binding;
+
+        GSYVideoOptionBuilder gsyVideoOptionBuilder;
+
+
         public VideoHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemNewsVideoBinding.bind(itemView);
+            gsyVideoOptionBuilder = new GSYVideoOptionBuilder();
+
+
+
         }
 
         @Override
         public void bindData(News news) {
-            binding.title.setText(news.getTheme());
-            GlideApp.with(itemView).load(news.getImageUrl()).into(binding.cover);
+            binding.newsTitle.setText(news.getTheme());
+            //
             binding.label.setText(news.getColumn_name());
+
+            gsyVideoOptionBuilder
+                    .setIsTouchWiget(true)
+                    .setUrl(news.getVideo_url())
+                    .setCacheWithPlay(false)
+                    .setRotateViewAuto(true)
+                    .setLockLand(true) //
+                    .setPlayTag(mPlayTag)
+                    .setShowFullAnimation(true)
+                    .setNeedLockFull(true)
+                    .setNeedShowWifiTip(false)
+                    .setPlayPosition(getAbsoluteAdapterPosition())
+                    .setVideoAllCallBack(new GSYSampleCallBack() {
+                        @Override
+                        public void onEnterFullscreen(String url, Object... objects) {
+                            super.onEnterFullscreen(url, objects);
+                            binding.player.getCurrentPlayer().getTitleTextView().setVisibility(View.VISIBLE);
+                            binding.player.getCurrentPlayer().getTitleTextView().setText(news.getTheme());
+                        }
+                    }).build(binding.player);
+
+
+            //增加title
+            binding.player.getTitleTextView().setVisibility(View.GONE);
+
+            //设置返回键
+            binding.player.getBackButton().setVisibility(View.GONE);
+
+            //设置全屏按键功能
+            binding.player.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    resolveFullBtn(binding.player);
+                }
+            });
+
+            GlideApp.with(itemView).load(news.getImageUrl()).into(binding.player.getCoverView());
         }
     }
 
 
+    /**
+     * 全屏幕按键处理
+     */
+    private void resolveFullBtn(final StandardGSYVideoPlayer standardGSYVideoPlayer) {
+        standardGSYVideoPlayer.startWindowFullscreen(standardGSYVideoPlayer.getContext(), true, true);
+    }
+
+
+
+    public class AdSmallHolder extends NewsHolder{
+        ItemAdPicSmallBinding binding;
+
+        public AdSmallHolder(@NonNull View itemView) {
+            super(itemView);
+            binding = ItemAdPicSmallBinding.bind(itemView);
+        }
+
+        @Override
+        public void bindData(News news) {
+
+           GlideApp.with(itemView).load(news.getAd().getAd_url()).into( binding.itemAdIvPicSmall);
+        }
+    }
+
+
+
+    public class AdBigHolder extends NewsHolder{
+        ItemAdPicBigBinding binding;
+
+        public AdBigHolder(@NonNull View itemView) {
+            super(itemView);
+            binding = ItemAdPicBigBinding.bind(itemView);
+        }
+
+        @Override
+        public void bindData(News news) {
+
+            GlideApp.with(itemView).load(news.getAd().getAd_url()).into( binding.itemAdIvPicBig);
+
+            if(TextUtils.isEmpty(news.getAd().getTitle())){
+                binding.itemAdTvTitle.setVisibility(View.GONE);
+            }else{
+                binding.itemAdTvTitle.setVisibility(View.VISIBLE);
+                binding.itemAdTvTitle.setText(news.getAd().getTitle());
+            }
+        }
+    }
+
+    public class AdVideoHolder extends NewsHolder{
+        ItemAdVideoBinding binding;
+        GSYVideoOptionBuilder gsyVideoOptionBuilder;
+        public AdVideoHolder(@NonNull View itemView) {
+            super(itemView);
+            binding = ItemAdVideoBinding.bind(itemView);
+            gsyVideoOptionBuilder = new GSYVideoOptionBuilder();
+        }
+
+        @Override
+        public void bindData(News news) {
+
+            GlideApp.with(itemView).load(news.getAd().getAd_url()).into( binding.itemAdVideo.getCoverView());
+
+            if(TextUtils.isEmpty(news.getAd().getTitle())){
+                binding.itemAdVideoTvTitle.setVisibility(View.GONE);
+            }else{
+                binding.itemAdVideoTvTitle.setVisibility(View.VISIBLE);
+                binding.itemAdVideoTvTitle.setText(news.getAd().getTitle());
+            }
+
+            gsyVideoOptionBuilder
+                    .setIsTouchWiget(true)
+                    .setUrl(news.getAd().getAd_url())
+                    .setCacheWithPlay(false)
+                    .setRotateViewAuto(true)
+                    .setLockLand(true) //
+                    .setPlayTag(mPlayTag)
+                    .setShowFullAnimation(true)
+                    .setNeedLockFull(true)
+                    .setNeedShowWifiTip(false)
+                    .setPlayPosition(getAbsoluteAdapterPosition())
+                    .setVideoAllCallBack(new GSYSampleCallBack() {
+                        @Override
+                        public void onEnterFullscreen(String url, Object... objects) {
+                            super.onEnterFullscreen(url, objects);
+                            binding.itemAdVideo.getCurrentPlayer().getTitleTextView().setVisibility(View.VISIBLE);
+                            binding.itemAdVideo.getCurrentPlayer().getTitleTextView().setText(news.getAd().getTitle());
+                        }
+                    }).build(binding.itemAdVideo);
+
+
+            //增加title
+            binding.itemAdVideo.getTitleTextView().setVisibility(View.GONE);
+
+            //设置返回键
+            binding.itemAdVideo.getBackButton().setVisibility(View.GONE);
+
+            //设置全屏按键功能
+            binding.itemAdVideo.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    resolveFullBtn(binding.itemAdVideo);
+                }
+            });
+
+
+        }
+    }
 }

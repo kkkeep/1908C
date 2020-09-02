@@ -3,6 +3,7 @@ package com.m.k.mvp.data.request;
 
 import com.m.k.mvp.manager.MvpManager;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 
 public class MvpRequest<T> {
@@ -12,7 +13,7 @@ public class MvpRequest<T> {
     protected RequestMethod requestMethod; // 1 post,2 get
     protected HashMap<String, Object> params; // 请求参数
     protected HashMap<String, Object> headers; // 请求头
-    private Class<T> type;
+    private Type type;
 
     protected boolean isEnableCancel;  // 网络请求是否支持取消
 
@@ -25,11 +26,11 @@ public class MvpRequest<T> {
 
     }
 
-    public Class<T> getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Class<T> type) {
+    public void setType(Type type) {
         this.type = type;
     }
 

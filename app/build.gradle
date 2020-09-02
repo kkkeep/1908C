@@ -12,6 +12,7 @@ android {
             targetSdkVersion 29
             versionCode 1
             versionName "1.1."
+            multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,6 +67,7 @@ dependencies {
     implementation deps.androidX.appcompat
     implementation deps.androidX.constraintlayout
     implementation deps.androidX.recyclerview
+    implementation deps.androidX.multidex
 
 
 
@@ -103,5 +105,8 @@ dependencies {
 
     implementation 'androidx.startup:startup-runtime:1.0.0-alpha01'
 
+    implementation 'com.shuyu:GSYVideoPlayer:7.1.5'
+    implementation 'me.jessyan:autosize:1.2.1'
+    implementation project(path: ':libvideo') // 屏幕适配
 
 }

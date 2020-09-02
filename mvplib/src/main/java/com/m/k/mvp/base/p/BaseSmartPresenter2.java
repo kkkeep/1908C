@@ -6,11 +6,13 @@ import com.m.k.mvp.base.m.IBaseMode;
 import com.m.k.mvp.base.v.IBaseSmartView2;
 import com.m.k.mvp.data.response.MvpResponse;
 
+import java.lang.reflect.Type;
+
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class BaseSmartPresenter2<D1,D2,V extends IBaseSmartView2<D1,D2,?>> extends BaseSmartPresenter1<D1,V> implements IBaseSmartPresenter2<D1,D2,V> {
 
-    protected Class<D2> mType2;
+    protected Type mType2;
 
     public BaseSmartPresenter2() {
     }
@@ -20,7 +22,7 @@ public class BaseSmartPresenter2<D1,D2,V extends IBaseSmartView2<D1,D2,?>> exten
     }
 
     @Override
-    public void setType2(Class<D2> type) {
+    public void setType2(Type type) {
         mType2 = type;
     }
 

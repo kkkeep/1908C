@@ -8,6 +8,7 @@ import com.m.k.mvp.utils.Logger;
 import com.m.k.mvp.utils.MvpDataFileCacheUtils;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.mvp.base.IBaseCallBack;
+import com.m.k.seetaoism.data.entity.News;
 import com.m.k.seetaoism.data.entity.RecommendData;
 import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.mvp.data.response.ResponseType;
@@ -116,6 +117,57 @@ public class RecommendNewsRepository extends BaseRepository {
         public void accept(MvpResponse<T> mvpResponse) throws Throwable {
 
             // 接收到上游发送的数据，做缓存
+
+            News news = new News();
+            news.setType(7);
+            News.Ad ad = new News.Ad();
+            ad.setLayout(5);
+            ad.setId("1232143");
+            ad.setTitle("这个一个我们自己插入的大图广告");
+            ad.setAd_url("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3830946526,2769361828&fm=26&gp=0.jpg");
+            ad.setTarget_href("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3830946526,2769361828&fm=26&gp=0.jpg");
+            news.setAd(ad);
+            RecommendData recommendData = (RecommendData) mvpResponse.getData();
+            recommendData.getNews().add(0,news);
+
+
+
+            news = new News();
+            news.setType(7);
+             ad = new News.Ad();
+            ad.setLayout(4);
+            ad.setId("1232144");
+            ad.setAd_url("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2428034512,2003179618&fm=26&gp=0.jpg");
+            ad.setTarget_href("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599046487679&di=0f28f382115333e2e94f89689616bc88&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fddd6368f875f0434e979aa256832cfc48dc490e6113af-tMIEBd_fw658");
+            news.setAd(ad);
+            recommendData = (RecommendData) mvpResponse.getData();
+            recommendData.getNews().add(3,news);
+
+
+
+            news = new News();
+            news.setType(7);
+            ad = new News.Ad();
+            ad.setLayout(6);
+            ad.setId("1232145");
+            ad.setAd_url("https://res.exexm.com/cw_145225549855002");
+            ad.setTarget_href("https://res.exexm.com/cw_145225549855002");
+            ad.setTitle("我是自己插入的视频广告");
+            news.setAd(ad);
+            recommendData = (RecommendData) mvpResponse.getData();
+            recommendData.getNews().add(4,news);
+
+
+            news = new News();
+            news.setType(7);
+            ad = new News.Ad();
+            ad.setLayout(7);
+            ad.setId("1232146");
+            ad.setAd_url("http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4");
+            ad.setTarget_href("http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4");
+            news.setAd(ad);
+            recommendData = (RecommendData) mvpResponse.getData();
+            recommendData.getNews().add(5,news);
 
             String key =  request.getParams().get(Constrant.RequestKey.KEY_COLUMN_ID).toString();
 

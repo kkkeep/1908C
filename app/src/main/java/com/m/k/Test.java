@@ -17,26 +17,28 @@ import io.reactivex.rxjava3.functions.Function;
 
 public class Test {
 
-    public static void main(String args []) {
+    public static void main(String args []) throws InterruptedException {
 
-        Animal dog = new Person();
+       ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
 
-        saySomething(dog);
-        move(dog);
-
-        DecimalFormat df = new DecimalFormat("000");
-
-        String str2 = df.format(20);
-
-        System.out.println(str2);
-
-       //System.out.println(String.format("%03",1));
-       //System.out.println(String.format("%03",23));
+       new Thread(new Runnable() {
+           @Override
+           public void run() {
+                System.out.println("thread1 put 1 into thread local");
+               threadLocal.set(1);
+               System.out.println("thread1 get value from thread local " + threadLocal.get());
+           }
+       }).start();
 
 
 
-        // mMaskView.setBackgroundResource();
 
+
+
+       Thread.sleep(1000);
+
+
+        System.out.println("main thread get value from thread local " + threadLocal.get());
 
     }
 

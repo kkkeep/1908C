@@ -9,6 +9,7 @@ import com.m.k.mvp.base.p.BaseSmartPresenter1;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public abstract class BaseSmartFragment1<D> extends MvpBaseFragment<BaseSmartPresenter1<D,?>> implements IBaseSmartView1<D, BaseSmartPresenter1<D,?>> {
 
@@ -16,10 +17,13 @@ public abstract class BaseSmartFragment1<D> extends MvpBaseFragment<BaseSmartPre
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //BaseSmartFragment1<ArrayList<WBannerData>>
+
         Type type = getClass().getGenericSuperclass();
         if(type instanceof ParameterizedType){
             ParameterizedType superClass = (ParameterizedType) type;
-            Class<D> aClass = (Class<D>) superClass.getActualTypeArguments()[0];
+            Type aClass = superClass.getActualTypeArguments()[0];
             mPresenter.setType(aClass);
         }
 

@@ -47,7 +47,6 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
         binding.newsViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Logger.d(" position = %s positionOffset = %s ,current = %s", position, positionOffset, current);
                 if(isDragging){
                     changeTabColor(position,positionOffset);
                 }

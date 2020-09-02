@@ -3,6 +3,10 @@ package com.m.k.seetaoism.home;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 
@@ -23,14 +27,14 @@ public class HomeActivity extends BaseActivity {
 
     private ActivityHomeBinding binding;
 
+    Handler handler;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SystemBarConfig config = new SystemBarConfig(this);
         config.setStatusBarLightMode(true);
-        config.setStatusBarColor(Color.WHITE).apply();
-
+        config.setStatusBarColor(Color.TRANSPARENT).apply();
 
     }
 
@@ -46,6 +50,7 @@ public class HomeActivity extends BaseActivity {
     protected void initView() {
 
 
+
         binding.bottomNavigation.addItem(R.drawable.tab_recommend_selector,getString(R.string.text_tab_recommend))
                 .addItem(R.drawable.tab_video_selector,getString(R.string.text_tab_video))
                 .addItem(R.drawable.tab_special_selector,getString(R.string.text_tab_special))
@@ -56,6 +61,8 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onTabSelect(View tab, int position) {
                 MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(), RecommendFragment.class,null,R.id.home_fragmentContainer);
+
+
             }
 
             @Override

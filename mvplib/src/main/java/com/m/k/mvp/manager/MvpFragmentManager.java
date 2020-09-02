@@ -1,5 +1,7 @@
 package com.m.k.mvp.manager;
 
+import android.os.Bundle;
+
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,10 +27,13 @@ public class MvpFragmentManager {
      * 返回时： remove B  show A
      */
 
+    public static BaseFragment addOrShowFragment(FragmentManager manager, Class<? extends BaseFragment> willShowFragment, BaseFragment preFragment, @IdRes int containerId){
+
+        return addOrShowFragment(manager,willShowFragment,preFragment,containerId,null);
+    }
 
 
-
-    public static BaseFragment addOrShowFragment(FragmentManager manager, Class<? extends BaseFragment> willShowFragment,BaseFragment preFragment,@IdRes int containerId){
+    public static BaseFragment addOrShowFragment(FragmentManager manager, Class<? extends BaseFragment> willShowFragment, BaseFragment preFragment, @IdRes int containerId, Bundle bundle){
 
         FragmentTransaction transaction = manager.beginTransaction();
         try {
@@ -40,6 +45,10 @@ public class MvpFragmentManager {
             if(willShowFragmentInstance == null){ // 当前activity 已经添加了 该fragment
 
                 willShowFragmentInstance = willShowFragment.newInstance();
+
+                if(bundle != null){
+                    willShowFragmentInstance.setArguments(bundle);
+                }
 
                 /**
                  * `17: 18  从 A  进入B   此时事务里面记录的 将要显示的fragment 是B ，上一个是A 。 提交过后，这个事务这个记录是不不是已经被记录了。17： 20 的时候
@@ -69,6 +78,7 @@ public class MvpFragmentManager {
                int count = manager.getBackStackEntryCount(); // 获取回退栈里面 事务的个数
 
                 FragmentManager.BackStackEntry entry = null;
+
                 for(int i = 0; i < count; i++){
                     entry = manager.getBackStackEntryAt(i);
                     if(entry.getName().equals(tag)){
@@ -80,6 +90,7 @@ public class MvpFragmentManager {
                     manager.popBackStackImmediate(manager.getBackStackEntryAt(0).getName(),FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     return willShowFragmentInstance;
                 }else{
+
                     if(!willShowFragmentInstance.isAdded()){ // 如果没有添加
                         transaction.add(containerId,willShowFragmentInstance, tag);
                     }
@@ -89,7 +100,6 @@ public class MvpFragmentManager {
                     if(willShowFragmentInstance.isHidden()){// 如果被隐藏了
                         transaction.show(willShowFragmentInstance);
                     }
-
                 }
             }
 

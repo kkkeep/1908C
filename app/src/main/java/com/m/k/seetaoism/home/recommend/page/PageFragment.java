@@ -1,5 +1,6 @@
 package com.m.k.seetaoism.home.recommend.page;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,25 +17,36 @@ import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.mvp.base.p.BaseSmartPresenter1;
 import com.m.k.mvp.base.v.BaseSmartFragment1;
+import com.m.k.seetaoism.data.entity.News;
 import com.m.k.seetaoism.data.entity.RecommendData;
 import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.mvp.data.response.ResponseType;
 import com.m.k.seetaoism.data.repository.RecommendNewsRepository;
 import com.m.k.seetaoism.databinding.FragmentRecommendNewsPageBinding;
 import com.m.k.mvp.widgets.MvpLoadingView;
+import com.m.k.seetaoism.video.SmallVideoHelper;
+import com.m.k.seetaoism.video.SmallVideoPlayer;
+import com.m.k.systemui.uitils.SystemFacade;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
+import com.shuyu.gsyvideoplayer.utils.CommonUtil;
+import com.shuyu.gsyvideoplayer.utils.Debuger;
+import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class PageFragment extends BaseSmartFragment1<RecommendData> {
     private static final String KEY =  "columnId";
 
+    private static final String PLAY_TAG_PREFIX = "PLAY_TAB_";
    private FragmentRecommendNewsPageBinding binging;
 
    private MergeAdapter mAdapter;
    private BannerAdapter mBannerAdapter;
-   private NewsAdapter mNewsAdapter;
+   private NewsListAdapter mNewsAdapter;
    private AlbumAdapter mAlbumAdapter;
 
 
@@ -48,7 +60,9 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     private int targetPosition;
     private int targetOffset;
 
+    int lastVisibleItem;
 
+    int firstVisibleItem;
 
 
 
@@ -94,28 +108,20 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                Logger.d("newState = %s",newState);
 
             }
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                Logger.d("dx = %s dy = %s",dx,dy);
 
             }
         });
 
-       binging.go.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
 
 
 
 
-
-           }
-       });
     }
 
     @Override
@@ -165,7 +171,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
         mAdapter = new MergeAdapter();
         mBannerAdapter = new BannerAdapter(this);
-        mNewsAdapter = new NewsAdapter();
+        mNewsAdapter = new NewsListAdapter(makeTag());
 
 
 
@@ -176,7 +182,39 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
         binging.newsRecyclerView.setAdapter(mAdapter);
         binging.newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        binging.newsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
+            int firstVisibleItem, lastVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) binging.newsRecyclerView.getLayoutManager();
+                firstVisibleItem   = linearLayoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                //大于0说明有播放
+                if (GSYVideoManager.instance().getPlayPosition() >= 0) {
+                    //当前播放的位置
+                    int position = GSYVideoManager.instance().getPlayPosition();
+                    //对应的播放列表TAG
+                    if (GSYVideoManager.instance().getPlayTag().equals(makeTag())
+                            && (position < firstVisibleItem || position > lastVisibleItem)) {
+
+                        //如果滑出去了上面和下面就是否，和今日头条一样
+                        //是否全屏
+                        if(!GSYVideoManager.isFullState(getActivity())) {
+                            GSYVideoManager.releaseAllVideos();
+                            mAdapter.notifyItemChanged(position);
+                        }
+                    }
+                }
+            }
+        });
 
 
         loadData();
@@ -220,21 +258,20 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
 
         if(response.isOk()){
+
             if(response.getRequestType() == RequestType.FIRST){
                 closeLoading();
-
-
                     ArrayList<BannerAdapter.BannerWrapData> arrayList = new ArrayList<>();
                     arrayList.add(new BannerAdapter.BannerWrapData(response.getData().getBannerList(),response.getData().getFlashNews()));
                     mBannerAdapter.submitList(arrayList );
-                    mNewsAdapter.set(response.getData().getNews());
+                    mNewsAdapter.submitList(response.getData().getNews());
 
                     start = response.getData().getStart();
                     number = response.getData().getNumber();
                     pointTime = response.getData().getPointTime();
 
 
-                scrollToTargetPosition();
+                    scrollToTargetPosition();
 
 
                 if(response.getType() == ResponseType.SDCARD){
@@ -246,7 +283,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
                 ArrayList<BannerAdapter.BannerWrapData> arrayList = new ArrayList<>();
                 arrayList.add(new BannerAdapter.BannerWrapData(response.getData().getBannerList(),response.getData().getFlashNews()));
                 mBannerAdapter.submitList(arrayList );
-                mNewsAdapter.refresh(response.getData().getNews());
+                mNewsAdapter.submitList(response.getData().getNews());
                 start = response.getData().getStart();
                 number = response.getData().getNumber();
                 pointTime = response.getData().getPointTime();
@@ -294,5 +331,32 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     @Override
     public BaseSmartPresenter1<RecommendData, ?> createPresenter() {
         return new BaseSmartPresenter1<>(RecommendNewsRepository.getInstance());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Logger.d("%s  play tag = %s  hashcode =%s",name,GSYVideoManager.instance().getPlayTag(),hashCode());
+        GSYVideoManager.onPause();
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GSYVideoManager.releaseAllVideos();
+    }
+
+    private String makeTag(){
+        return PLAY_TAG_PREFIX + hashCode();
     }
 }

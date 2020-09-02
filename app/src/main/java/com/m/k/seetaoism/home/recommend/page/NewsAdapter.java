@@ -222,8 +222,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
         @Override
         public void bindData(News news) {
-            binding.title.setText(news.getTheme());
-            GlideApp.with(itemView).load(news.getImageUrl()).into(binding.cover);
+            binding.newsTitle.setText(news.getTheme());
+           // GlideApp.with(itemView).load(news.getImageUrl()).into(binding.cover);
             binding.label.setText(news.getColumn_name());
         }
     }

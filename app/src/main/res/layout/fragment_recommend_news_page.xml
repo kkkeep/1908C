@@ -11,41 +11,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smartRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    >
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+       />
 
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-    <EditText
-        android:id="@+id/targetPosition"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:inputType="number"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
+
+
+
+    <FrameLayout
+        android:id="@+id/video_full_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
-
-    <Button
-        android:id="@+id/go"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="Go"
-        app:layout_constraintTop_toTopOf="@id/targetPosition"
-        app:layout_constraintStart_toEndOf="@id/targetPosition"
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

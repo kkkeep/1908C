@@ -7,6 +7,8 @@ import com.m.k.mvp.base.m.IBaseMode;
 import com.m.k.mvp.base.v.IBaseSmartView1;
 import com.m.k.mvp.data.response.MvpResponse;
 
+import java.lang.reflect.Type;
+
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -14,10 +16,10 @@ public class BaseSmartPresenter1<D,V extends IBaseSmartView1<D,?>> extends BaseP
 
     protected IBaseMode mMode;
     protected CompositeDisposable mCompositeDisposable;
-    protected Class<D> mType;
+    protected Type mType;
 
     @Override
-    public void setType(Class<D> type) {
+    public void setType(Type type) {
         mType = type;
     }
 
