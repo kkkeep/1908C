@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
@@ -78,10 +79,17 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
 
         private void bindData(ArrayList<BannerNews> news, ArrayList<FlashNews> flashNews){
 
-            binding.banner.setData(new SimpleBannerAdapter(news) {
+            binding.banner.setData(new SimpleBannerAdapter<BannerNews>(news) {
+
+
                 @Override
-                public void bindData(ImageView view, IBannerData data) {
-                    GlideApp.with(view).load(data.getImageUrl()).into(view);
+                public void bindData(ImageView view, BannerNews data,int position) {
+                        GlideApp.with(view).load(data.getImageUrl()).into(view);
+                }
+
+                @Override
+                public void onClick(BannerNews data, int position) {
+
                 }
             });
 
