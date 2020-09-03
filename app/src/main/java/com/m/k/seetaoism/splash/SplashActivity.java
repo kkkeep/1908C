@@ -21,10 +21,11 @@ import com.m.k.seetaoism.utils.ParamsUtils;
 import com.m.k.systemui.SystemBarConfig;
 
 import io.reactivex.rxjava3.functions.Consumer;
+import me.jessyan.autosize.internal.CancelAdapt;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity implements CancelAdapt {
 
-    private static final int SPLASH_TIME = 300; //  3秒后跳转。
+    private static final int SPLASH_TIME = 3000; //  3秒后跳转。
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class SplashActivity extends BaseActivity {
 
             // 设置为全屏
             SystemBarConfig config = new SystemBarConfig(this).enterFullScreen(SystemBarConfig.MODE_HIDE_LEAN_BACK);
-            config.apply();
+            //config.apply();
 
             getWindow().getDecorView().postDelayed(new Runnable() {
                 @Override

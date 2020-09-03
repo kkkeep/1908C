@@ -22,11 +22,6 @@ import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
-import java.util.HashMap;
-
-import me.jessyan.autosize.AutoSizeConfig;
-import me.jessyan.autosize.onAdaptListener;
-import me.jessyan.autosize.utils.ScreenUtils;
 
 public class JDApplication extends Application {
 

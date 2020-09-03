@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Jiandao">
 
-        <meta-data android:name="android.notch_support" android:value="true"/>
+
         <!--UI 效果图的尺寸 宽度，单位dp-->
         <meta-data
             android:name="design_width_in_dp"
@@ -32,23 +32,24 @@
             android:name="design_height_in_dp"
             android:value="640"/>
 
+
         <activity android:name=".splash.SplashActivity"
             android:theme="@style/Jiandao.FullScreen.Splash"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+
         <activity android:name=".home.HomeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
-
-
-
 
 
 

@@ -428,7 +428,6 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
                 getHandler().postDelayed(this, mInterval);
 
             }catch (Exception e){
-                Log.d("Test3"," start switch error---------" + Banner.this.hashCode() + " parent = " + isAttachedToWindow());
             }
         }
     };
@@ -483,10 +482,12 @@ public class Banner extends ConstraintLayout implements LifecycleObserver{
 
 
 
+
     public  int dip2px(float dpValue) {
         final float scale = getContext().getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
 
 
 

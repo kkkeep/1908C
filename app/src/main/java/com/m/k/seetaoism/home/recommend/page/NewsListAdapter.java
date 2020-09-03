@@ -25,6 +25,7 @@ import com.m.k.seetaoism.databinding.ItemNewsSpecialBinding;
 import com.m.k.seetaoism.databinding.ItemNewsVideoBinding;
 import com.m.k.video.MKVideo;
 import com.m.k.video.MkAutoPlayVideoHolder;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -409,14 +410,33 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
             super(itemView);
             binding = ItemAdVideoBinding.bind(itemView);
             gsyVideoOptionBuilder = new GSYVideoOptionBuilder();
+            binding.retryPlay.setVisibility(View.GONE);
             itemView.setTag("ad");
+
+            binding.volume.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    GSYVideoManager.instance().setNeedMute(!GSYVideoManager.instance().isNeedMute());
+                }
+            });
+
+            binding.retryPlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    binding.itemAdVideo.startPrepare();
+                    binding.retryPlay.setVisibility(View.GONE);
+                }
+            });
+
+
         }
 
         @Override
         public void bindData(News news) {
+            binding.retryPlay.setVisibility(View.GONE);
 
-
-            //GlideApp.with(itemView).load(news.getAd().getAd_url()).into( binding.itemAdVideo.getCoverView());
+            GlideApp.with(itemView).load(news.getAd().getAd_url()).into( binding.itemAdVideo.getCoverView());
 
             if(TextUtils.isEmpty(news.getAd().getTitle())){
                 binding.itemAdVideoTvTitle.setVisibility(View.GONE);
@@ -436,29 +456,25 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
                     .setNeedLockFull(true)
                     .setNeedShowWifiTip(false)
                     .setPlayPosition(getAbsoluteAdapterPosition())
-                    .setVideoAllCallBack(new GSYSampleCallBack() {
+                    .setVideoAllCallBack(new GSYSampleCallBack(){
                         @Override
-                        public void onEnterFullscreen(String url, Object... objects) {
-                            super.onEnterFullscreen(url, objects);
-                            binding.itemAdVideo.getCurrentPlayer().getTitleTextView().setVisibility(View.VISIBLE);
-                            binding.itemAdVideo.getCurrentPlayer().getTitleTextView().setText(news.getAd().getTitle());
+                        public void onPrepared(String url, Object... objects) {
+                            super.onPrepared(url, objects);
+                            GSYVideoManager.instance().setNeedMute(true);
+                            binding.retryPlay.setVisibility(View.GONE);
                         }
-                    }).build(binding.itemAdVideo);
+
+                        @Override
+                        public void onAutoComplete(String url, Object... objects) {
+                            super.onAutoComplete(url, objects);
+                            binding.retryPlay.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .build(binding.itemAdVideo);
 
 
-            //增加title
-            binding.itemAdVideo.getTitleTextView().setVisibility(View.GONE);
 
-            //设置返回键
-            binding.itemAdVideo.getBackButton().setVisibility(View.GONE);
 
-            //设置全屏按键功能
-            binding.itemAdVideo.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    resolveFullBtn(binding.itemAdVideo);
-                }
-            });
 
 
         }

@@ -1,6 +1,5 @@
 package com.m.k.seetaoism.home.recommend.page;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,27 +16,18 @@ import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.mvp.base.p.BaseSmartPresenter1;
 import com.m.k.mvp.base.v.BaseSmartFragment1;
-import com.m.k.seetaoism.data.entity.News;
 import com.m.k.seetaoism.data.entity.RecommendData;
 import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.mvp.data.response.ResponseType;
 import com.m.k.seetaoism.data.repository.RecommendNewsRepository;
 import com.m.k.seetaoism.databinding.FragmentRecommendNewsPageBinding;
 import com.m.k.mvp.widgets.MvpLoadingView;
-import com.m.k.seetaoism.video.SmallVideoHelper;
-import com.m.k.seetaoism.video.SmallVideoPlayer;
-import com.m.k.systemui.uitils.SystemFacade;
-import com.m.k.video.MkVideoScrollListener;
+import com.m.k.video.MkVideoAutoPlayScrollHelper;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
-import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
-import com.shuyu.gsyvideoplayer.utils.CommonUtil;
-import com.shuyu.gsyvideoplayer.utils.Debuger;
-import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class PageFragment extends BaseSmartFragment1<RecommendData> {
     private static final String KEY =  "columnId";
@@ -183,39 +173,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
         binging.newsRecyclerView.setAdapter(mAdapter);
         binging.newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        binging.newsRecyclerView.addOnScrollListener(new MkVideoScrollListener((LinearLayoutManager) binging.newsRecyclerView.getLayoutManager(),makeTag())/*new RecyclerView.OnScrollListener() {
-
-            int firstVisibleItem, lastVisibleItem;
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) binging.newsRecyclerView.getLayoutManager();
-                firstVisibleItem   = linearLayoutManager.findFirstVisibleItemPosition();
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                //大于0说明有播放
-                if (GSYVideoManager.instance().getPlayPosition() >= 0) {
-                    //当前播放的位置
-                    int position = GSYVideoManager.instance().getPlayPosition();
-                    //对应的播放列表TAG
-                    if (GSYVideoManager.instance().getPlayTag().equals(makeTag())
-                            && (position < firstVisibleItem || position > lastVisibleItem)) {
-
-                        //如果滑出去了上面和下面就是否，和今日头条一样
-                        //是否全屏
-                        if(!GSYVideoManager.isFullState(getActivity())) {
-                            GSYVideoManager.releaseAllVideos();
-                            mAdapter.notifyItemChanged(position);
-                        }
-                    }
-                }
-            }
-        }*/);
+        binging.newsRecyclerView.addOnScrollListener(new MkVideoAutoPlayScrollHelper((LinearLayoutManager) binging.newsRecyclerView.getLayoutManager()));
 
 
         loadData();
@@ -277,6 +235,10 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
 
                 if(response.getType() == ResponseType.SDCARD){
                     binging.smartRefreshLayout.autoRefresh(500);
+                }else{
+
+                    MkVideoAutoPlayScrollHelper.playIfNeed(binging.newsRecyclerView);
+
                 }
 
             }else if(response.getRequestType() == RequestType.REFRESH){
@@ -290,6 +252,9 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
                 pointTime = response.getData().getPointTime();
                 binging.smartRefreshLayout.finishRefresh();
 
+                if(isResumed()){
+                    MkVideoAutoPlayScrollHelper.playIfNeed(binging.newsRecyclerView);
+                }
 
             }else if(response.getRequestType() == RequestType.LOAD_MORE){
 
@@ -338,7 +303,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     public void onResume() {
         super.onResume();
 
-
+        MkVideoAutoPlayScrollHelper.playIfNeed(binging.newsRecyclerView);
     }
 
 
@@ -346,7 +311,11 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     public void onPause() {
         super.onPause();
         Logger.d("%s  play tag = %s  hashcode =%s",name,GSYVideoManager.instance().getPlayTag(),hashCode());
-        GSYVideoManager.onPause();
+
+        if(GSYVideoManager.instance().getPlayPosition() > 0 && GSYVideoManager.instance().getPlayTag().equals(makeTag())){
+            GSYVideoManager.onPause();
+        }
+
 
 
     }

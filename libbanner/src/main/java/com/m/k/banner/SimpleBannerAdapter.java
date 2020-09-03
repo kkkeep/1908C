@@ -12,17 +12,20 @@ import com.example.libbanner.R;
 
 import java.util.ArrayList;
 
-public abstract class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdapter.SimpleBannerHolder> {
+public abstract class SimpleBannerAdapter<T extends IBannerData> extends BannerAdapter<T,SimpleBannerAdapter<T>.SimpleBannerHolder> {
 
 
     private static int mCount =0;
 
-    private ArrayList<? extends IBannerData> mDatas;
+    private ArrayList<T> mDatas;
 
 
-    public SimpleBannerAdapter(ArrayList<? extends IBannerData> datas) {
+
+    public SimpleBannerAdapter(ArrayList<T> datas) {
         this.mDatas = datas;
     }
+
+
 
     @NonNull
     @Override
@@ -35,14 +38,19 @@ public abstract class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdap
         return new SimpleBannerHolder(imageView);
     }
 
+
+
+
     @Override
     public void onBindViewHolder(@NonNull SimpleBannerHolder holder, int position) {
         position = position % mDatas.size();
 
-        bindData((ImageView) holder.itemView,mDatas.get(position));
+        bindData((ImageView) holder.itemView,mDatas.get(position),position);
     }
 
-    public abstract void bindData(ImageView view,IBannerData data);
+    public abstract void bindData(ImageView view,T data,int position);
+
+    public abstract void onClick(T data,int position);
 
     @Override
     public int getItemCount() {
@@ -51,21 +59,22 @@ public abstract class SimpleBannerAdapter extends BannerAdapter<SimpleBannerAdap
 
 
     @Override
-    public void onViewRecycled(@NonNull SimpleBannerHolder holder) {
-        super.onViewRecycled(holder);
-        Log.d("Test","回收 页面 " + holder.itemView.getTag());
-    }
-
-    @Override
-    protected   ArrayList<? extends IBannerData> getDataList() {
+    protected ArrayList<T> getDataList() {
         return mDatas;
     }
-
 
     public class SimpleBannerHolder extends RecyclerView.ViewHolder{
 
         public SimpleBannerHolder(@NonNull View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int index = getAbsoluteAdapterPosition() % getDataList().size();
+                    SimpleBannerAdapter.this.onClick(getDataList().get(index),index);
+                }
+            });
         }
 
         private void setData(int id){

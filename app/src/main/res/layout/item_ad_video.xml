@@ -9,7 +9,7 @@
     android:paddingTop="15dp"
     android:layout_height="wrap_content">
 
-    <com.m.k.video.MKVideo
+    <com.m.k.video.MkEmptyVideo
         android:id="@+id/item_ad_video"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -51,6 +51,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
+    <ImageView
+        android:id="@+id/volume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/video_volume_icon"
+        app:layout_constraintEnd_toEndOf="@+id/item_ad_video"
+        app:layout_constraintBottom_toBottomOf="@id/item_ad_video"
+        tools:layout_editor_absoluteY="258dp" />
 
+
+        <ImageView
+            android:id="@+id/retry_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/video_play_normal"
+            app:layout_constraintStart_toStartOf="@id/item_ad_video"
+            app:layout_constraintEnd_toEndOf="@id/item_ad_video"
+            app:layout_constraintTop_toTopOf="@id/item_ad_video"
+            app:layout_constraintBottom_toBottomOf="@id/item_ad_video"
+            />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

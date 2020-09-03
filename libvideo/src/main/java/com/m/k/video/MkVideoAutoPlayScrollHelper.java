@@ -9,16 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
-public class MkVideoScrollListener extends RecyclerView.OnScrollListener {
+public class MkVideoAutoPlayScrollHelper extends RecyclerView.OnScrollListener {
 
     int firstVisibleItem;
     int lastVisibleItem;
     LinearLayoutManager linearLayoutManager;
-    private String tag;
 
-    public MkVideoScrollListener(LinearLayoutManager linearLayoutManager,String tag) {
+    public MkVideoAutoPlayScrollHelper(LinearLayoutManager linearLayoutManager) {
         this.linearLayoutManager = linearLayoutManager;
-        this.tag = tag;
     }
 
     @Override
@@ -28,7 +26,7 @@ public class MkVideoScrollListener extends RecyclerView.OnScrollListener {
         firstVisibleItem   = linearLayoutManager.findFirstVisibleItemPosition();
         lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
         //大于0说明有播放
-        if (GSYVideoManager.instance().getPlayPosition() >= 0  && GSYVideoManager.instance().getPlayTag().equals(tag)) {
+        if (GSYVideoManager.instance().getPlayPosition() >= 0) {
             //当前播放的位置
             int position = GSYVideoManager.instance().getPlayPosition();
             //对应的播放列表TAG
@@ -45,10 +43,10 @@ public class MkVideoScrollListener extends RecyclerView.OnScrollListener {
     }
 
     @Override
-    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-        if(newState == RecyclerView.SCROLL_STATE_IDLE){
-            play(recyclerView);
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                play(recyclerView);
 
         }
     }
@@ -72,10 +70,14 @@ public class MkVideoScrollListener extends RecyclerView.OnScrollListener {
 
     public void play(RecyclerView recyclerView){
 
+
         // 遍历第一个可见 item 和 最后一个可见item 之间的 是否有 视频广告item
         for (int i = firstVisibleItem; i <= lastVisibleItem; i++) {
 
             View itemView = linearLayoutManager.findViewByPosition(i);// 根据 position  找到 item view;
+            if(itemView == null){
+                return;
+            }
 
             RecyclerView.ViewHolder holder = recyclerView.getChildViewHolder(itemView); // 更具 item  view 找到对应 holder
 
@@ -136,5 +138,17 @@ public class MkVideoScrollListener extends RecyclerView.OnScrollListener {
      */
     public int getPlayOrStopThreshold(int videoHeight){
         return 0;
+    }
+
+
+
+    // 看一下是否有满足自动播放的 video
+    public static void playIfNeed(final RecyclerView recyclerView){
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.smoothScrollBy(0,1);
+            }
+        });
     }
 }
