@@ -1,11 +1,15 @@
 package com.m.k.mvp.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.Window;
+import android.view.WindowManager;
 
 public class MvpUtils {
 
@@ -129,4 +133,23 @@ public class MvpUtils {
         return (int) (dpValue * scale + 0.5f);
     }
 
+
+    public static int [] getNotchScreenDensity(Activity activity) {
+        WindowManager windowManager =  activity.getWindowManager();
+        DisplayMetrics outMetrics = new  DisplayMetrics();
+        // getRealMetrics刘海屏才能获取到实际的分辨率
+        if(hasJellyBeanMR1()){
+            windowManager.getDefaultDisplay().getRealMetrics(outMetrics);
+        }
+
+        int width = outMetrics.widthPixels;
+        int height = outMetrics.heightPixels;
+
+        int arr [] = new int[2];
+
+        arr[0] = width;
+        arr[1] = height;
+        return arr;
+
+    }
 }

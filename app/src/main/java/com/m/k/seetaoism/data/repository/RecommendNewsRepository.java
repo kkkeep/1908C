@@ -167,7 +167,7 @@ public class RecommendNewsRepository extends BaseRepository {
             ad.setTarget_href("http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4");
             news.setAd(ad);
             recommendData = (RecommendData) mvpResponse.getData();
-            recommendData.getNews().add(5,news);
+            recommendData.getNews().add(7,news);
 
             String key =  request.getParams().get(Constrant.RequestKey.KEY_COLUMN_ID).toString();
 

@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,11 +23,10 @@ import com.m.k.seetaoism.databinding.ItemNewsNewsLeftBinding;
 import com.m.k.seetaoism.databinding.ItemNewsNewsRightBinding;
 import com.m.k.seetaoism.databinding.ItemNewsSpecialBinding;
 import com.m.k.seetaoism.databinding.ItemNewsVideoBinding;
-import com.m.k.seetaoism.video.SmallVideoPlayer;
-import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.m.k.video.MKVideo;
+import com.m.k.video.MkAutoPlayVideoHolder;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
-import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import java.lang.reflect.Constructor;
@@ -384,6 +382,7 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
     public class AdBigHolder extends NewsHolder{
         ItemAdPicBigBinding binding;
 
+
         public AdBigHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemAdPicBigBinding.bind(itemView);
@@ -403,19 +402,21 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
         }
     }
 
-    public class AdVideoHolder extends NewsHolder{
+    public class AdVideoHolder extends NewsHolder implements MkAutoPlayVideoHolder {
         ItemAdVideoBinding binding;
         GSYVideoOptionBuilder gsyVideoOptionBuilder;
         public AdVideoHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemAdVideoBinding.bind(itemView);
             gsyVideoOptionBuilder = new GSYVideoOptionBuilder();
+            itemView.setTag("ad");
         }
 
         @Override
         public void bindData(News news) {
 
-            GlideApp.with(itemView).load(news.getAd().getAd_url()).into( binding.itemAdVideo.getCoverView());
+
+            //GlideApp.with(itemView).load(news.getAd().getAd_url()).into( binding.itemAdVideo.getCoverView());
 
             if(TextUtils.isEmpty(news.getAd().getTitle())){
                 binding.itemAdVideoTvTitle.setVisibility(View.GONE);
@@ -460,6 +461,12 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
             });
 
 
+        }
+
+
+        @Override
+        public MKVideo getVideoView() {
+            return binding.itemAdVideo;
         }
     }
 }

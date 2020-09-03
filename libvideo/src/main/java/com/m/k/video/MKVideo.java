@@ -178,6 +178,11 @@ public class MKVideo extends StandardGSYVideoPlayer {
     }
 
 
+    @Override
+    public void startPrepare() {
+        super.startPrepare();
+    }
+
     // 自定义 开始/ 暂停/ 错误的图标
     @Override
     protected void updateStartImage() {
@@ -204,4 +209,8 @@ public class MKVideo extends StandardGSYVideoPlayer {
     }
 
 
+
+    public boolean isInInPause(){
+        return (mCurrentState >= 0 && mCurrentState == CURRENT_STATE_PAUSE);
+    }
 }

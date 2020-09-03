@@ -27,6 +27,7 @@ import com.m.k.mvp.widgets.MvpLoadingView;
 import com.m.k.seetaoism.video.SmallVideoHelper;
 import com.m.k.seetaoism.video.SmallVideoPlayer;
 import com.m.k.systemui.uitils.SystemFacade;
+import com.m.k.video.MkVideoScrollListener;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
@@ -182,7 +183,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
         binging.newsRecyclerView.setAdapter(mAdapter);
         binging.newsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        binging.newsRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binging.newsRecyclerView.addOnScrollListener(new MkVideoScrollListener((LinearLayoutManager) binging.newsRecyclerView.getLayoutManager(),makeTag())/*new RecyclerView.OnScrollListener() {
 
             int firstVisibleItem, lastVisibleItem;
 
@@ -214,7 +215,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
                     }
                 }
             }
-        });
+        }*/);
 
 
         loadData();
@@ -353,7 +354,7 @@ public class PageFragment extends BaseSmartFragment1<RecommendData> {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        GSYVideoManager.releaseAllVideos();
+       //
     }
 
     private String makeTag(){

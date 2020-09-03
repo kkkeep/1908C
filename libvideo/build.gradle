@@ -28,4 +28,5 @@ dependencies {
     implementation deps.androidX.appcompat
     implementation deps.androidX.constraintlayout
     implementation 'com.shuyu:GSYVideoPlayer:7.1.5'
+    implementation deps.androidX.recyclerview
 }

@@ -23,6 +23,7 @@ import com.m.k.seetaoism.databinding.FragmentRecommendBinding;
 import com.m.k.seetaoism.home.recommend.page.PageFragment;
 import com.m.k.seetaoism.utils.ParamsUtils;
 import com.m.k.mvp.widgets.MvpLoadingView;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 import java.util.ArrayList;
 
@@ -161,6 +162,13 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
 
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        GSYVideoManager.releaseAllVideos();
+    }
+
     @Override
     public void onResult1(MvpResponse<ColumnData> response) {
         if (response.isOk()) {
@@ -210,5 +218,7 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
             return mColumns.get(position).getName();
 
         }
+
+
     }
 }
