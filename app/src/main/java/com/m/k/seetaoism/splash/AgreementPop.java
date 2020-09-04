@@ -23,6 +23,7 @@ public class AgreementPop extends MvpCommonPopView {
     }
 
 
+
     public void setListener(IPopClickListener listener) {
         this.mListener = listener;
     }
@@ -66,6 +67,7 @@ public class AgreementPop extends MvpCommonPopView {
 
 
     }
+
 
 
     public interface IPopClickListener{

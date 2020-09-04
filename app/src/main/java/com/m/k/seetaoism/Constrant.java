@@ -17,6 +17,8 @@ public interface Constrant {
         String GET_USER = "/api/user/getuserinfo";
         String COLUMN_MANAGER = "/api/column/columnmanagelist";
         String RECOMMEND_LIST = "/app/v_1_6/article/recommendlist";
+        String VIDEO_LIST = "/app/v_1_6/article/videolist";
+        String SPECIAL_LIST = "/app/v_1_6/article/speciallist";
     }
 
 

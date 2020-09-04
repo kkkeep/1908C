@@ -128,7 +128,7 @@ public class RecommendNewsRepository extends BaseRepository {
             ad.setTarget_href("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3830946526,2769361828&fm=26&gp=0.jpg");
             news.setAd(ad);
             RecommendData recommendData = (RecommendData) mvpResponse.getData();
-            recommendData.getNews().add(0,news);
+            recommendData.getNewsList().add(0,news);
 
 
 
@@ -141,7 +141,7 @@ public class RecommendNewsRepository extends BaseRepository {
             ad.setTarget_href("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599046487679&di=0f28f382115333e2e94f89689616bc88&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2Fddd6368f875f0434e979aa256832cfc48dc490e6113af-tMIEBd_fw658");
             news.setAd(ad);
             recommendData = (RecommendData) mvpResponse.getData();
-            recommendData.getNews().add(3,news);
+            recommendData.getNewsList().add(3,news);
 
 
 
@@ -155,7 +155,7 @@ public class RecommendNewsRepository extends BaseRepository {
             ad.setTitle("我是自己插入的视频广告");
             news.setAd(ad);
             recommendData = (RecommendData) mvpResponse.getData();
-            recommendData.getNews().add(8,news);
+            recommendData.getNewsList().add(8,news);
 
 
             news = new News();
@@ -167,7 +167,7 @@ public class RecommendNewsRepository extends BaseRepository {
             ad.setTarget_href("http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4");
             news.setAd(ad);
             recommendData = (RecommendData) mvpResponse.getData();
-            recommendData.getNews().add(0,news);
+            recommendData.getNewsList().add(0,news);
 
             String key =  request.getParams().get(Constrant.RequestKey.KEY_COLUMN_ID).toString();
 
@@ -197,24 +197,24 @@ public class RecommendNewsRepository extends BaseRepository {
             recommendData.setStart(serverData.getStart());
 
 
-            recommendData.setNews(new ArrayList<>(serverData.getNews()));
+            recommendData.setNewsList(new ArrayList<>(serverData.getNewsList()));
             mMemoryCache.put(key,recommendData);
 
-            Logger.d(" list code = %s",response.getData().getNews().hashCode());
+            Logger.d(" list code = %s",response.getData().getNewsList().hashCode());
         }else{
 
             // 加载更多，追加
             RecommendData cacheData = mMemoryCache.get(key);
 
             RecommendData serverData = response.getData();
-            Logger.d("  load more list code = %s",cacheData.getNews().hashCode());
+            Logger.d("  load more list code = %s",cacheData.getNewsList().hashCode());
 
             if(cacheData != null && serverData != null){
                 cacheData.setStart(serverData.getStart());
                 cacheData.setNumber(serverData.getNumber());
                 cacheData.setPointTime(serverData.getPointTime());
                 cacheData.setMore(serverData.getMore());
-                cacheData.getNews().addAll(serverData.getNews());
+                cacheData.getNewsList().addAll(serverData.getNewsList());
             }
 
 

@@ -32,7 +32,7 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
 
     private LifecycleOwner mLifecycleOwner;
 
-    protected BannerAdapter(LifecycleOwner owner) {
+    public BannerAdapter(LifecycleOwner owner) {
 
        super(new DiffUtil.ItemCallback<BannerWrapData>() {
            @Override
@@ -125,16 +125,19 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
                     return false;
                 }
             }
-
-            if(flashNews.size() != data.flashNews.size()){
-                return false;
-            }
-
-            for(int i = 0; i < flashNews.size();i ++){
-                if(!flashNews.get(i).getId().equals(data.flashNews.get(i).getId())){
+            if(flashNews != null){
+                if(flashNews.size() != data.flashNews.size()){
                     return false;
                 }
+
+                for(int i = 0; i < flashNews.size();i ++){
+                    if(!flashNews.get(i).getId().equals(data.flashNews.get(i).getId())){
+                        return false;
+                    }
+                }
             }
+
+
 
             return true;
         }
@@ -152,15 +155,18 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
                 }
             }
 
-            if(flashNews.size() != data.flashNews.size()){
-                return false;
-            }
-
-            for(int i = 0; i < flashNews.size();i ++){
-                if(!flashNews.get(i).getTheme().equals(data.flashNews.get(i).getTheme())){
+            if(flashNews != null){
+                if(flashNews.size() != data.flashNews.size()){
                     return false;
                 }
+
+                for(int i = 0; i < flashNews.size();i ++){
+                    if(!flashNews.get(i).getTheme().equals(data.flashNews.get(i).getTheme())){
+                        return false;
+                    }
+                }
             }
+
 
             return true;
         }

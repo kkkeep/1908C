@@ -23,6 +23,7 @@ import com.m.k.seetaoism.databinding.ItemNewsNewsLeftBinding;
 import com.m.k.seetaoism.databinding.ItemNewsNewsRightBinding;
 import com.m.k.seetaoism.databinding.ItemNewsSpecialBinding;
 import com.m.k.seetaoism.databinding.ItemNewsVideoBinding;
+import com.m.k.seetaoism.home.NewsFragment;
 import com.m.k.video.MKVideo;
 import com.m.k.video.MkAutoPlayVideoHolder;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
@@ -53,7 +54,9 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
 
     private String mPlayTag;
 
-    public NewsListAdapter(String playTag) {
+    private int mPageType;
+
+    public NewsListAdapter(String playTag,int  pageType) {
         super(new DiffUtil.ItemCallback<News>() {
             @Override
             public boolean areItemsTheSame(@NonNull News oldItem, @NonNull News newItem) {
@@ -86,6 +89,8 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
             }
         });
         mPlayTag = playTag;
+
+        this.mPageType = pageType;
     }
 
 
@@ -312,7 +317,11 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
         public void bindData(News news) {
             binding.newsTitle.setText(news.getTheme());
             //
-            binding.label.setText(news.getColumn_name());
+            if(mPageType == NewsFragment.PAGE_TYPE_RECOMMEND){
+                binding.label.setText(news.getColumn_name());
+            }else if(mPageType == NewsFragment.PAGE_TYPE_VIDEO){
+                binding.label.setText(news.getDescription());
+            }
 
             gsyVideoOptionBuilder
                     .setIsTouchWiget(true)

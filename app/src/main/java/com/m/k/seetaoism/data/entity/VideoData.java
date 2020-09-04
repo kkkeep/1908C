@@ -4,23 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class RecommendData extends NewsData {
+public class VideoData extends NewsData {
 
-
-
-    @SerializedName("article_list")
-    private ArrayList<News> news;
-
+    private ArrayList<News> list;
 
     @Override
     public ArrayList<News> getNewsList() {
-        return news;
+        return list;
     }
 
     @Override
     public void setNewsList(ArrayList<News> list) {
-        this.news = list;
+        this.list = list;
     }
-
-
 }

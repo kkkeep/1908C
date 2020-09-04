@@ -1,0 +1,20 @@
+package com.m.k.seetaoism.data.entity;
+
+import java.util.ArrayList;
+
+public class SpecialData extends NewsData {
+
+    private ArrayList<News> list;
+
+    @Override
+    public ArrayList<News> getNewsList() {
+        return list;
+    }
+
+    @Override
+    public void setNewsList(ArrayList<News> list) {
+        this.list = list;
+    }
+
+
+}

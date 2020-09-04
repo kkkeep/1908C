@@ -115,8 +115,7 @@ public class MvpFragmentManager {
 
 
     private static void handPreFragment(FragmentTransaction transaction,BaseFragment preFragment,BaseFragment willShowFragment){
-        if(preFragment != null){
-
+        if(preFragment != null && preFragment != willShowFragment){
             switch (willShowFragment.getActionFroPreFragment()){
                 case REMOVE:{
                     transaction.remove(preFragment);

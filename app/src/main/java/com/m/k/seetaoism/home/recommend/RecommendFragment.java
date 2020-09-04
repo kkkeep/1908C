@@ -221,4 +221,6 @@ public class RecommendFragment extends BaseSmartFragment1<ColumnData> {
 
 
     }
+
+
 }

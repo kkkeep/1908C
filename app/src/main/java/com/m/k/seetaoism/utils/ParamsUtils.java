@@ -3,6 +3,7 @@ package com.m.k.seetaoism.utils;
 import android.text.TextUtils;
 
 
+import com.m.k.mvp.manager.MvpUserManager;
 import com.m.k.seetaoism.Constrant;
 
 import java.security.MessageDigest;
@@ -33,6 +34,11 @@ public class ParamsUtils {
         hashMap.put(KEY_NONCE, nonce);
         hashMap.put(KEY_TIMESTAMP, timestamp);
         hashMap.put(KEY_SIGNATURE,getSHA1(timestamp, nonce));
+
+
+        if(!TextUtils.isEmpty(MvpUserManager.getToken())){
+            hashMap.put(KEY_TOKEN,MvpUserManager.getToken());
+        }
 
         return hashMap;
     }
