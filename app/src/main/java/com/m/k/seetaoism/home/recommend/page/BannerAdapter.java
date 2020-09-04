@@ -1,5 +1,7 @@
 package com.m.k.seetaoism.home.recommend.page;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.m.k.seetaoism.data.entity.BannerNews;
 import com.m.k.seetaoism.data.entity.BaseNews;
 import com.m.k.seetaoism.data.entity.FlashNews;
 import com.m.k.seetaoism.databinding.ItemHomeBannerBinding;
+import com.m.k.seetaoism.detail.DetailActivity;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -89,6 +92,12 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
 
                 @Override
                 public void onClick(BannerNews data, int position) {
+                    Intent intent = new Intent(itemView.getContext(), DetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("url",data.getLink());
+
+                    intent.putExtra("bundle",bundle);
+                    itemView.getContext().startActivity(intent);
 
                 }
             });

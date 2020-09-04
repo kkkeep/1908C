@@ -32,7 +32,9 @@ public abstract class MvpBaseFragment<P extends IBasePresenter> extends BaseFrag
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mPresenter.bindView(this);
+        if(mPresenter != null){
+            mPresenter.bindView(this);
+        }
         return super.onCreateView(inflater, container, savedInstanceState);
 
     }
@@ -54,7 +56,9 @@ public abstract class MvpBaseFragment<P extends IBasePresenter> extends BaseFrag
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mPresenter.unBind();
+        if(mPresenter != null){
+            mPresenter.unBind();
+        }
     }
 
     @Override
