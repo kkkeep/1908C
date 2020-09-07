@@ -33,4 +33,14 @@ public class DetailFragment extends MvpBaseFragment {
 
         MvpFragmentManager.addOrShowFragment(getChildFragmentManager(),DetailContentFragment.class,null,R.id.detail_content_fragment_Container,getArguments());
     }
+
+    @Override
+    public boolean isNeedAnimation() {
+        return false;
+    }
+
+    @Override
+    public boolean isNeedAddToBackStack() {
+        return false;
+    }
 }

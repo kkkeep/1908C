@@ -23,6 +23,7 @@ import com.m.k.seetaoism.databinding.ItemNewsNewsLeftBinding;
 import com.m.k.seetaoism.databinding.ItemNewsNewsRightBinding;
 import com.m.k.seetaoism.databinding.ItemNewsSpecialBinding;
 import com.m.k.seetaoism.databinding.ItemNewsVideoBinding;
+import com.m.k.seetaoism.detail.DetailActivity;
 import com.m.k.seetaoism.home.NewsFragment;
 import com.m.k.video.MKVideo;
 import com.m.k.video.MkAutoPlayVideoHolder;
@@ -221,11 +222,18 @@ public class NewsListAdapter extends ListAdapter<News, NewsListAdapter.NewsHolde
 
         public NewsHolder(@NonNull View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(v -> {
+
+                DetailActivity.startDetailActivity(itemView.getContext(),getNewsByPosition(getBindingAdapterPosition()));
+            });
         }
 
         public void bindData(News news){
 
         }
+
+
     }
 
 

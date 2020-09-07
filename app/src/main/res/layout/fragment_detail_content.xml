@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.scwang.smartrefresh.layout.SmartRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/smartRefreshLayout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     >
+
 
 
     <androidx.core.widget.NestedScrollView
@@ -19,19 +22,17 @@
             android:orientation="vertical"
             tools:ignore="WebViewLayout">
 
-
-            <WebView
+            <com.m.k.mvp.widgets.MvpWebView
                 android:id="@+id/detail_web_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <androidx.recyclerview.widget.RecyclerView
+             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/detail_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
-
 
 
 

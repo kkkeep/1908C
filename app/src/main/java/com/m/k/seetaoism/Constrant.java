@@ -6,7 +6,8 @@ public interface Constrant {
 
     @BaseUrl
     String BASE_URL = "https://www.seetao.com";
-    String BASE_URL_Test = "https://www.seetao.com";
+
+    String BASE_URL_Test = "http://test.seetaoism.com";
 
     String VALUE_FROM = "ios";
     String VALUE_LANG = "zh";
@@ -19,6 +20,8 @@ public interface Constrant {
         String RECOMMEND_LIST = "/app/v_1_6/article/recommendlist";
         String VIDEO_LIST = "/app/v_1_6/article/videolist";
         String SPECIAL_LIST = "/app/v_1_6/article/speciallist";
+        String DETAIL_RELATIVE_NEWS = "/api/article/articleaccess";
+        String DETAIL_COMMENT_LIST = "/api/comment_reply/commentlist";
     }
 
 
@@ -41,6 +44,8 @@ public interface Constrant {
         String KEY_NUMBER = "number";
         String KEY_POINT_TIME = "point_time";
         String KEY_COLUMN_ID = "id";
+        String KEY_NEWS_ID = "id";
+        String KEY_NEWS_ID_2 = "article_id";
 
 
     }

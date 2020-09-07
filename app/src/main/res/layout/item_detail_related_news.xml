@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginStart="15sp"
+    android:layout_marginEnd="15dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/detail_item_news_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        tools:text="55555555"
+        style="@style/Jiandao.NewsTitle"
+        app:layout_constraintEnd_toStartOf="@+id/detail_comcomt_item_user_head_pic"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/detail_comcomt_item_user_head_pic" />
+
+    <ImageView
+        android:id="@+id/detail_comcomt_item_user_head_pic"
+        android:layout_width="91dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/detail_item_news_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:textSize="12dp"
+        tools:text="44444444"
+        android:textColor="@color/gray_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        style="@style/Jiandao.Horizontal_Line"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+         />
+</androidx.constraintlayout.widget.ConstraintLayout>

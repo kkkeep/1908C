@@ -92,13 +92,8 @@ public class BannerAdapter extends ListAdapter<BannerAdapter.BannerWrapData,Bann
 
                 @Override
                 public void onClick(BannerNews data, int position) {
-                    Intent intent = new Intent(itemView.getContext(), DetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("url",data.getLink());
 
-                    intent.putExtra("bundle",bundle);
-                    itemView.getContext().startActivity(intent);
-
+                    DetailActivity.startDetailActivity(itemView.getContext(),data);
                 }
             });
 
