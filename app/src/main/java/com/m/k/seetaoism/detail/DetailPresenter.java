@@ -4,6 +4,7 @@ import com.m.k.mvp.base.IBaseCallBack;
 import com.m.k.mvp.base.p.BasePresenter;
 import com.m.k.mvp.data.BaseRepository;
 import com.m.k.mvp.data.request.GetRequest;
+import com.m.k.mvp.data.request.PostRequest;
 import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.data.entity.CommentListData;
@@ -52,6 +53,21 @@ public class DetailPresenter extends BasePresenter<IDetailConstraint.IDetailView
             public void onResult(MvpResponse<CommentListData> response) {
                 if(mView != null){
                     mView.onNewsCommentResult(response);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void sendShareSuccess(String newsId) {
+        PostRequest<String> request = new PostRequest<>(DETAIL_SHARE);
+        request.getParams().put(KEY_NEWS_ID,newsId);
+
+        mRepository.doRequest(getLifecycleProvider(), request, new IBaseCallBack<String>() {
+            @Override
+            public void onResult(MvpResponse<String> response) {
+                if(mView != null){
+                    mView.onSendShareResult(response);
                 }
             }
         });

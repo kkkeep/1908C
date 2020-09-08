@@ -32,6 +32,8 @@ public class MvpDataService {
     private static volatile Object mAppApiService;
 
 
+
+
     public static MvpApiService getMvpApiService() {
         if (mService == null) {
             synchronized (MvpDataService.class) {
@@ -129,8 +131,11 @@ public class MvpDataService {
     }
 
 
-    public static Object getAppApiService(){
+    public static synchronized Object getAppApiService(){
 
+        if(mAppApiService == null){
+            getMvpApiService();
+        }
         return mAppApiService;
     }
 

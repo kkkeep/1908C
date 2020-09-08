@@ -27,6 +27,7 @@ import com.m.k.seetaoism.detail.adapter.ShareAdapter;
 import com.m.k.systemui.uitils.SystemFacade;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.IDetailPresenter> implements IDetailConstraint.IDetailView {
 
@@ -87,7 +88,15 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
         binding.detailRecyclerview.setNestedScrollingEnabled(false);
 
 
-        mShareAdapter = new ShareAdapter();
+        mShareAdapter = new ShareAdapter(getArguments(),new SampleShareListener(){
+            @Override
+            public void onResult(SHARE_MEDIA share_media) {
+                showToast("分享成功");
+                sendShareSuccess();
+            }
+
+        });
+
         mRelatedNewsAdapter = new RelatedNewsAdapter();
         mCommentAdapter = new CommentAdapter();
         mAdapter = new MergeAdapter(mShareAdapter,mRelatedNewsAdapter,mCommentAdapter);
@@ -142,14 +151,17 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
         loadComment();
     }
 
+    /**
+     * 请求相关新闻
+     */
     private void loadRelativeNews(){
-
-
         mRequestCount++;
-
         mPresenter.getRelatedNews(mNewsId);
     }
 
+    /**
+     * 加载新闻的评论列表
+     */
     private void loadComment(){
         mRequestCount++;
 
@@ -157,7 +169,15 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
     }
 
 
+    /**
+     * 发送分享成功增加积分
+     */
+    public void sendShareSuccess(){
 
+        IntegralWidget.show(getActivity(),10);
+        //showPopLoading();
+        //mPresenter.sendShareSuccess(mNewsId);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -192,6 +212,16 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
         mRequestCount--;
         mCommentListData = response.getData();
         show();
+    }
+
+    @Override
+    public void onSendShareResult(MvpResponse<String> response) {
+        closeLoading();
+        if(response.isOk()){
+            // 显示一个增加积分动画
+            showToast("分享增加积分成功");
+
+        }
     }
 
     private void show(){

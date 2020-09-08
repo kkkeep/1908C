@@ -10,6 +10,7 @@ public class User implements IUser {
 
 
 
+
     public Token getToken() {
         return token;
     }
@@ -27,7 +28,7 @@ public class User implements IUser {
         if(token != null){
             return token.getExpire_time();
         }
-        return 0;
+        return 0l;
     }
 
 
@@ -47,7 +48,7 @@ public class User implements IUser {
 
 
 
-    public class Token {
+    public static class Token {
 
         /**
          * * 'token': {//token信息

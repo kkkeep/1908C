@@ -7,6 +7,7 @@ public interface Constrant {
     @BaseUrl
     String BASE_URL = "https://www.seetao.com";
 
+
     String BASE_URL_Test = "http://test.seetaoism.com";
 
     String VALUE_FROM = "ios";
@@ -22,6 +23,7 @@ public interface Constrant {
         String SPECIAL_LIST = "/app/v_1_6/article/speciallist";
         String DETAIL_RELATIVE_NEWS = "/api/article/articleaccess";
         String DETAIL_COMMENT_LIST = "/api/comment_reply/commentlist";
+        String DETAIL_SHARE = "/api/user/sharearticleaddintegral";
     }
 
 

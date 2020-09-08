@@ -1,19 +1,18 @@
 package com.m.k;
 
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.multidex.MultiDex;
 
-import com.m.k.mvp.ParamsGetter;
+import com.m.k.anotaion.Umeng;
+import com.m.k.seetaoism.BuildConfig;
+import com.m.k.umeng.share.ShareUtils;
 import com.m.k.mvp.manager.MvpManager;
 import com.m.k.seetaoism.R;
-import com.m.k.seetaoism.data.entity.HttpResult;
 import com.m.k.seetaoism.utils.ParamsUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
@@ -23,13 +22,13 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
 
+
 public class JDApplication extends Application {
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-
 
         MvpManager.setParamsGetter(ParamsUtils::getCommonParams);
 
@@ -49,6 +48,9 @@ public class JDApplication extends Application {
                 return (RefreshFooter) LayoutInflater.from(context).inflate(R.layout.layout_refresh_footer,null,false);
             }
         });
+
+        initUmengShare();
+
 
    /*     SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {//设置全局的Header构建器
             @Override
@@ -95,6 +97,11 @@ public class JDApplication extends Application {
             }
         });*/
 
+    }
+    @Umeng(BuildConfig.APPLICATION_ID)
+    public void initUmengShare(){
+
+        ShareUtils.init(this,"chanel",BuildConfig.DEBUG);
     }
 
     @Override

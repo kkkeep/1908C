@@ -49,8 +49,8 @@ public class MvpUserManager {
         }
 
 
-        MvpSpUtils.saveApply(SP_TOKEN, user.getTokenValue());
-        MvpSpUtils.saveApply(SP_TOKEN_EXPIRE_TIME, user.getExpireTimeSeconds());
+        MvpSpUtils.saveApply(SP_TOKEN, mToken);
+        MvpSpUtils.saveApply(SP_TOKEN_EXPIRE_TIME, mExpireTime);
 
     }
 
@@ -61,8 +61,8 @@ public class MvpUserManager {
         mUser = null;
         mToken = null;
         mExpireTime = 0;
-        MvpSpUtils.saveApply(SP_TOKEN, "");
-        MvpSpUtils.saveApply(SP_TOKEN_EXPIRE_TIME, 0);
+        MvpSpUtils.remove(SP_TOKEN);
+        MvpSpUtils.remove(SP_TOKEN_EXPIRE_TIME);
 
         if (mCallBackList != null) {
             IUserCallBack callBack;
@@ -115,6 +115,20 @@ public class MvpUserManager {
             return  mToken;
         }
         return null;
+    }
+
+    public static long getTokenExpireTime() {
+
+        if(mExpireTime == 0){
+            mToken = MvpSpUtils.getString(SP_TOKEN);
+            mExpireTime = MvpSpUtils.getLong(SP_TOKEN_EXPIRE_TIME);
+        }
+
+
+        if (System.currentTimeMillis() / 1000 < mExpireTime) {
+            return  mExpireTime;
+        }
+        return 0;
     }
 
 

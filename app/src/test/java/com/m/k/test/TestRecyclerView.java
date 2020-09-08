@@ -1,7 +1,6 @@
-package com.k.test;
+package com.m.k.test;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,10 +14,8 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.m.k.mvp.utils.Logger;
-import com.m.k.seetaoism.R;
 import com.m.k.seetaoism.databinding.TestActivityRecyclerBinding;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class TestRecyclerView extends AppCompatActivity {

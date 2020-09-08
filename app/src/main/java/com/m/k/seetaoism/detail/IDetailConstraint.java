@@ -15,6 +15,7 @@ public interface IDetailConstraint {
 
         void onRelatedNewsResult(MvpResponse<RelatedNewsData> response);
         void onNewsCommentResult(MvpResponse<CommentListData> response);
+        void onSendShareResult(MvpResponse<String> response);
 
     }
 
@@ -25,7 +26,7 @@ public interface IDetailConstraint {
 
         void getNewsComment(String newsId,long pointTime,int start);
 
-
+        void sendShareSuccess(String newsId);
     }
 
 

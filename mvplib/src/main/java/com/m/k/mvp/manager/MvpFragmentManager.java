@@ -27,20 +27,20 @@ public class MvpFragmentManager {
      * 返回时： remove B  show A
      */
 
-    public static BaseFragment addOrShowFragment(FragmentManager manager, Class<? extends BaseFragment> willShowFragment, BaseFragment preFragment, @IdRes int containerId){
+    public static  <T extends BaseFragment> T addOrShowFragment(FragmentManager manager, Class<T> willShowFragment, BaseFragment preFragment, @IdRes int containerId){
 
         return addOrShowFragment(manager,willShowFragment,preFragment,containerId,null);
     }
 
 
-    public static BaseFragment addOrShowFragment(FragmentManager manager, Class<? extends BaseFragment> willShowFragment, BaseFragment preFragment, @IdRes int containerId, Bundle bundle){
+    public static  <T extends BaseFragment> T addOrShowFragment(FragmentManager manager, Class<T> willShowFragment, BaseFragment preFragment, @IdRes int containerId, Bundle bundle){
 
         FragmentTransaction transaction = manager.beginTransaction();
         try {
 
             String tag = willShowFragment.getName();
 
-            BaseFragment  willShowFragmentInstance = (BaseFragment) manager.findFragmentByTag(tag);
+            T  willShowFragmentInstance = (T) manager.findFragmentByTag(tag);
 
             if(willShowFragmentInstance == null){ // 当前activity 已经添加了 该fragment
 

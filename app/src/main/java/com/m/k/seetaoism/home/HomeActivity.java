@@ -19,6 +19,7 @@ import com.m.k.mvp.utils.Logger;
 import com.m.k.mvp.widgets.BottomNavigation;
 import com.m.k.seetaoism.R;
 import com.m.k.mvp.base.BaseActivity;
+import com.m.k.seetaoism.auth.Login.pwd.PasswordLoginFragment;
 import com.m.k.seetaoism.data.entity.SpecialData;
 import com.m.k.seetaoism.data.repository.RecommendNewsRepository;
 import com.m.k.seetaoism.databinding.ActivityHomeBinding;
@@ -72,7 +73,7 @@ public class HomeActivity extends BaseActivity {
                 }else if(position == 2){
                     mCurrentFragment =  MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(), SpecialNewsFragment.class,mCurrentFragment,R.id.home_fragmentContainer);
                 }else{
-
+                    mCurrentFragment = MvpFragmentManager.addOrShowFragment(getSupportFragmentManager(), PasswordLoginFragment.class,mCurrentFragment,R.id.home_fragmentContainer);
                 }
 
 

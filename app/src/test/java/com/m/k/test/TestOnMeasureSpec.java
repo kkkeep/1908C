@@ -1,21 +1,16 @@
-package com.k.test;
+package com.m.k.test;
 
 import android.content.Context;
-import android.graphics.Insets;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.m.k.seetaoism.R;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 public class TestOnMeasureSpec extends AppCompatActivity {
 

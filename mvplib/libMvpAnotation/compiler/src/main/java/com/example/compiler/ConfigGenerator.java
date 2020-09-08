@@ -29,6 +29,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
+import javax.tools.Diagnostic;
 
 public class ConfigGenerator implements FileGenerator {
 
@@ -90,12 +91,13 @@ public class ConfigGenerator implements FileGenerator {
     private String getMvpApiServiceName;
 
 
-    public ConfigGenerator() {
+    public ConfigGenerator(File file) {
 
         Properties properties = new Properties();
         try {
 
-            properties.load(new FileInputStream(new File(PROPERTIES_FILE_NAME)));
+
+            properties.load(new FileInputStream(file));
 
             mvpDataServicePackageName = properties.getProperty(PROPERTIES_KEY_MVP_DATA_SERVICE_PK_NAME);
             mvpDataServiceClassName = properties.getProperty(PROPERTIES_KEY_MVP_DATA_SERVICE_C_NAME);
@@ -133,6 +135,7 @@ public class ConfigGenerator implements FileGenerator {
     @Override
     public boolean process(Elements elements, Messager messager, Filer filer, Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
 
+       // messager.printMessage(Diagnostic.Kind.ERROR,"------" + new File(PROPERTIES_FILE_NAME).getAbsolutePath());
         Set<? extends Element> baseUrlElements = roundEnvironment.getElementsAnnotatedWith(BaseUrl.class);
         Set<? extends Element> ApiServiceElements = roundEnvironment.getElementsAnnotatedWith(ApiService.class);
         Set<? extends Element> converterElements = roundEnvironment.getElementsAnnotatedWith(GsonConverter.class);

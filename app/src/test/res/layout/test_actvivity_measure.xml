@@ -8,14 +8,14 @@
 
 
    <!-- <view
-        class="com.k.test.TestOnMeasureSpec$MyViewGroup"
+        class="com.m.k.test.TestOnMeasureSpec$MyViewGroup"
         android:layout_width="500dp"
         android:layout_height="500dp"
         android:background="@color/gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <view class="com.k.test.TestOnMeasureSpec$MyView"
+        <view class="com.m.k.test.TestOnMeasureSpec$MyView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello"/>

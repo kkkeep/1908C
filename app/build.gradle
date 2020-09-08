@@ -3,16 +3,26 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-          compileSdkVersion 29
+
+    signingConfigs {
+        release {
+            storeFile file('../jiandao.jks')
+            keyAlias 'jiandao12'
+            keyPassword 'jiandao123'
+            storePassword 'jiandao123'
+        }
+    }
+
+    compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
-        defaultConfig {
-            applicationId "com.m.k.study"
-            minSdkVersion 19
-            targetSdkVersion 29
-            versionCode 1
-            versionName "1.1."
-            multiDexEnabled true
+    defaultConfig {
+        applicationId "com.seetaoism"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.1."
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,12 +31,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
         }
     }
     sourceSets {
         main {
-            java.srcDirs = ['src/mvp/java', 'src/main/java','src/test/java']
-            res.srcDirs = ['src/main/res','src/mvp/res','src/test/res']
+            java.srcDirs = ['src/mvp/java', 'src/main/java', 'src/test/java']
+            res.srcDirs = ['src/main/res', 'src/mvp/res', 'src/test/res']
         }
     }
     compileOptions {
@@ -34,19 +52,17 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-        viewBinding{
+    viewBinding {
 
-           enabled = true
-        }
+        enabled = true
+    }
 
 
 }
 
 
-
-
-task start{
-    doLast{
+task start {
+    doLast {
         def cmd = "adb shell am start -n com.m.k.study/com.m.k.seetaoism.home.HomeActivity"
         executeCmd cmd
     }
@@ -54,10 +70,9 @@ task start{
 
 }
 
-start.dependsOn{
+start.dependsOn {
     [":app:installDebug"]
 }
-
 
 
 dependencies {
@@ -68,8 +83,6 @@ dependencies {
     implementation deps.androidX.constraintlayout
     implementation deps.androidX.recyclerview
     implementation deps.androidX.multidex
-
-
 
 
     implementation deps.okhttp3X.okhttp3
@@ -90,7 +103,6 @@ dependencies {
     annotationProcessor deps.glideX.compiler
 
 
-
     implementation deps.other.gifView
     implementation deps.other.smartRefreshLayout
     implementation deps.other.smartRefreshHeader
@@ -107,6 +119,7 @@ dependencies {
 
     implementation 'com.shuyu:GSYVideoPlayer:7.1.5'
     implementation 'me.jessyan:autosize:1.2.1'
-    implementation project(path: ':libvideo') // 屏幕适配
+    implementation project(path: ':libvideo')
+    implementation project(path: ':libumeng') // 屏幕适配
 
 }

@@ -2,6 +2,7 @@ package com.m.k.seetaoism.data;
 
 
 import com.m.k.anotaion.ApiService;
+import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.data.entity.HttpResult;
 import com.m.k.seetaoism.data.entity.User;
 
@@ -9,6 +10,7 @@ import java.util.HashMap;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Url;
@@ -18,7 +20,8 @@ import retrofit2.http.Url;
 public interface AppApiService  {
 
 
-    @POST()
+    @POST(Constrant.URL.LOGIN)
+    @FormUrlEncoded
     Observable<HttpResult<User>> getUser( @FieldMap HashMap<String,Object> map);
 }
 

@@ -3,6 +3,7 @@ package com.m.k.seetaoism.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -14,6 +15,7 @@ import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
 import com.m.k.mvp.base.BaseActivity;
 import com.m.k.mvp.base.NoResultCallBack;
+import com.m.k.seetaoism.auth.Login.AuthActivity;
 import com.m.k.seetaoism.data.entity.User;
 import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.seetaoism.home.HomeActivity;
@@ -112,6 +114,7 @@ public class SplashActivity extends BaseActivity implements CancelAdapt {
     private void getUserInfo(){
 
       String token =   MvpUserManager.getToken();
+      long expireTime = MvpUserManager.getTokenExpireTime();
 
       if(TextUtils.isEmpty(token)){
           return;
@@ -127,6 +130,15 @@ public class SplashActivity extends BaseActivity implements CancelAdapt {
             @Override
             public void accept(MvpResponse<User> response) throws Throwable {
                 if (response.isOk()) {
+                    // 由于后去用户信息的接口返回的User 对象里面没有token
+
+                    User.Token tokenObj = new User.Token();
+
+                    tokenObj.setValue(token);
+                    tokenObj.setExpire_time(expireTime);
+
+                    response.getData().setToken(tokenObj);
+
                     MvpUserManager.login(response.getData());
                 }
             }

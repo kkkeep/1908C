@@ -21,7 +21,14 @@ public class PasswordLoginRepository extends BaseRepository implements PasswordL
 
     @Override
     public void login(LifecycleProvider provider, MvpRequest<User> request, IBaseCallBack<User> back) {
-        doObserver(provider, request, AppDataService.getAppApiService().getUser(request.getParams()),back);
+
+        doObserver(provider, request, AppDataService.getAppApiService().getUser(request.getParams()), new Consumer<MvpResponse<User>>() {
+            @Override
+            public void accept(MvpResponse<User> userMvpResponse) throws Throwable {
+                User  user = (User) userMvpResponse.getData();
+                MvpUserManager.login(user);
+            }
+        },back);
 
     }
 }

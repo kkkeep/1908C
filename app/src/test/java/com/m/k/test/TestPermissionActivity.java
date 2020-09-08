@@ -1,4 +1,4 @@
-package com.k.test;
+package com.m.k.test;
 
 import android.Manifest;
 import android.app.AlertDialog;
