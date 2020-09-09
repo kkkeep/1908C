@@ -55,34 +55,24 @@ public class DetailFragment extends MvpBaseFragment {
             web.setDescription(getArguments().getString(DetailActivity.KEY_NEW_DESCRIPTION));//描述
 
             new ShareAction(getActivity()).withMedia(web).setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN,SHARE_MEDIA.QQ)
-                    .setCallback(new UMShareListener() {
-                        @Override
-                        public void onStart(SHARE_MEDIA share_media) {
-                            Logger.d();
-                        }
-
+                    .setCallback(new SampleShareListener() {
                         @Override
                         public void onResult(SHARE_MEDIA share_media) {
                             Logger.d();
-
                             mContentFragment.sendShareSuccess();
-
                         }
 
-                        @Override
-                        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                            Logger.d();
-
-                        }
-
-                        @Override
-                        public void onCancel(SHARE_MEDIA share_media) {
-                            Logger.d();
-                        }
                     }).open();
+        });
 
+
+        binding.newsDetailBottomIv.setOnClickListener((v) -> {
+            mContentFragment.showCommentPop(v);
         });
     }
+
+
+
 
     @Override
     protected void bindView(View view) {

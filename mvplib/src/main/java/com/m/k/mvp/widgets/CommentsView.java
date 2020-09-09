@@ -55,7 +55,7 @@ public class CommentsView extends LinearLayout {
         mDatas = list;
     }
 
-    public void setOnItemClickListener(onItemClickListener listener) {
+    public <T extends ReplayData> void setOnItemClickListener(onItemClickListener<T> listener) {
         this.listener = listener;
     }
 
@@ -198,8 +198,8 @@ public class CommentsView extends LinearLayout {
     /**
      * 定义一个用于回调的接口
      */
-    public interface onItemClickListener {
-        void onItemClick(int position,String clickUserId, ReplayData replayData);
+    public interface  onItemClickListener<T extends ReplayData> {
+        void onItemClick(int position,String clickUserId, T replayData);
     }
 
 

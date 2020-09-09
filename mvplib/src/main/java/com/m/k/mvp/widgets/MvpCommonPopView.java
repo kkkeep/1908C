@@ -109,7 +109,7 @@ import com.m.k.mvp.utils.MvpUtils;
  *
  *
  * 使用方式：
- * 1. 自己写一个子类继承  在子类内部去调用setContentView（view）以及对view 的初始化
+ * 1. 自己写一个子类继承  在子类内部去调用setContentView（view）以及对view 的初始化(可以通过重写 setView 方法来初始化)
  * 2. 直接new 一个 MvpCommonPopView 实例，调用 setContentView(view)；。在调用者里面对 view  进行初始化
  *
  * 然后调用 showCenter（view）方法 进行显示，把pop 显示在屏幕中间，view 参数可以是任意一个 view .
@@ -133,6 +133,12 @@ public class MvpCommonPopView extends PopupWindow {
     private  Activity context;
 
 
+    /**
+     *
+     * @param context
+     * @param width 可以使固定的值，也可以是 Match_Parent,WRAP_CONTENT
+     * @param height  可以使固定的值，也可以是 Match_Parent,WRAP_CONTENT
+     */
     public MvpCommonPopView(Context context, int width, int height) {
         super(context);
 
@@ -140,12 +146,17 @@ public class MvpCommonPopView extends PopupWindow {
         setWidth(width);
         this.context = (Activity) context;
         init(context);
+
+        setView(context);
     }
 
     // 这个构造方法，pop 的高度是WRAP_CONTENT,宽度是 MATCH_PARENT
     public MvpCommonPopView(Context context) {
         this(context,WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
 
+    }
+
+    protected void setView(Context context){
 
     }
 

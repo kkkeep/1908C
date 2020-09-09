@@ -4,9 +4,6 @@ public class PostRequest<T> extends MvpRequest<T> {
     public PostRequest(String url) {
         super(url);
 
-
-
-
     }
 
     public PostRequest() {

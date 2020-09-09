@@ -52,9 +52,7 @@ public class CommentListData {
         this.more = more;
     }
 
-    public ArrayList<Comment> getComment_list() {
-        return comment_list;
-    }
+
 
     public void setComment_list(ArrayList<Comment> comment_list) {
         this.comment_list = comment_list;

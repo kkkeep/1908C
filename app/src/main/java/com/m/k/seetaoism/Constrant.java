@@ -4,10 +4,10 @@ import com.m.k.anotaion.BaseUrl;
 
 public interface Constrant {
 
-    @BaseUrl
+
     String BASE_URL = "https://www.seetao.com";
 
-
+    @BaseUrl
     String BASE_URL_Test = "http://test.seetaoism.com";
 
     String VALUE_FROM = "ios";
@@ -24,6 +24,9 @@ public interface Constrant {
         String DETAIL_RELATIVE_NEWS = "/api/article/articleaccess";
         String DETAIL_COMMENT_LIST = "/api/comment_reply/commentlist";
         String DETAIL_SHARE = "/api/user/sharearticleaddintegral";
+        String DETAIL_COMMENT_NEWS = "/api/comment_reply/usercomment";
+        String DETAIL_USER_REPLAY = "/api/comment_reply/userreply";
+        String DETAIL_DO_COMMENT_LIKE = "/api/comment_reply/commentpraise";
     }
 
 
@@ -48,6 +51,11 @@ public interface Constrant {
         String KEY_COLUMN_ID = "id";
         String KEY_NEWS_ID = "id";
         String KEY_NEWS_ID_2 = "article_id";
+        String KEY_CONTENT = "content";
+        String KEY_COMMENT_ID = "comment_id";
+        String KEY_TO_IOD = "to_id";
+        String KEY_REPLY_TYPE= "type";
+        String KEY_REPLAY_ID = "reply_id";
 
 
     }

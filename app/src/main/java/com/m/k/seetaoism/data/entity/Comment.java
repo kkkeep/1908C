@@ -96,6 +96,10 @@ public class Comment {
         return praise_count_describe;
     }
 
+    public void incrementLikeCount(){
+        praise_count_describe++;
+    }
+
     public boolean isPraise() {
         return is_praise == 1;
     }

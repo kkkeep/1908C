@@ -68,6 +68,11 @@ public class MvpRequest<T> {
         return params == null ? new HashMap<>() : params;
     }
 
+    public MvpRequest<T> addParams(String key,Object value){
+        getParams().put(key,value);
+        return this;
+    }
+
     public void setParams(HashMap<String, Object> params) {
         if (this.params != null) {
             this.params.putAll(params);

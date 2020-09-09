@@ -1,0 +1,90 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.m.k.umeng" >
+
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application>
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <!--新浪-->
+        <activity
+                android:name="com.umeng.socialize.media.WBShareCallBackActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                android:exported="false"
+                >
+        </activity>
+        <activity android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:exported="false"
+                android:windowSoftInputMode="adjustResize"
+                >
+
+        </activity>
+       <activity
+                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+                android:launchMode="singleTask"
+                android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
+        <!--新浪-->
+
+
+        <!--微信-->
+        <activity
+                android:name="${applicationId}.wxapi.WXEntryActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+                android:exported="true"
+                android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!--微信-->
+
+
+        <!--qq-->
+        <activity
+                android:name="com.tencent.tauth.AuthActivity"
+                android:launchMode="singleTask"
+                android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!--记得把100424468 替换成你自己在qq 平台申请的 id，不要把 tencent 删掉-->
+                <data android:scheme="tencent1109759123" />
+            </intent-filter>
+        </activity>
+        <activity
+                android:name="com.tencent.connect.common.AssistActivity"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+
+        <provider
+            android:authorities="com.m.k.umeng.share.fileProvider"
+            android:name="com.m.k.umeng.share.UmengQQShareProvider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/mk_umeng_share_file_path"/>
+        </provider>
+        <!--qq-->
+
+    </application>
+</manifest>

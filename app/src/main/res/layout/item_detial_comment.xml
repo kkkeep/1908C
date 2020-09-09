@@ -45,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/detail_comcomt_item_user_head_pic"
         app:layout_constraintStart_toStartOf="@+id/detail_comment_item_tv_username" />
 
-    <TextView
+    <com.mr.k.libmvp.widget.ToggleStateView
         android:id="@+id/detail_comment_item_cb_lick"
         android:layout_width="wrap_content"
         android:layout_height="25dp"

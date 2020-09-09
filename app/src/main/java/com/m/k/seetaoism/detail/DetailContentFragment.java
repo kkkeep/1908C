@@ -15,11 +15,16 @@ import androidx.recyclerview.widget.MergeAdapter;
 
 import com.m.k.mvp.base.p.IBasePresenter;
 import com.m.k.mvp.base.v.MvpBaseFragment;
+import com.m.k.mvp.data.request.PostRequest;
+import com.m.k.mvp.data.request.RequestType;
 import com.m.k.mvp.data.response.MvpResponse;
 import com.m.k.mvp.utils.Logger;
+import com.m.k.seetaoism.Constrant;
 import com.m.k.seetaoism.R;
+import com.m.k.seetaoism.data.entity.Comment;
 import com.m.k.seetaoism.data.entity.CommentListData;
 import com.m.k.seetaoism.data.entity.RelatedNewsData;
+import com.m.k.seetaoism.data.entity.Replay;
 import com.m.k.seetaoism.databinding.FragmentDetailContentBinding;
 import com.m.k.seetaoism.detail.adapter.CommentAdapter;
 import com.m.k.seetaoism.detail.adapter.RelatedNewsAdapter;
@@ -28,6 +33,10 @@ import com.m.k.systemui.uitils.SystemFacade;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.IDetailPresenter> implements IDetailConstraint.IDetailView {
 
@@ -44,6 +53,10 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
     private RelatedNewsData mRelatedNewsData;
 
     private CommentListData mCommentListData;
+
+    private int mCurrentDoLikeCommentPosition; // 当前点赞的这条评论的position
+
+    private String mSavedContent;
 
     private String contentUrl;
 
@@ -91,14 +104,50 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
         mShareAdapter = new ShareAdapter(getArguments(),new SampleShareListener(){
             @Override
             public void onResult(SHARE_MEDIA share_media) {
-                showToast("分享成功");
                 sendShareSuccess();
             }
 
         });
 
         mRelatedNewsAdapter = new RelatedNewsAdapter();
-        mCommentAdapter = new CommentAdapter();
+
+        mCommentAdapter = new CommentAdapter(new CommentAdapter.OnItemClickListener() {
+            @Override
+            public void onReplayComment(Comment comment) {
+
+                DetailCommentPop pop = new DetailCommentPop(getContext(), new DetailCommentPop.OnSendCallBack() {
+                    @Override
+                    public void onSend(String content) {
+                        sendCommentRelay(comment,content);
+                    }
+                });
+                pop.showRelay(getView(),comment.getUserName());
+            }
+
+            @Override
+            public void onReplayReplay(Comment comment, String userId,Replay replay) {
+
+                DetailCommentPop pop = new DetailCommentPop(getContext(), new DetailCommentPop.OnSendCallBack() {
+                    @Override
+                    public void onSend(String content) {
+                        sendRelayRelay(comment,userId,replay.getReply_id(),content);
+                    }
+                });
+                if(replay.getFromUserId().equals(userId)){
+                    pop.showRelay(getView(),replay.getFromUserName());
+                }else{
+                    pop.showRelay(getView(),replay.getToUserName());
+                }
+            }
+
+            @Override
+            public void onLikeClick(String commentId,int position) {
+
+                sendCommentLike(commentId,position);
+            }
+        });
+
+
         mAdapter = new MergeAdapter(mShareAdapter,mRelatedNewsAdapter,mCommentAdapter);
 
 
@@ -109,7 +158,6 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                Logger.d("newProgeress = %s",newProgress );
             }
         });
 
@@ -117,17 +165,14 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Logger.d("shouldOverrideUrlLoading = %s",url);
                 return false;
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-
-                Logger.d("onPage finish");
                 mRequestCount--;
-                show();
+                show(RequestType.FIRST);
 
             }
 
@@ -136,7 +181,7 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
         binding.smartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                showToast("准备加载更多");
+                loadComment(RequestType.LOAD_MORE);
             }
         });
 
@@ -148,7 +193,7 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
         super.onViewCreated(view, savedInstanceState);
 
         loadRelativeNews();
-        loadComment();
+        loadComment(RequestType.FIRST);
     }
 
     /**
@@ -162,22 +207,85 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
     /**
      * 加载新闻的评论列表
      */
-    private void loadComment(){
+    private void loadComment(RequestType type){
         mRequestCount++;
 
-        mPresenter.getNewsComment(mNewsId,mPointTime,mStart);
+        mPresenter.getNewsComment(type,mNewsId,mPointTime,mStart);
     }
+
+
+
 
 
     /**
      * 发送分享成功增加积分
      */
-    public void sendShareSuccess(){
-
-        IntegralWidget.show(getActivity(),10);
-        //showPopLoading();
-        //mPresenter.sendShareSuccess(mNewsId);
+     void sendShareSuccess(){
+        showPopLoading();
+        mPresenter.sendShareSuccess(mNewsId);
     }
+
+
+    /**
+     * 显示评论输入框
+     * @param view
+     */
+     void showCommentPop(View view){
+         DetailCommentPop pop = new DetailCommentPop(getContext(), new DetailCommentPop.OnSendCallBack() {
+             @Override
+             public void onSend(String content) {
+                 sendComment(content);
+             }
+
+             @Override
+             public void onSaveContent(String content) {
+                mSavedContent = content;
+             }
+         });
+
+         pop.showComment(view,mSavedContent);
+     }
+
+
+    /**
+     * 向服务器发送评论
+     * @param content ，评论类容
+     */
+     void sendComment(String content){
+         showPopLoading();
+         mPresenter.sendNewsComment(mNewsId,content);
+
+
+     }
+
+    /**
+     * 向服务器发送评论的回复
+     * @param content
+     */
+     void sendCommentRelay(Comment comment,String content){
+        showPopLoading();
+        mPresenter.sendUserReplay(comment.getCommentId(),comment.getUserId(),1,"0",mNewsId,content);
+     }
+
+    /**
+     * 向服务发送回复的回复
+     * @param content
+     */
+     void sendRelayRelay(Comment comment,String toUserIds,String replayId,String content){
+
+         showPopLoading();
+         mPresenter.sendUserReplay(comment.getCommentId(),toUserIds,2,replayId,mNewsId,content);
+     }
+
+    /**
+     * 发送评论点赞
+     */
+     void sendCommentLike(String commentId,int position){
+         showPopLoading();
+         mCurrentDoLikeCommentPosition = position;
+         mPresenter.doCommentLike(commentId);
+
+     }
 
     @Override
     protected int getLayoutId() {
@@ -199,32 +307,72 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
         return false;
     }
 
+    // 相关新闻的回调
     @Override
     public void onRelatedNewsResult(MvpResponse<RelatedNewsData> response) {
         mRequestCount--;
         mRelatedNewsData = response.getData();
-        show();
+        show(RequestType.FIRST);
 
     }
 
+    // 评论列表的回调
     @Override
-    public void onNewsCommentResult(MvpResponse<CommentListData> response) {
+    public void onNewsCommentListResult(MvpResponse<CommentListData> response) {
         mRequestCount--;
         mCommentListData = response.getData();
-        show();
+        show(response.getRequestType());
     }
 
+    // 分享成功的增加积分的回调
     @Override
     public void onSendShareResult(MvpResponse<String> response) {
         closeLoading();
         if(response.isOk()){
             // 显示一个增加积分动画
-            showToast("分享增加积分成功");
-
+          IntegralWidget.show(getActivity(),10);
         }
     }
 
-    private void show(){
+
+    // 文章评论的回调
+    @Override
+    public void onSendNewsCommentResult(MvpResponse<Comment> response) {
+        closeLoading();
+        if(response.isOk()){
+            mSavedContent = null;
+            mCommentAdapter.insertComment(response.getData());
+        }else{
+            showToast(response.getMsg());
+        }
+    }
+
+    // 回复成功回调 包含了主评论的回复和和回复的回复
+    @Override
+    public void onSendUserReplayResult(MvpResponse<Replay> response) {
+        closeLoading();
+        if(response.isOk()){
+            mCommentAdapter.insertReplay(response.getData());
+        }else{
+            showToast(response.getMsg());
+        }
+    }
+
+    // 发送点赞请求
+    @Override
+    public void onCommentLikeResult(MvpResponse<String> response) {
+        closeLoading();
+
+        if(response.isOk()){
+            mCommentAdapter.doLike(mCurrentDoLikeCommentPosition);
+        }else{
+            showToast(response.getMsg());
+        }
+
+        mCurrentDoLikeCommentPosition = -1;
+    }
+
+    private void show(RequestType type){
         if(mRequestCount != 0){
             return;
         }
@@ -232,18 +380,56 @@ public class DetailContentFragment  extends MvpBaseFragment<IDetailConstraint.ID
 
         if(mRelatedNewsData != null && !SystemFacade.isListEmpty(mRelatedNewsData.getNewsList())){
             mRelatedNewsAdapter.setNews(mRelatedNewsData.getNewsList());
+            binding.detailRecyclerview.addItemDecoration(new CommentDecoration(mRelatedNewsData.getNewsList().size() +1));
         }
 
 
         if(mCommentListData != null && !SystemFacade.isListEmpty(mCommentListData.getCommentList())){
 
-            mCommentAdapter.setComments(mCommentListData.getCommentList());
+            sortCommentListData(mCommentListData.getCommentList());
+
+            mPointTime = mCommentListData.getPoint_time();
+            mStart = mCommentListData.getStart();
+
+            if(type == RequestType.FIRST){
+
+                mCommentAdapter.setComments(mCommentListData.getCommentList());
+
+            }else if(type == RequestType.LOAD_MORE){
+                mCommentAdapter.loadMore(mCommentListData.getCommentList());
+                binding.smartRefreshLayout.finishLoadMore();
+            }
+
 
             binding.smartRefreshLayout.setNoMoreData(mCommentListData.getMore() == 0);
 
+
+
+        }else{
+            binding.smartRefreshLayout.setNoMoreData(true);
         }
 
 
+    }
+
+
+
+    private void sortCommentListData(ArrayList<Comment> comments){
+
+        Collections.sort(comments, new Comparator<Comment>() {
+            @Override
+            public int compare(Comment o1, Comment o2) {
+                int o1RelaySize  = o1.getReplyList() == null ? 0 : o1.getReplyList().size();
+                int o2RelaySize  = o2.getReplyList() == null ? 0 : o2.getReplyList().size();
+
+                if(o1RelaySize == 0 && o2RelaySize == 0){ // 都没有
+                    return 0;
+                }
+
+                return   o2RelaySize - o1RelaySize;
+
+            }
+        });
     }
 
 

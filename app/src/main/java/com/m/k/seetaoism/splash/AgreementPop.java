@@ -19,10 +19,15 @@ public class AgreementPop extends MvpCommonPopView {
 
     public AgreementPop(Context context) {
         super(context);
-        initView(context);
+
     }
 
 
+    @Override
+    protected void setView(Context context) {
+        super.setView(context);
+        initView(context);
+    }
 
     public void setListener(IPopClickListener listener) {
         this.mListener = listener;

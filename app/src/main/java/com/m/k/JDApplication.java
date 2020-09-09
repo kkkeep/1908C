@@ -20,7 +20,8 @@ import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
 
 public class JDApplication extends Application {
@@ -52,7 +53,7 @@ public class JDApplication extends Application {
         initUmengShare();
 
 
-   /*     SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {//设置全局的Header构建器
+    /*   SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {//设置全局的Header构建器
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
                 return new ClassicsHeader(context)

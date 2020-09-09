@@ -11,8 +11,6 @@
         <attr name="bottomNavigationDeliverLine" format="boolean"/>
         <attr name="bottomNavigationDeliverLineWidth" format="dimension|reference"/>
         <attr name="bottomNavigationDeliverLineColor" format="color|reference"/>
-
-
         <attr name="bottomNavigationTextColor" format="color|reference"/>
         <attr name="bottomNavigationTextSize" format="dimension|reference"/>
     </declare-styleable>
