@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 
@@ -90,6 +91,12 @@ public class HomeActivity extends BaseActivity {
             }
         });
 
+        binding.drawer.getRoot().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
        // binding.drawerLayout.openDrawer(Gravity.LEFT);
 
