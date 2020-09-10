@@ -3,7 +3,10 @@ package com.m.k;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.multidex.MultiDex;
@@ -110,8 +113,20 @@ public class JDApplication extends Application {
     }
     @Umeng(BuildConfig.APPLICATION_ID)
     public void initUmengShare(){
+        String chanel = "Jiandao";
 
-        ShareUtils.init(this,"chanel",BuildConfig.DEBUG);
+        try {
+            ApplicationInfo applicationInfo =  getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+
+             chanel = applicationInfo.metaData.getString("chanel");
+
+            Toast.makeText(this,chanel,Toast.LENGTH_LONG).show();
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ShareUtils.init(this,chanel,BuildConfig.DEBUG);
     }
 
     @Override
