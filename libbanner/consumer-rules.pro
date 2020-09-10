@@ -1,0 +1,4 @@
+-keep class androidx.recyclerview.widget.LinearLayoutManager{*;}
+-keep class androidx.viewpager2.widget.PageTransformerAdapter{*;}
+-keep class androidx.viewpager2.widget.ViewPager2{*;}
+-keep class androidx.viewpager2.widget.ScrollEventAdapter{*;}

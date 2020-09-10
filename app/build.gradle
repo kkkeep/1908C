@@ -8,15 +8,19 @@ android {
         release {
             storeFile file('../jiandao.jks')
             keyAlias 'jiandao12'
-            keyPassword 'jiandao123'
-            storePassword 'jiandao123'
+            keyPassword System.getenv("KEY_STORE_PASSWORD")
+            storePassword System.getenv("KEY_STORE_PASSWORD")
         }
+
     }
 
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+
+    println("--------------------- ${System.getenv("KEY_STORE_PASSWORD")}")
     defaultConfig {
+
         applicationId "com.seetaoism"
         minSdkVersion 19
         targetSdkVersion 29
@@ -29,13 +33,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
 
         }
         debug {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
 

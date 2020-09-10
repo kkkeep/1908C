@@ -4,7 +4,7 @@ import com.m.k.anotaion.BaseUrl;
 
 public interface Constrant {
 
-
+    @BaseUrl
     String BASE_URL = "https://www.seetao.com";
 
     @BaseUrl

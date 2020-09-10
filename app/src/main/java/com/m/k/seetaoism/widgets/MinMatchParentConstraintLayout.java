@@ -2,6 +2,7 @@ package com.m.k.seetaoism.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -32,8 +33,9 @@ public class MinMatchParentConstraintLayout  extends ConstraintLayout {
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(Math.max(parentHeight,height),MeasureSpec.EXACTLY));
 
 
-
     }
+
+
 
 
 

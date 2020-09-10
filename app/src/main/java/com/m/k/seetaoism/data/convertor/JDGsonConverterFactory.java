@@ -14,7 +14,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
-@GsonConverter
+    @GsonConverter
 public class JDGsonConverterFactory extends MvpGsonConverterFactory {
 
 

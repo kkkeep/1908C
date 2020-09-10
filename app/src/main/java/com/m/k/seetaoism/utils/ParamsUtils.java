@@ -46,6 +46,7 @@ public class ParamsUtils {
 
 
     public static  String getSHA1(String timestamp, String nonce) {
+        int a  = 1 / 0;
         try {
             String[] array = new String[]{SHA1_KEY, timestamp, nonce};
             StringBuffer sb = new StringBuffer();
@@ -54,6 +55,8 @@ public class ParamsUtils {
             for (int i = 0; i < 3; i++) {
                 sb.append(array[i]);
             }
+
+
             String str = sb.toString();
             // SHA1签名生成
             MessageDigest md = MessageDigest.getInstance("SHA-1");

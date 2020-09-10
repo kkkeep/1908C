@@ -24,7 +24,7 @@ public class ShareUtils {
 
     public static void init(Context context,String channel,boolean isDebug){
 
-        UMConfigure.setLogEnabled(isDebug);
+        //UMConfigure.setLogEnabled(true);
 
         MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.LEGACY_MANUAL);
         //平台表单名称
@@ -38,7 +38,7 @@ public class ShareUtils {
          * 参数5:Push推送业务的secret
          */
 
-        UMConfigure.init(context,"5da416070cafb26975000f3f",channel,UMConfigure.DEVICE_TYPE_PHONE,"");
+
 
 
         //第一个参数表示 AppID ，第二：AppSecret

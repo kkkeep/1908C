@@ -75,3 +75,28 @@
 # ---------- rxjava ---------------
 -dontwarn java.util.concurrent.Flow*
 # ---------- rxjava ---------------
+
+-keep class com.m.k.seetaoism.data.entity.**{*;}
+
+
+
+# ------- mvp lib ----------------
+
+-keep class com.m.k.anotaion.**{*;}
+
+-keep @com.m.k.anotaion.ApiService class * {*;}
+
+-keepclassmembers class * {
+   @com.m.k.anotaion.BaseUrl <fields>;
+}
+-keep @com.m.k.anotaion.GsonConverter class * {*;}
+-keep @com.m.k.anotaion.MvpEntity class * {*;}
+-keep @com.m.k.anotaion.OkInterceptor class * {*;}
+
+
+-keep @com.m.k.anotaion.Umeng class * {*;}
+
+-keepclassmembers class * {
+  @com.m.k.anotaion.Umeng *;
+}
+# ------- mvp lib ----------------

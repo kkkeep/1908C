@@ -131,7 +131,7 @@ public class SplashActivity extends BaseActivity implements CancelAdapt {
             public void accept(MvpResponse<User> response) throws Throwable {
                 if (response.isOk()) {
                     // 由于后去用户信息的接口返回的User 对象里面没有token
-
+                    showToast("获取用户成功");
                     User.Token tokenObj = new User.Token();
 
                     tokenObj.setValue(token);

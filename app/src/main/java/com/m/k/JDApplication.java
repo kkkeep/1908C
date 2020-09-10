@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.multidex.MultiDex;
 
 import com.m.k.anotaion.Umeng;
+import com.m.k.mvp.ParamsGetter;
 import com.m.k.seetaoism.BuildConfig;
 import com.m.k.umeng.share.ShareUtils;
 import com.m.k.mvp.manager.MvpManager;
@@ -23,6 +24,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 
+import java.util.HashMap;
+
 
 public class JDApplication extends Application {
 
@@ -31,7 +34,13 @@ public class JDApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        MvpManager.setParamsGetter(ParamsUtils::getCommonParams);
+        MvpManager.setParamsGetter(new ParamsGetter() {
+            @Override
+            public HashMap<String, Object> getParams() {
+                return ParamsUtils.getCommonParams();
+            }
+
+        });
 
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @NonNull

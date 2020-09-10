@@ -19,9 +19,7 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 
 import java.text.DecimalFormat;
-
 public class SmartRefreshFooter extends ConstraintLayout implements RefreshFooter {
-
     private GifView mGifView;
     private ImageView mMaskView;
     private DecimalFormat decimalFormat = new DecimalFormat("000");

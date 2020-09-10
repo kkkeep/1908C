@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.m.k.mvp.data.ok.converter.MvpGsonResponseBodyConverter;
+import com.m.k.mvp.utils.Logger;
 
 import org.json.JSONObject;
 
@@ -19,6 +20,7 @@ public class JDGsonResponseBodyConverter<T> extends MvpGsonResponseBodyConverter
 
     @Override
     public String handJson(String json) {
+        Logger.d(" 使用的是自己的转换器");
         try {
             JSONObject jsonObject = new JSONObject(json);
 

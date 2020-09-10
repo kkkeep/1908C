@@ -18,14 +18,9 @@
 -keep public interface com.umeng.socialize.**
 -keep public interface com.umeng.socialize.sensor.**
 -keep public interface com.umeng.scrshot.**
--keep class com.uc.** {*;}
--keep class com.zui.** {*;}
--keep class com.miui.** {*;}
--keep class com.heytap.** {*;}
--keep class a.** {*;}
--keep class com.vivo.** {*;}
--keep class com.umeng.**
+
 -keep public class com.umeng.socialize.* {*;}
+
 
 -keep class com.facebook.**
 -keep class com.facebook.** { *; }
@@ -55,7 +50,6 @@
 -keep class com.tencent.mm.sdk.** {
    *;
 }
-
 
 -keep class com.twitter.** { *; }
 
@@ -94,10 +88,3 @@
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
-
--keepclassmembers class * {
-   public <init>(org.json.JSONObject);
-}
-
-
--keep class com.umeng.** {*;}
